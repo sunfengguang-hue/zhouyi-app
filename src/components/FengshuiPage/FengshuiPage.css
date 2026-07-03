@@ -1,0 +1,40 @@
+.page-form__intro-fs { text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; letter-spacing: 2px; }
+
+.fs-result__title { font-family: var(--font-display); font-size: 22px; color: var(--gold); text-align: center; letter-spacing: 6px; margin-bottom: 8px; }
+.fs-result__mingua { text-align: center; margin-bottom: 24px; font-size: 14px; }
+.fs-result__gua-name { font-family: var(--font-display); font-size: 16px; color: var(--text-primary); letter-spacing: 2px; }
+
+/* 罗盘 */
+.compass { position: relative; width: 260px; height: 260px; margin: 0 auto 32px; }
+.compass__ring--outer { position: absolute; inset: 0; border: 2px solid var(--border-gold); border-radius: 50%; }
+.compass__dir {
+  position: absolute; top: 50%; left: 50%; width: 60px; margin-left: -30px; margin-top: -12px;
+  text-align: center; transform-origin: 0 0; pointer-events: none;
+}
+.compass__dir-name { display: block; font-family: var(--font-display); font-size: 14px; color: var(--text-primary); }
+.compass__dir--lucky .compass__dir-star { color: #2ecc71; }
+.compass__dir--unlucky .compass__dir-star { color: #e74c3c; }
+.compass__dir-star { display: block; font-size: 11px; letter-spacing: 1px; }
+.compass__center {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 64px; height: 64px; border-radius: 50%; background: rgba(212,168,83,0.15);
+  border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 22px; color: var(--gold); font-weight: bold;
+}
+
+/* 方位卡 */
+.fs-result__section { margin-bottom: 24px; }
+.fs-result__section-title { font-family: var(--font-display); font-size: 16px; color: var(--gold); letter-spacing: 4px; text-align: center; margin-bottom: 12px; }
+.fs-result__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.fs-result__card { padding: 14px; border-radius: var(--radius-md); }
+.fs-result__card--lucky { background: rgba(46,204,113,0.08); border: 1px solid rgba(46,204,113,0.3); }
+.fs-result__card--unlucky { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); }
+.fs-result__card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.fs-result__card-dir { font-family: var(--font-display); font-size: 15px; color: var(--text-primary); letter-spacing: 2px; }
+.fs-result__card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+@media (max-width: 480px) {
+  .compass { width: 220px; height: 220px; }
+  .compass__dir { transform-origin: 0 0; width: 50px; margin-left: -25px; }
+  .fs-result__grid { grid-template-columns: 1fr; }
+}

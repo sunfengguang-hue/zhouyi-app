@@ -1,0 +1,115 @@
+.hexagram-display {
+  text-align: center;
+  padding: 20px;
+}
+
+.hexagram-display__title {
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing: 4px;
+  margin-bottom: 12px;
+}
+
+.hexagram-display__name {
+  margin-bottom: 24px;
+}
+
+.hexagram-display__name-main {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--gold);
+  letter-spacing: 6px;
+  font-weight: bold;
+  text-shadow: 0 0 20px rgba(212, 168, 83, 0.2);
+}
+
+.hexagram-display__name-sub {
+  display: block;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  letter-spacing: 2px;
+}
+
+/* 六爻显示 */
+.hexagram-display__lines {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hexagram-display__line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hexagram-display__line-pos {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--text-secondary);
+  width: 20px;
+  text-align: right;
+}
+
+.hexagram-display__line-bar {
+  width: 120px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+/* 阳爻 */
+.hexagram-display__line-bar--yang .hexagram-display__yang-bar {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(212, 168, 83, 0.3);
+}
+
+/* 阴爻 */
+.hexagram-display__line-bar--yin .hexagram-display__yin-bar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.hexagram-display__yin-segment {
+  flex: 1;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cloud-gray), var(--text-secondary), var(--cloud-gray));
+  border-radius: 2px;
+}
+
+.hexagram-display__yin-gap {
+  width: 16px;
+}
+
+/* 变爻标记 */
+.hexagram-display__line-bar--changed {
+  filter: brightness(1.3);
+}
+
+.hexagram-display__line-bar--changed .hexagram-display__yang-bar,
+.hexagram-display__line-bar--changed .hexagram-display__yin-segment {
+  background: linear-gradient(90deg, var(--vermillion), var(--vermillion-light), var(--vermillion));
+  box-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+}
+
+.hexagram-display__changed-mark {
+  font-size: 14px;
+  color: var(--vermillion-light);
+  width: 20px;
+}
+
+@media (max-width: 768px) {
+  .hexagram-display__name-main { font-size: 22px; }
+  .hexagram-display__line-bar { width: 90px; }
+  .hexagram-display__yin-gap { width: 12px; }
+}

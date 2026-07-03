@@ -1,0 +1,223 @@
+// 卦名（八卦）
+export type TrigramName = '乾' | '兑' | '离' | '震' | '巽' | '坎' | '艮' | '坤';
+
+// 爻的类型
+export type LineType = 'yang' | 'yin'; // 阳爻 / 阴爻
+export type LineChange = 'unchanged' | 'changed'; // 不变 / 变爻
+
+// 单个爻的信息
+export interface LineInfo {
+  position: number;       // 爻位 (1-6, 从下到上)
+  value: number;          // 铜钱之和 (6, 7, 8, 9)
+  type: LineType;         // 阴阳
+  change: LineChange;     // 是否变爻
+  name: string;           // 爻的名称 (初六, 九二, ...)
+  text: string;           // 爻辞
+  translation: string;   // 白话译文
+}
+
+// 六爻组合
+export type HexagramLines = [number, number, number, number, number, number]; // 从下到上
+
+// 八卦信息
+export interface TrigramInfo {
+  name: TrigramName;
+  nature: string;         // 自然属性 (天, 泽, 火, 雷, 风, 水, 山, 地)
+  attribute: string;      // 属性 (健, 说, 丽, 动, 入, 陷, 止, 顺)
+  symbol: string[][];     // 三爻符号表示
+}
+
+// 卦象数据
+export interface HexagramData {
+  number: number;              // 卦序 (1-64)
+  name: string;                // 卦名 (如"乾")
+  fullName: string;            // 全名 (如"乾为天")
+  upperTrigram: TrigramName;   // 上卦
+  lowerTrigram: TrigramName;   // 下卦
+  judgment: string;            // 卦辞
+  judgmentTranslation: string;  // 卦辞白话译文
+  image: string;               // 象辞
+  imageTranslation: string;    // 象辞白话译文
+  commentary: string;          // 彖辞
+  commentaryTranslation: string; // 彖辞白话译文
+  lines: LineInfo[];            // 六爻信息
+  interpretation: {
+    career: string;             // 事业
+    love: string;               // 感情
+    wealth: string;             // 财运
+    health: string;             // 健康
+  };
+}
+
+// 摇卦步骤
+export interface CoinFlipResult {
+  coins: [number, number, number]; // 三枚铜钱结果 (2 或 3)
+  sum: number;                       // 总和 (6-9)
+  position: number;                  // 第几爻
+}
+
+// 算卦状态
+export type DivinationPhase = 'idle' | 'flipping' | 'complete';
+
+export interface DivinationState {
+  phase: DivinationPhase;
+  currentFlip: number;          // 当前第几次摇 (0-5)
+  lines: HexagramLines;         // 六爻数值
+  flips: CoinFlipResult[];      // 每次摇卦的结果
+  result: DivinationResult | null;
+}
+
+// 算卦结果
+export interface DivinationResult {
+  hexagram: HexagramData;           // 本卦
+  changedHexagram: HexagramData | null; // 变卦 (无变爻时为 null)
+  changedLines: number[];            // 变爻的位置列表 (1-6)
+  lines: HexagramLines;             // 六爻数值 (从下到上)
+  timestamp: number;
+}
+
+// 历史记录项
+export interface HistoryItem {
+  id: string;
+  result: DivinationResult;
+  timestamp: number;
+}
+
+// 分享图片配置
+export interface ShareConfig {
+  width: number;
+  height: number;
+  backgroundColor: string;
+}
+
+// ======================== 应用页面导航 ========================
+export type AppView =
+  | 'home'
+  | 'zhouyi'
+  | 'bazi'
+  | 'astrology'
+  | 'fengshui'
+  | 'naming';
+
+// ======================== 生辰八字 ========================
+export type WuXing = '金' | '木' | '水' | '火' | '土';
+export type YinYang = '阴' | '阳';
+
+// 十神
+export type ShiShen =
+  | '比肩' | '劫财'
+  | '食神' | '伤官'
+  | '偏财' | '正财'
+  | '七杀' | '正官'
+  | '偏印' | '正印';
+
+// 一柱（天干地支）
+export interface BaziPillar {
+  gan: string;     // 天干
+  zhi: string;     // 地支
+  ganWX: WuXing;   // 天干五行
+  zhiWX: WuXing;   // 地支五行
+  ganSS: ShiShen;  // 天干十神（年月时柱；日柱为日主）
+  zhiCangGan: { gan: string; wx: WuXing; ss: ShiShen }[]; // 地支藏干
+  zhiSS: ShiShen;  // 地支主气十神
+}
+
+export interface BaziResult {
+  year: BaziPillar;   // 年柱
+  month: BaziPillar;  // 月柱
+  day: BaziPillar;    // 日柱（日主）
+  hour: BaziPillar;   // 时柱
+  wuxingCount: Record<WuXing, number>; // 五行计数（含藏干）
+  dayMaster: string;  // 日主天干
+  dayMasterWX: WuXing;
+  strength: '旺' | '偏旺' | '中和' | '偏弱' | '弱';
+  favorableWX: WuXing[]; // 喜用神
+  shenSha: string[];  // 神煞提示
+  solarTime: string;  // 真太阳时
+  input: {
+    date: string;
+    time: string;
+    gender: '男' | '女';
+    longitude: number;
+  };
+}
+
+// ======================== 星座 ========================
+export interface AstrologySign {
+  name: string;
+  symbol: string;
+  element: '火' | '土' | '风' | '水';
+  ruler: string;       // 守护星
+  dateRange: string;
+  traits: string[];
+  love: string;
+  career: string;
+  wealth: string;
+  health: string;
+  luckyColor: string;
+  luckyNumber: number;
+}
+
+export interface AstrologyResult {
+  sign: AstrologySign;
+  todayFortune: {
+    career: number;  // 1-5
+    love: number;
+    wealth: number;
+    health: number;
+    summary: string;
+  };
+  compatibleSigns: { sign: string; score: number }[];
+  input: { month: number; day: number };
+}
+
+// ======================== 风水（八宅） ========================
+export type BaguaName = '坎' | '艮' | '震' | '巽' | '离' | '坤' | '兑' | '乾';
+export type YouXing = '生气' | '天医' | '延年' | '伏位' | '绝命' | '五鬼' | '六煞' | '祸害';
+
+export interface FengshuiDirection {
+  direction: string;   // 方位名（北、东北、东...）
+  gua: BaguaName;      // 卦名
+  youXing: YouXing;    // 游星
+  lucky: boolean;      // 是否吉方
+  description: string; // 说明
+  suggestion: string;  // 布局建议
+}
+
+export interface FengshuiResult {
+  mingGua: BaguaName;  // 命卦
+  group: '东四命' | '西四命';
+  directions: FengshuiDirection[]; // 八方吉凶
+  houseSitting: string; // 房屋坐向
+  houseFacing: string;
+  bestDirections: string[]; // 最佳方位
+  input: { birthYear: number; gender: '男' | '女'; sitting: string };
+}
+
+// ======================== 起名 ========================
+export interface NameChar {
+  char: string;        // 汉字
+  pinyin: string;      // 拼音
+  strokes: number;     // 康熙笔画
+  wuxing: WuXing;      // 五行
+  meaning: string;     // 寓意
+  gender: '男' | '女' | '中';
+}
+
+export interface NameResult {
+  fullName: string;
+  givenName: string;
+  wuge: {
+    tian: number;   // 天格
+    ren: number;    // 人格
+    di: number;     // 地格
+    wai: number;    // 外格
+    zong: number;   // 总格
+  };
+  wugeJi: { index: number; luck: '吉' | '半吉' | '凶'; desc: string }[];
+  sancai: { tian: WuXing; ren: WuXing; di: WuXing; luck: '吉' | '半吉' | '凶'; desc: string };
+  score: number;       // 综合评分 0-100
+  meaning: string;     // 名字寓意
+  chars: NameChar[];
+}
+

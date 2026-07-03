@@ -1,0 +1,45 @@
+.astro-intro { text-align:center; color:var(--text-secondary); font-size:14px; margin-bottom:24px; letter-spacing:2px; }
+
+.astro-header { text-align:center; margin-bottom:28px; animation:fadeIn 0.6s ease; }
+.astro-symbol {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:80px; height:80px; border-radius:50%; border:2px solid;
+  font-size:40px; margin-bottom:12px;
+  background:rgba(255,255,255,0.05);
+  animation:float 4s ease-in-out infinite;
+}
+.astro-name { font-family:var(--font-display); font-size:26px; color:var(--text-primary); letter-spacing:6px; }
+.astro-range { font-size:13px; color:var(--text-secondary); letter-spacing:2px; margin-top:4px; }
+
+.astro-section { margin-bottom:24px; padding:16px; background:rgba(0,0,0,0.15); border-radius:var(--radius-md); border-left:3px solid var(--gold); animation:fadeInUp 0.5s ease; }
+.astro-section__title { font-family:var(--font-display); font-size:16px; color:var(--gold); letter-spacing:4px; margin-bottom:12px; }
+
+.astro-traits { display:flex; flex-wrap:wrap; gap:8px; }
+.astro-trait { font-size:13px; }
+
+.astro-summary { text-align:center; font-size:15px; margin-bottom:14px; letter-spacing:2px; }
+
+.astro-fortune-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+.astro-fortune-item { display:flex; flex-direction:column; align-items:center; gap:4px; padding:12px; background:rgba(255,255,255,0.04); border-radius:var(--radius-md); }
+.astro-fortune__icon { font-size:22px; }
+.astro-fortune__label { font-size:13px; color:var(--text-secondary); }
+.astro-fortune__stars { font-size:13px; letter-spacing:1px; }
+
+.astro-detail { display:flex; flex-direction:column; gap:12px; }
+.astro-detail__item { display:flex; gap:10px; align-items:flex-start; }
+.astro-detail__icon { flex-shrink:0; font-size:18px; }
+.astro-detail__item p { font-size:14px; color:var(--text-secondary); line-height:1.7; }
+
+.astro-lucky { display:flex; gap:12px; justify-content:center; }
+
+.astro-compat { display:flex; flex-direction:column; gap:8px; }
+.astro-compat__item { display:flex; align-items:center; gap:10px; }
+.astro-compat__name { font-family:var(--font-display); font-size:14px; color:var(--text-primary); width:72px; }
+.astro-compat__bar { flex:1; height:12px; background:rgba(255,255,255,0.06); border-radius:6px; overflow:hidden; }
+.astro-compat__fill { height:100%; border-radius:6px; transition:width 0.6s ease; }
+.astro-compat__score { font-size:13px; color:var(--text-secondary); width:28px; text-align:right; }
+
+@media (max-width:480px) {
+  .astro-symbol { width:64px; height:64px; font-size:32px; }
+  .astro-fortune-grid { grid-template-columns:1fr; }
+}

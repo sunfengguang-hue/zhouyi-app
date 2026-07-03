@@ -1,0 +1,172 @@
+.app__nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: fadeIn 0.6s ease;
+}
+
+.app__nav-btn {
+  background: rgba(212, 168, 83, 0.1);
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 8px 20px;
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  letter-spacing: 2px;
+  transition: var(--transition);
+}
+
+.app__nav-btn:hover {
+  background: rgba(212, 168, 83, 0.2);
+  border-color: var(--gold);
+}
+
+.app__main {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 80px;
+}
+
+.app__viewing {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app__back-btn {
+  margin-top: 20px;
+}
+
+.app__share {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  z-index: 50;
+  animation: fadeInUp 0.5s ease;
+}
+
+.app__loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--gold);
+  font-size: 16px;
+  letter-spacing: 4px;
+  animation: pulse 1.5s ease infinite;
+}
+
+/* 通用页面表单样式 */
+.page-form {
+  width: 100%;
+  max-width: 480px;
+  animation: fadeIn 0.5s ease;
+}
+
+.page-form__group {
+  margin-bottom: 20px;
+}
+
+.page-form__label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.page-form__input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  letter-spacing: 1px;
+  transition: var(--transition);
+  outline: none;
+}
+
+.page-form__input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 12px var(--shadow-gold);
+}
+
+.page-form__input::placeholder {
+  color: var(--cloud-gray);
+  opacity: 0.5;
+}
+
+.page-form__select {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.page-form__select:focus {
+  border-color: var(--gold);
+}
+
+.page-form__select option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.page-form__row {
+  display: flex;
+  gap: 12px;
+}
+
+.page-form__row > * {
+  flex: 1;
+}
+
+.page-form__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+/* 通用结果展示 */
+.page-result {
+  width: 100%;
+  max-width: 560px;
+  margin-top: 24px;
+  animation: fadeInUp 0.6s ease;
+}
+
+.page-result__title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 480px) {
+  .page-form__row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .app__share {
+    bottom: 70px;
+    right: 12px;
+  }
+}

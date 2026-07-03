@@ -1,0 +1,201 @@
+.result-panel {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 24px;
+}
+
+.result-panel__hexagrams {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.result-panel__arrow {
+  font-size: 28px;
+  color: var(--gold);
+  align-self: center;
+  animation: pulse 2s ease infinite;
+}
+
+.result-panel__judgment-text {
+  text-align: center;
+  margin: 16px 0;
+}
+
+.result-panel__judgment-quote {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  text-shadow: 0 0 15px rgba(212, 168, 83, 0.2);
+}
+
+/* Tabs */
+.result-panel__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: 4px;
+}
+
+.result-panel__tab {
+  flex: 1;
+  padding: 10px 16px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text-secondary);
+  background: transparent;
+  border-radius: var(--radius-sm);
+  letter-spacing: 2px;
+  transition: var(--transition);
+}
+
+.result-panel__tab:hover {
+  color: var(--text-primary);
+  background: rgba(212, 168, 83, 0.1);
+}
+
+.result-panel__tab--active {
+  color: var(--bg-primary);
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  font-weight: bold;
+}
+
+/* Content */
+.result-panel__content {
+  min-height: 200px;
+}
+
+.result-panel__section {
+  padding: 8px 0;
+}
+
+.result-panel__item {
+  margin-bottom: 4px;
+}
+
+.result-panel__item-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.result-panel__item-text {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text-primary);
+  line-height: 2;
+  letter-spacing: 1px;
+}
+
+.result-panel__item-translation {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-top: 4px;
+}
+
+.result-panel__divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+  margin: 16px 0;
+}
+
+/* 爻辞 */
+.result-panel__yao {
+  margin-bottom: 4px;
+}
+
+.result-panel__yao-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.result-panel__yao-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.result-panel__yao-bar {
+  font-size: 22px;
+  color: var(--gold);
+}
+
+.result-panel__yao-text {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.8;
+  letter-spacing: 1px;
+}
+
+.result-panel__yao-translation {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-top: 2px;
+}
+
+/* 解读 */
+.result-panel__interp {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.result-panel__interp-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--gold);
+}
+
+.result-panel__interp-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.result-panel__interp-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.result-panel__interp-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* 操作按钮 */
+.result-panel__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-gold);
+}
+
+@media (max-width: 768px) {
+  .result-panel__hexagrams { gap: 16px; }
+  .result-panel__judgment-quote { font-size: 16px; }
+  .result-panel__tab { font-size: 13px; padding: 8px 10px; }
+}

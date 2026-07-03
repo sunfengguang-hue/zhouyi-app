@@ -1,0 +1,63 @@
+.bazi-form__intro { text-align: center; color: var(--text-secondary); font-size: 14px; margin-bottom: 24px; letter-spacing: 2px; }
+
+.bazi-result__title { font-family: var(--font-display); font-size: 24px; color: var(--gold); text-align: center; letter-spacing: 6px; margin-bottom: 4px; }
+.bazi-result__time { text-align: center; font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; letter-spacing: 2px; }
+
+/* 四柱排盘 */
+.bazi-result__pillars { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+
+.bazi-pillar {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 16px 12px; min-width: 80px;
+  background: rgba(0,0,0,0.2); border: 1px solid var(--border-gold); border-radius: var(--radius-md);
+}
+
+.bazi-pillar__name { font-size: 12px; color: var(--text-secondary); letter-spacing: 2px; margin-bottom: 4px; }
+.bazi-pillar__gan {
+  font-family: var(--font-display); font-size: 32px; color: var(--gold); font-weight: bold; line-height: 1.2;
+  text-shadow: 0 0 10px rgba(212,168,83,0.2);
+}
+.bazi-pillar__zhi {
+  font-family: var(--font-display); font-size: 28px; color: var(--cloud-white); font-weight: bold; line-height: 1.2;
+}
+.bazi-pillar__ss { font-size: 11px; color: var(--text-secondary); letter-spacing: 1px; }
+.bazi-pillar__cang { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 4px; }
+.bazi-pillar__cang-item { font-size: 11px; color: var(--cloud-gray); }
+
+/* 日主信息 */
+.bazi-result__info { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+
+.bazi-result__info-card {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 14px 20px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-gold); border-radius: var(--radius-md);
+  min-width: 100px;
+}
+
+.bazi-result__info-card h4 { font-size: 13px; color: var(--text-secondary); letter-spacing: 2px; margin-bottom: 2px; }
+.bazi-result__day-master { font-family: var(--font-display); font-size: 28px; color: var(--gold); font-weight: bold; }
+.bazi-result__day-wx { font-size: 14px; color: var(--text-secondary); }
+
+/* 五行分布 */
+.bazi-result__section-title { font-family: var(--font-display); font-size: 16px; color: var(--gold); letter-spacing: 4px; margin-bottom: 12px; text-align: center; }
+
+.bazi-result__wuxing { margin-bottom: 24px; padding: 16px; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); border-left: 3px solid var(--gold); }
+
+.bazi-result__wx-bars { display: flex; flex-direction: column; gap: 8px; }
+
+.bazi-wx-item { display: flex; align-items: center; gap: 10px; }
+.bazi-wx-item__label { font-family: var(--font-display); font-size: 15px; width: 24px; text-align: center; color: var(--text-primary); }
+.bazi-wx-item__bar { flex: 1; height: 14px; background: rgba(255,255,255,0.06); border-radius: 7px; overflow: hidden; }
+.bazi-wx-item__fill { height: 100%; border-radius: 7px; transition: width 0.6s ease; min-width: 4px; }
+.bazi-wx-item__val { font-size: 13px; width: 24px; text-align: right; color: var(--text-secondary); }
+
+/* 神煞 */
+.bazi-result__shensha { margin-bottom: 20px; }
+.bazi-result__shensha-item { display: inline-block; margin: 4px; }
+
+@media (max-width: 480px) {
+  .bazi-result__pillars { gap: 8px; }
+  .bazi-pillar { min-width: 70px; padding: 12px 8px; }
+  .bazi-pillar__gan { font-size: 26px; }
+  .bazi-pillar__zhi { font-size: 22px; }
+  .bazi-result__info { gap: 8px; }
+}

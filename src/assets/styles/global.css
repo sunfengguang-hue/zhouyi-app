@@ -1,0 +1,158 @@
+@import url('./theme.css');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-card: rgba(245, 230, 200, 0.08);
+  --bg-card-solid: #2a2a3e;
+  --paper: #f5e6c8;
+  --paper-dark: #e8d5b0;
+  --gold: #d4a853;
+  --gold-light: #e8c97a;
+  --gold-dark: #b8902e;
+  --vermillion: #c0392b;
+  --vermillion-light: #e74c3c;
+  --ink: #2c2c2c;
+  --ink-light: #4a4a4a;
+  --cloud-white: #faf8f0;
+  --cloud-gray: #b8b8b8;
+  --border-gold: rgba(212, 168, 83, 0.3);
+  --shadow-gold: rgba(212, 168, 83, 0.15);
+  --text-primary: #faf8f0;
+  --text-secondary: #b8b8b8;
+  --text-gold: #d4a853;
+  --text-vermillion: #e74c3c;
+  --font-serif: 'STKaiti', 'KaiTi', '楷体', 'Noto Serif SC', 'SimSun', serif;
+  --font-display: 'STSong', 'SimSun', '宋体', 'Noto Serif SC', serif;
+  --font-body: 'STKaiti', 'KaiTi', '楷体', 'Noto Serif SC', Georgia, serif;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --transition: all 0.3s ease;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, #0f3460 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.8;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* 选中文本 */
+::selection {
+  background: var(--gold);
+  color: var(--bg-primary);
+}
+
+/* 按钮 */
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: var(--transition);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* 链接 */
+a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: var(--transition);
+}
+a:hover {
+  color: var(--gold-light);
+}
+
+/* 动画关键帧 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes cloudDrift {
+  0% { transform: translateX(-100%); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+@keyframes coinFlip {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(1800deg); }
+}
+
+@keyframes coinLand {
+  0% { transform: rotateY(1800deg) translateY(0); }
+  50% { transform: rotateY(1800deg) translateY(-20px); }
+  100% { transform: rotateY(1800deg) translateY(0); }
+}
+
+/* 工具类 */
+.text-gold { color: var(--gold); }
+.text-vermillion { color: var(--vermillion-light); }
+.text-secondary { color: var(--text-secondary); }
+.font-display { font-family: var(--font-display); }

@@ -1,0 +1,221 @@
+/* 起名页 */
+.naming-page { padding-top: 4px; }
+
+/* Tabs */
+.naming-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-gold);
+}
+
+.naming-tab {
+  flex: 1;
+  padding: 12px 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 3px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+}
+
+.naming-tab:hover {
+  color: var(--gold-light);
+}
+
+.naming-tab--active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* 推荐结果 */
+.naming-result__title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 4px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.naming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.naming-card {
+  padding: 16px;
+  background: rgba(245, 230, 200, 0.06);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.naming-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 4px 20px var(--shadow-gold);
+}
+
+.naming-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.naming-card__name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;
+}
+
+.naming-card__score {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.naming-card__wuge {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.naming-card__ge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.naming-card__ge sub {
+  font-size: 10px;
+  margin-left: 2px;
+  vertical-align: baseline;
+}
+
+.naming-card__ge--吉 {
+  color: var(--gold);
+  background: rgba(212, 168, 83, 0.1);
+  border-color: var(--border-gold);
+}
+
+.naming-card__ge--半吉 {
+  color: var(--gold-dark);
+  background: rgba(212, 168, 83, 0.06);
+  border-color: rgba(212, 168, 83, 0.15);
+}
+
+.naming-card__ge--凶 {
+  color: var(--vermillion-light);
+  background: rgba(192, 57, 43, 0.1);
+  border-color: rgba(192, 57, 43, 0.2);
+}
+
+.naming-card__sancai {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.naming-card__meaning {
+  font-size: 13px;
+  color: var(--cloud-gray);
+  line-height: 1.6;
+}
+
+/* 测名结果 */
+.naming-analyze {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.naming-analyze__score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+}
+
+.naming-analyze__score {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(212, 168, 83, 0.2);
+}
+
+.naming-analyze__score-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  letter-spacing: 3px;
+}
+
+.naming-analyze__wuge,
+.naming-analyze__sancai {
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--gold);
+}
+
+.naming-analyze__wuge h4,
+.naming-analyze__sancai h4 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.naming-analyze__ge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 14px;
+}
+
+.naming-analyze__ge-row:last-child {
+  border-bottom: none;
+}
+
+.naming-analyze__ge-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  width: 40px;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.naming-analyze__sancai p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 480px) {
+  .naming-tab { font-size: 14px; letter-spacing: 2px; }
+  .naming-card { padding: 12px; }
+  .naming-card__name { font-size: 19px; }
+  .naming-analyze__score { font-size: 44px; }
+}
