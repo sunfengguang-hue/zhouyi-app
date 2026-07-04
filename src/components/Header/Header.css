@@ -34,3 +34,31 @@
   .header__title { font-size: 28px; letter-spacing: 8px; }
   .header__subtitle { font-size: 14px; letter-spacing: 4px; }
 }
+
+/* Compact mode - hide taiji and subtitle on home view */
+.header--compact {
+  padding: 16px 0 8px;
+}
+
+.header--compact .header__title {
+  font-size: 24px;
+  letter-spacing: 8px;
+}
+
+@media (max-width: 768px) {
+  .header--compact { padding: 12px 0 6px; }
+  .header--compact .header__title { font-size: 20px; letter-spacing: 6px; }
+}
+
+/* Focus-visible for all buttons */
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .header__taiji {
+    animation: none;
+  }
+}

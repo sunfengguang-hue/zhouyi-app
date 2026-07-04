@@ -70,3 +70,9 @@
   .bottom-nav__icon { font-size: 16px; }
   .bottom-nav__label { font-size: 10px; }
 }
+
+@media (max-width: 360px) {
+  .bottom-nav { height: 50px; }
+  .bottom-nav__icon { font-size: 14px; }
+  .bottom-nav__label { font-size: 9px; letter-spacing: 0; }
+}

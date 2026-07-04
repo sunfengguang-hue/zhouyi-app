@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { HistoryItem } from '../../types';
 import './HistoryPanel.css';
 
@@ -17,17 +17,55 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({
   onSelect,
   onClose,
 }) => {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [confirmClear, setConfirmClear] = useState(false);
+
   const formatDate = (ts: number) => {
     const d = new Date(ts);
     return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
   };
 
+  // Escape key to close
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
+  // Focus panel on open
+  useEffect(() => {
+    panelRef.current?.focus();
+  }, []);
+
+  const handleClear = () => {
+    if (confirmClear) {
+      onClear();
+      setConfirmClear(false);
+    } else {
+      setConfirmClear(true);
+      setTimeout(() => setConfirmClear(false), 3000);
+    }
+  };
+
   return (
-    <div className="history-overlay" onClick={onClose}>
-      <div className="history-panel paper-card" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="history-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="历史记录"
+    >
+      <div
+        ref={panelRef}
+        className="history-panel paper-card"
+        onClick={(e) => e.stopPropagation()}
+        tabIndex={-1}
+      >
         <div className="history-panel__header">
-          <h3 className="history-panel__title">📜 历史记录</h3>
-          <button className="history-panel__close" onClick={onClose}>✕</button>
+          <h3 className="history-panel__title" id="history-title">📜 历史记录</h3>
+          <button className="history-panel__close" onClick={onClose} aria-label="关闭">✕</button>
         </div>
 
         {history.length === 0 ? (
@@ -37,13 +75,14 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({
           </div>
         ) : (
           <>
-            <div className="history-panel__list">
+            <div className="history-panel__list" role="list" aria-labelledby="history-title">
               {history.map((item) => (
-                <div
+                <button
                   key={item.id}
                   className="history-panel__item"
                   onClick={() => onSelect(item)}
                   style={{ animation: 'fadeInUp 0.3s ease' }}
+                  aria-label={`${item.result.hexagram.fullName} ${formatDate(item.timestamp)}`}
                 >
                   <div className="history-panel__item-info">
                     <span className="history-panel__item-name text-gold">
@@ -62,17 +101,20 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({
                     <button
                       className="history-panel__item-delete"
                       onClick={(e) => { e.stopPropagation(); onRemove(item.id); }}
-                      title="删除"
+                      aria-label={`删除 ${item.result.hexagram.fullName}`}
                     >
                       ✕
                     </button>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
             <div className="history-panel__footer">
-              <button className="btn-secondary" onClick={onClear}>
-                清空记录
+              <button
+                className={`btn-secondary ${confirmClear ? 'btn-secondary--warn' : ''}`}
+                onClick={handleClear}
+              >
+                {confirmClear ? '确认清空？' : '清空记录'}
               </button>
             </div>
           </>

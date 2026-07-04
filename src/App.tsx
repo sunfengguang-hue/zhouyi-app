@@ -21,11 +21,13 @@ const NamingPage = React.lazy(() => import('./components/NamingPage/NamingPage')
 const AstrologyPage = React.lazy(() => import('./components/AstrologyPage/AstrologyPage'));
 
 const App: React.FC = () => {
-  const { view, navigate } = useAppView();
+  const { view, navigate: rawNavigate } = useAppView();
+  const navigate = (v: AppView) => { setSaved(false); rawNavigate(v); };
   const { phase, currentFlip, result, startDivination, flipOnce, reset } = useDivination();
   const { history, addRecord, removeRecord, clearHistory } = useHistory();
   const [showHistory, setShowHistory] = useState(false);
   const [toasts, setToasts] = useState<ToastData[]>([]);
+  const [saved, setSaved] = useState(false);
   const [viewingResult, setViewingResult] = useState<DivinationResult | null>(null);
   const shareRef = useRef<HTMLDivElement>(null);
 
@@ -39,10 +41,12 @@ const App: React.FC = () => {
   }, []);
 
   const handleSaveHistory = useCallback(() => {
+    if (saved) { showToast('已保存过', 'info'); return; }
     if (!result) return;
     addRecord(result);
+    setSaved(true);
     showToast('已保存到历史记录', 'success');
-  }, [result, addRecord, showToast]);
+  }, [result, addRecord, showToast, saved]);
 
   const handleSelectHistory = useCallback((item: HistoryItem) => {
     setViewingResult(item.result);
@@ -63,7 +67,7 @@ const App: React.FC = () => {
 
   return (
     <Layout>
-      <Header title={pageTitles[view]} />
+      <Header title={pageTitles[view]} compact={view === 'home'} />
 
       <main className="app__main">
         {/* 首页 */}
@@ -87,7 +91,7 @@ const App: React.FC = () => {
                 currentFlip={currentFlip}
                 onFlipOnce={flipOnce}
                 onStart={startDivination}
-                onReset={reset}
+                onReset={() => { setSaved(false); reset(); }}
               />
             )}
             {phase === 'complete' && result && !viewingResult && (

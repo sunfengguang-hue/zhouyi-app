@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import type { CoinFlipResult } from '../../types';
 import Coin from './Coin';
 import './CoinDivination.css';
@@ -39,18 +39,6 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
       setFlipping(false);
     }, 1200);
   }, [flipping, phase, onFlipOnce]);
-
-  // 自动进入下次摇卦
-  useEffect(() => {
-    if (phase === 'flipping' && !flipping && lastResult) {
-      const timer = setTimeout(() => {
-        if (currentFlip < 6) {
-          // 等待用户点击或自动
-        }
-      }, 300);
-      return () => clearTimeout(timer);
-    }
-  }, [phase, flipping, lastResult, currentFlip]);
 
   const positionNames = ['初', '二', '三', '四', '五', '上'];
 

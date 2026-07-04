@@ -155,3 +155,14 @@
   .home__card-title { font-size: 17px; }
   .home__card-desc { font-size: 12px; }
 }
+
+@media (max-width: 360px) {
+  .home__intro-taiji { font-size: 36px; }
+  .home__intro-title { font-size: 20px; letter-spacing: 6px; }
+  .home__intro-sub { font-size: 12px; letter-spacing: 2px; }
+  .home__card { padding: 14px; gap: 10px; }
+  .home__card-icon { width: 44px; height: 44px; font-size: 18px; }
+  .home__card-title { font-size: 15px; letter-spacing: 2px; }
+  .home__card-desc { font-size: 11px; }
+  .home__disclaimer { font-size: 11px; margin-top: 24px; }
+}

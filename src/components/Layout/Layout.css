@@ -101,3 +101,22 @@
     padding: 16px 12px;
   }
 }
+
+/* Performance: promote clouds to GPU layer */
+.layout__cloud {
+  will-change: transform;
+}
+
+/* 320px ultra-small screen */
+@media (max-width: 360px) {
+  .layout__content { padding: 0 12px; }
+  .layout__footer { padding-bottom: 64px; }
+}
+
+/* Reduced motion: stop clouds */
+@media (prefers-reduced-motion: reduce) {
+  .layout__cloud {
+    animation: none !important;
+    display: none;
+  }
+}

@@ -100,3 +100,16 @@
   .coin__text { font-size: 22px; }
   .coin__text--back { font-size: 20px; }
 }
+
+/* GPU compositing hint for flip animation */
+.coin--flipping .coin__inner {
+  will-change: transform;
+}
+
+/* Reduced motion: skip flip animation */
+@media (prefers-reduced-motion: reduce) {
+  .coin--flipping .coin__inner {
+    animation: none;
+    transform: rotateY(1800deg);
+  }
+}

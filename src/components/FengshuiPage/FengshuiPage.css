@@ -35,6 +35,6 @@
 
 @media (max-width: 480px) {
   .compass { width: 220px; height: 220px; }
-  .compass__dir { transform-origin: 0 0; width: 50px; margin-left: -25px; }
+  .compass__dir { transform-origin: 0 0; width: 50px; margin-left: -25px; margin-top: -10px; }
   .fs-result__grid { grid-template-columns: 1fr; }
 }
