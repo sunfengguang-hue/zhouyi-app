@@ -97,7 +97,9 @@ export type AppView =
   | 'bazi'
   | 'astrology'
   | 'fengshui'
-  | 'naming';
+  | 'naming'
+  | 'fortune'
+  | 'tarot';
 
 // ======================== 生辰八字 ========================
 export type WuXing = '金' | '木' | '水' | '火' | '土';
@@ -221,3 +223,59 @@ export interface NameResult {
   chars: NameChar[];
 }
 
+
+// ======================== 抽签问事 ========================
+export type FortuneStickLevel = '上上签' | '上签' | '中签' | '下签' | '下下签';
+
+export interface FortuneStick {
+  id: number;           // 签号 1-100
+  title: string;        // 签题（典故）
+  level: FortuneStickLevel; // 签等
+  poem: string;         // 签诗（四句）
+  interpretation: string; // 解曰
+  meaning: {
+    overall: string;    // 总体解读
+    career: string;     // 事业
+    love: string;       // 感情
+    wealth: string;     // 财运
+    health: string;     // 健康
+  };
+}
+
+export interface FortuneStickResult {
+  stick: FortuneStick;
+  question: string;     // 用户所问之事
+  timestamp: number;
+}
+
+// ======================== 塔罗牌 ========================
+export type TarotSuit = 'major' | 'wands' | 'cups' | 'swords' | 'pentacles';
+export type TarotOrientation = 'upright' | 'reversed';
+
+export interface TarotCard {
+  id: number;
+  name: string;           // 牌名
+  nameEn: string;         // 英文名
+  suit: TarotSuit;        // 花色
+  number: number;         // 编号
+  upright: string;        // 正位含义
+  reversed: string;       // 逆位含义
+  keywords: string[];     // 关键词
+  description: string;    // 牌面描述
+}
+
+export type TarotSpreadType = 'single' | 'three' | 'celtic';
+
+export interface TarotDraw {
+  card: TarotCard;
+  orientation: TarotOrientation;
+  position: string;       // 位置名（过去/现在/未来 等）
+}
+
+export interface TarotResult {
+  spreadType: TarotSpreadType;
+  draws: TarotDraw[];
+  question: string;
+  summary: string;        // 综合解读
+  timestamp: number;
+}

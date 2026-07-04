@@ -31,6 +31,20 @@ const CARDS: CardItem[] = [
     desc: '天干地支排四柱，五行十神论命格，真太阳时校正。',
   },
   {
+    view: 'fortune',
+    icon: '签',
+    title: '抽签问事',
+    sub: '观音灵签',
+    desc: '心中默念所问之事，诚心摇签，得签诗与详解。',
+  },
+  {
+    view: 'tarot',
+    icon: '🃏',
+    title: '塔罗占卜',
+    sub: '大阿尔卡纳',
+    desc: '22张命运之牌，单牌指引或时间之流三牌阵。',
+  },
+  {
     view: 'fengshui',
     icon: '風',
     title: '罗盘风水',
@@ -56,14 +70,12 @@ const CARDS: CardItem[] = [
 const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   return (
     <div className="home">
-      {/* 开篇 */}
       <div className="home__intro">
         <div className="home__intro-taiji">☯</div>
         <div className="home__intro-title">玄学测算</div>
         <div className="home__intro-sub">知命 · 趋吉 · 避凶</div>
       </div>
 
-      {/* 功能卡片 */}
       <div className="home__grid">
         {CARDS.map((card) => (
           <button
@@ -82,7 +94,6 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         ))}
       </div>
 
-      {/* 免责声明 */}
       <div className="home__disclaimer">仅供娱乐参考，切勿迷信</div>
     </div>
   );

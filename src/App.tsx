@@ -18,6 +18,8 @@ import type { AppView, DivinationResult, HistoryItem } from './types';
 const BaziPage = React.lazy(() => import('./components/BaziPage/BaziPage'));
 const FengshuiPage = React.lazy(() => import('./components/FengshuiPage/FengshuiPage'));
 const NamingPage = React.lazy(() => import('./components/NamingPage/NamingPage'));
+const FortuneStickPage = React.lazy(() => import('./components/FortuneStickPage/FortuneStickPage'));
+const TarotPage = React.lazy(() => import('./components/TarotPage/TarotPage'));
 const AstrologyPage = React.lazy(() => import('./components/AstrologyPage/AstrologyPage'));
 
 const App: React.FC = () => {
@@ -63,6 +65,8 @@ const App: React.FC = () => {
     fengshui: '罗盘风水',
     naming: '起名测名',
     astrology: '星座运势',
+    fortune: '抽签问事',
+    tarot: '塔罗占卜',
   };
 
   return (
@@ -148,6 +152,20 @@ const App: React.FC = () => {
         {view === 'naming' && (
           <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
             <NamingPage />
+          </React.Suspense>
+        )}
+
+        {/* 抽签问事 */}
+        {view === 'fortune' && (
+          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+            <FortuneStickPage />
+          </React.Suspense>
+        )}
+
+        {/* 塔罗占卜 */}
+        {view === 'tarot' && (
+          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+            <TarotPage />
           </React.Suspense>
         )}
 
