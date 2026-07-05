@@ -90,7 +90,7 @@ const App: React.FC = () => {
                 </button>
               </div>
             )}
-            {(phase === 'idle' || (phase === 'flipping' && !divComplete)) && (
+            {!divComplete && (
               <CoinDivination
                 phase={phase}
                 currentFlip={currentFlip}
@@ -101,7 +101,7 @@ const App: React.FC = () => {
                 onViewResult={() => setDivComplete(true)}
               />
             )}
-            {(divComplete || phase === 'complete') && result && !viewingResult && (
+            {divComplete && result && !viewingResult && (
               <ResultPanel
                 result={result}
                 onSaveHistory={handleSaveHistory}

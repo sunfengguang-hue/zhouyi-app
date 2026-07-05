@@ -69,7 +69,7 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
         </div>
       )}
 
-      {phase === 'flipping' && (
+      {(phase === 'flipping' || phase === 'complete') && (
         <div className="coin-divination__flipping">
           <div className="coin-divination__progress">
             <span className="coin-divination__progress-label">
@@ -107,9 +107,14 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
           )}
 
           {!flipping && currentFlip >= 6 && hasResult && (
-            <button className="btn-primary coin-divination__flip-btn" onClick={onViewResult} style={{ animation: 'fadeInUp 0.4s ease' }}>
-              查看卦象 →
-            </button>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', animation: 'fadeInUp 0.4s ease' }}>
+              <button className="btn-primary coin-divination__flip-btn" onClick={onViewResult}>
+                查看卦象 →
+              </button>
+              <button className="btn-secondary" onClick={onReset}>
+                再算一卦
+              </button>
+            </div>
           )}
 
           {flipping && (
@@ -142,15 +147,7 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
         </div>
       )}
 
-      {phase === 'complete' && (
-        <div className="coin-divination__complete">
-          <div className="coin-divination__complete-icon">✨</div>
-          <p className="coin-divination__complete-text">卦象已成</p>
-          <button className="btn-secondary" onClick={onReset}>
-            再算一卦
-          </button>
-        </div>
-      )}
+
     </div>
   );
 };

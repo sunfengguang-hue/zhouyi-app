@@ -66,7 +66,7 @@ export function useDivination() {
 
         return {
           ...prev,
-          phase: 'flipping',
+          phase: 'complete',
           currentFlip: nextFlip,
           lines: newLines,
           flips: newFlips,

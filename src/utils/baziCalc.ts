@@ -251,7 +251,11 @@ export function calculateBazi(
   // 神煞（简化提示）
   const shenSha: string[] = [];
   const dayZhi = dayPillar.zhi;
-  if (yearPillar.zhi === '辰' || yearPillar.zhi === '戌') shenSha.push('华盖星（主聪明才艺）');
+  const HUA_GAI: Record<string, string> = {
+    '申':'辰','子':'辰','辰':'辰', '寅':'戌','午':'戌','戌':'戌',
+    '亥':'未','卯':'未','未':'未', '巳':'丑','酉':'丑','丑':'丑',
+  };
+  if (yearPillar.zhi === HUA_GAI[dayPillar.zhi]) shenSha.push('华盖星（主聪明才艺）');
   if (DI_ZHI_CANG_GAN[dayZhi].includes(dayGan)) shenSha.push('地支藏干得禄');
   // 五行齐全
   if (Object.values(count).every(v => v > 0)) shenSha.push('五行俱全');
