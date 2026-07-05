@@ -87,7 +87,7 @@ export const SHULI: Record<number, { luck: '吉' | '半吉' | '凶'; desc: strin
 
 /** 获取数理吉凶信息 */
 export function getShuli(n: number): { index: number; luck: '吉' | '半吉' | '凶'; desc: string } {
-  const idx = n > 81 ? (n % 80 === 0 ? 80 : n % 80) : n;
+  const idx = n > 81 ? ((n - 1) % 81 + 1) : n;
   const item = SHULI[idx] || { luck: '半吉' as const, desc: '未知' };
   return { index: idx, luck: item.luck, desc: item.desc };
 }

@@ -57,7 +57,7 @@ export function getHexagramFromLines(lines: HexagramLines): HexagramData {
 /**
  * 从六爻值计算变卦（如有变爻）
  */
-export function getChangedLines(lines: HexagramLines): HexagramLines {
+function getChangedLines(lines: HexagramLines): HexagramLines {
   return lines.map(v => getChangedValue(v)) as HexagramLines;
 }
 

@@ -120,7 +120,7 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
                       <span className="coin-divination__history-pos">
                         {positionNames[i]}爻
                       </span>
-                      <span className={`coin-divination__history-line coin-divination__history-line--${sum === 6 || sum === 9 ? 'yang' : sum === 7 ? 'yang' : 'yin'}`}>
+                      <span className={`coin-divination__history-line coin-divination__history-line--${sum === 7 || sum === 9 ? 'yang' : 'yin'}`}>
                         {sum === 6 || sum === 8 ? '⚋' : '⚊'}
                       </span>
                     </div>

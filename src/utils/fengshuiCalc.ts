@@ -65,7 +65,7 @@ export function calculateFengshui(
     group,
     directions,
     houseSitting: sittingStr,
-    houseFacing: sittingStr.replace(/坐.*朝/, '').replace(')', ''),
+    houseFacing: sittingStr.replace(/坐.*朝/, '').replace(/\(.*$/, ''),
     bestDirections,
     input: { birthYear, gender, sitting: sittingStr },
   };

@@ -1,4 +1,4 @@
-import type { HexagramLines, CoinFlipResult } from '../types';
+import type { CoinFlipResult } from '../types';
 
 /**
  * 模拟抛掷一枚铜钱
@@ -19,26 +19,6 @@ export function flipThreeCoins(): CoinFlipResult {
   ];
   const sum = coins[0] + coins[1] + coins[2];
   return { coins, sum, position: 0 }; // position 在外层设置
-}
-
-/**
- * 生成完整的六爻
- */
-export function generateAllLines(): {
-  lines: HexagramLines;
-  flips: CoinFlipResult[];
-} {
-  const lines: HexagramLines = [0, 0, 0, 0, 0, 0];
-  const flips: CoinFlipResult[] = [];
-
-  for (let i = 0; i < 6; i++) {
-    const result = flipThreeCoins();
-    result.position = i + 1;
-    lines[i] = result.sum;
-    flips.push(result);
-  }
-
-  return { lines, flips };
 }
 
 /**
@@ -68,26 +48,3 @@ export function getChangedValue(value: number): number {
   return value;
 }
 
-/**
- * 获取爻的名称
- * 阳爻用"九"，阴爻用"六"
- * 初、二、三、四、五、上
- */
-export function getLineName(position: number, type: 'yang' | 'yin'): string {
-  const positionNames = ['初', '二', '三', '四', '五', '上'];
-  const typeName = type === 'yang' ? '九' : '六';
-  return `${typeName}${positionNames[position - 1]}`;
-}
-
-/**
- * 获取爻值的中文名称
- */
-export function getLineValueName(value: number): string {
-  switch (value) {
-    case 6: return '老阴（变爻）';
-    case 7: return '少阳';
-    case 8: return '少阴';
-    case 9: return '老阳（变爻）';
-    default: return '未知';
-  }
-}
