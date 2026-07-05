@@ -41,7 +41,6 @@ const FengshuiPage: React.FC = () => {
   );
 };
 
-const GUA_MAP: Record<string, string> = { '坎':'子','艮':'丑','震':'卯','巽':'辰','离':'午','坤':'未','兑':'酉','乾':'戌' };
 
 const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void }> = ({ result, onReset }) => {
   const r = result;

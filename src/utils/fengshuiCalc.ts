@@ -1,6 +1,6 @@
 import type { FengshuiResult, BaguaName } from '../types';
 import { BA_GUA_NUM } from '../data/bazi';
-import { YOUXING_MAP, YOUXING_LUCK, BAGUA_DIRECTION, DONG_XI_GROUP, type GuaMap } from '../data/fengshui';
+import { YOUXING_MAP, YOUXING_LUCK, BAGUA_DIRECTION, DONG_XI_GROUP } from '../data/fengshui';
 
 const GUA_ORDER: BaguaName[] = ['坎','艮','震','巽','离','坤','兑','乾'];
 
@@ -18,18 +18,6 @@ function calcMingGua(birthYear: number, gender: '男' | '女'): BaguaName {
   return (BA_GUA_NUM[remainder] || '坎') as BaguaName;
 }
 
-/**
- * 从坐向字符串提取坐卦
- */
-function sittingToGua(sitting: string): BaguaName {
-  const match = sitting.match(/坐(\S)朝/);
-  if (match) {
-    for (const g of GUA_ORDER) {
-      if (sitting.includes(g)) return g;
-    }
-  }
-  return '坎';
-}
 
 /**
  * 主函数
@@ -42,7 +30,6 @@ export function calculateFengshui(
   const mingGua = calcMingGua(birthYear, gender);
   const group = DONG_XI_GROUP[mingGua];
   const youXingArr = YOUXING_MAP[mingGua];
-  const sitGua = sittingToGua(sittingStr);
 
   const directions = GUA_ORDER.map((gua, i) => {
     const yx = youXingArr[i];

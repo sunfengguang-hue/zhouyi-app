@@ -94,11 +94,8 @@ export function recommendNames(
   const results: NameResult[] = [];
 
   // 筛选候选字
-  let candidates = NAME_CHARS.filter(c =>
-    c.gender === gender || c.gender === '中' || gender === '男' ? true : c.gender === gender
-  );
   // 性别适配
-  candidates = NAME_CHARS.filter(c => {
+  let candidates = NAME_CHARS.filter(c => {
     if (gender === '男') return c.gender === '男' || c.gender === '中';
     return c.gender === '女' || c.gender === '中';
   });

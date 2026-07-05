@@ -3,10 +3,10 @@ import type { HexagramData, LineInfo, TrigramName } from '../types';
 // 八卦爻型 (从下到上, true=阳 false=阴)
 const T: Record<TrigramName, [boolean, boolean, boolean]> = {
   '乾': [true, true, true],
-  '兑': [false, true, true],
+  '兑': [true, true, false],
   '离': [true, false, true],
-  '震': [true, true, false],
-  '巽': [false, false, true],
+  '震': [true, false, false],
+  '巽': [false, true, true],
   '坎': [false, true, false],
   '艮': [false, false, true],
   '坤': [false, false, false],

@@ -1,4 +1,4 @@
-import type { FortuneStick, FortuneStickResult } from '../types';
+import type { FortuneStickResult } from '../types';
 import { FORTUNE_STICKS } from '../data/fortuneSticks';
 
 /**

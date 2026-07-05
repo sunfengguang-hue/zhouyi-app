@@ -1,4 +1,4 @@
-import type { TarotCard, TarotDraw, TarotResult, TarotSpreadType, TarotOrientation } from '../types';
+import type { TarotDraw, TarotResult, TarotSpreadType, TarotOrientation } from '../types';
 import { MAJOR_ARCANA, SPREAD_POSITIONS, generateTarotSummary } from '../data/tarotCards';
 
 /**
@@ -27,7 +27,7 @@ export function drawTarotCards(
   spreadType: TarotSpreadType,
   question: string
 ): TarotResult {
-  const positions = SPREAD_POSITIONS[spreadType] || SPREAD_POSITIONS.three;
+  const positions = SPREAD_POSITIONS[spreadType as keyof typeof SPREAD_POSITIONS] || SPREAD_POSITIONS.three;
   const count = positions.length;
   const deck = shuffle(MAJOR_ARCANA);
   const drawn = deck.slice(0, count);
