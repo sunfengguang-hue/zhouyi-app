@@ -251,10 +251,8 @@ export function calculateBazi(
   const dayZhi = dayPillar.zhi;
   if (yearPillar.zhi === '辰' || yearPillar.zhi === '戌') shenSha.push('华盖星（主聪明才艺）');
   if (DI_ZHI_CANG_GAN[dayZhi].includes(dayGan)) shenSha.push('地支藏干得禄');
-  if (count['金'] + count['木'] + count['水'] + count['火'] + count['土'] >= 8) {
-    // 五行齐全
-    if (Object.values(count).every(v => v > 0)) shenSha.push('五行俱全');
-  }
+  // 五行齐全
+  if (Object.values(count).every(v => v > 0)) shenSha.push('五行俱全');
 
   return {
     year: yearPillar,

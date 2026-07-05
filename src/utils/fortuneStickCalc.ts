@@ -1,4 +1,4 @@
-import type { FortuneStickResult } from '../types';
+import type { FortuneStickLevel, FortuneStickResult } from '../types';
 import { FORTUNE_STICKS } from '../data/fortuneSticks';
 
 /**
@@ -16,7 +16,7 @@ export function drawFortuneStick(question: string): FortuneStickResult {
 /**
  * 获取签等对应的颜色
  */
-export function getLevelColor(level: string): string {
+export function getLevelColor(level: FortuneStickLevel): string {
   switch (level) {
     case '上上签': return '#ffd700';
     case '上签': return '#2ecc71';

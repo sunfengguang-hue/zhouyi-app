@@ -14,6 +14,7 @@ const NamingPage: React.FC = () => {
   // 测名
   const [analyzeGiven, setAnalyzeGiven] = useState('');
   const [analyzeResult, setAnalyzeResult] = useState<NameResult | null>(null);
+  const [analyzeError, setAnalyzeError] = useState('');
 
   const handleRecommend = () => {
     setResults(recommendNames(surname, gender, preferWX, 12));
@@ -23,6 +24,12 @@ const NamingPage: React.FC = () => {
   const handleAnalyze = () => {
     if (!analyzeGiven.trim()) return;
     const r = analyzeName(surname, analyzeGiven.trim());
+    if (!r) {
+      setAnalyzeError('未找到该姓氏，暂不支持分析');
+      setAnalyzeResult(null);
+      return;
+    }
+    setAnalyzeError('');
     setAnalyzeResult(r);
     setResults(null);
   };
@@ -111,6 +118,12 @@ const NamingPage: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {analyzeError && (
+        <div className="page-result" style={{textAlign:'center',color:'var(--vermillion-light)',padding:'20px'}}>
+          {analyzeError}
         </div>
       )}
 

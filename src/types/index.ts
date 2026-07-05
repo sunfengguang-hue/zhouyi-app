@@ -264,7 +264,7 @@ export interface TarotCard {
   description: string;    // 牌面描述
 }
 
-export type TarotSpreadType = 'single' | 'three' | 'celtic';
+export type TarotSpreadType = 'single' | 'three';
 
 export interface TarotDraw {
   card: TarotCard;

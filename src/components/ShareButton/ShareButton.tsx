@@ -5,9 +5,10 @@ import './ShareButton.css';
 interface ShareButtonProps {
   targetRef: React.RefObject<HTMLDivElement | null>;
   fileName?: string;
+  onError?: (msg: string) => void;
 }
 
-const ShareButton: React.FC<ShareButtonProps> = ({ targetRef, fileName }) => {
+const ShareButton: React.FC<ShareButtonProps> = ({ targetRef, fileName, onError }) => {
   const [loading, setLoading] = useState(false);
 
   const handleShare = async () => {
@@ -18,8 +19,8 @@ const ShareButton: React.FC<ShareButtonProps> = ({ targetRef, fileName }) => {
         targetRef.current,
         fileName || `周易算卦_${Date.now()}.png`
       );
-    } catch {
-      // 失败静默处理，由调用方 Toast 提示
+    } catch (e) {
+      onError?.(e instanceof Error ? e.message : '图片生成失败');
     } finally {
       setLoading(false);
     }

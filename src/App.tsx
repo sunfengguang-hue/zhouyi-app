@@ -119,7 +119,7 @@ const App: React.FC = () => {
             )}
             {displayResult && (
               <div className="app__share">
-                <ShareButton targetRef={shareRef} />
+                <ShareButton targetRef={shareRef} onError={(msg) => showToast(msg, 'error')} />
               </div>
             )}
             {showHistory && (
