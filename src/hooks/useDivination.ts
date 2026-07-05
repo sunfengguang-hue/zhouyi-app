@@ -51,7 +51,7 @@ export function useDivination() {
       const isComplete = nextFlip >= 6;
 
       if (isComplete) {
-        // 所有六爻摇完，计算结果
+        // 所有六爻摇完，计算结果（保持 flipping 状态以展示第6爻动画）
         const hexagram = getHexagramFromLines(newLines);
         const changedHexagram = getChangedHexagramFromLines(newLines);
         const changedLines = getChangedPositions(newLines);
@@ -65,7 +65,8 @@ export function useDivination() {
         };
 
         return {
-          phase: 'complete',
+          ...prev,
+          phase: 'flipping',
           currentFlip: nextFlip,
           lines: newLines,
           flips: newFlips,

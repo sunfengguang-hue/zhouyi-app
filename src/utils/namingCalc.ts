@@ -13,7 +13,7 @@ function calcWuge(surnameStrokes: number, nameStrokes: number[]): {
   const tian = surnameStrokes + 1;
   const ren = surnameStrokes + first;
   const di = nameStrokes.length === 1 ? first + 1 : first + second;
-  const zong = surnameStrokes + first + second;
+  const zong = nameStrokes.length === 1 ? surnameStrokes + first + 1 : surnameStrokes + first + second;
   const wai = nameStrokes.length === 1 ? 2 : zong - ren + 1;
 
   return { tian, ren, di, wai, zong };

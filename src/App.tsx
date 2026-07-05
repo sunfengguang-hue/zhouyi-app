@@ -26,6 +26,7 @@ const App: React.FC = () => {
   const { view, navigate: rawNavigate } = useAppView();
   const navigate = useCallback((v: AppView) => { setSaved(false); setViewingResult(null); rawNavigate(v); }, [rawNavigate]);
   const { phase, currentFlip, result, startDivination, flipOnce, reset } = useDivination();
+  const [divComplete, setDivComplete] = React.useState(false);
   const { history, addRecord, removeRecord, clearHistory } = useHistory();
   const [showHistory, setShowHistory] = useState(false);
   const [toasts, setToasts] = useState<ToastData[]>([]);
@@ -89,16 +90,18 @@ const App: React.FC = () => {
                 </button>
               </div>
             )}
-            {phase !== 'complete' && (
+            {(phase === 'idle' || (phase === 'flipping' && !divComplete)) && (
               <CoinDivination
                 phase={phase}
                 currentFlip={currentFlip}
+                hasResult={!!result}
                 onFlipOnce={flipOnce}
-                onStart={startDivination}
-                onReset={() => { setSaved(false); reset(); }}
+                onStart={() => { setDivComplete(false); startDivination(); }}
+                onReset={() => { setSaved(false); setDivComplete(false); reset(); }}
+                onViewResult={() => setDivComplete(true)}
               />
             )}
-            {phase === 'complete' && result && !viewingResult && (
+            {(divComplete || phase === 'complete') && result && !viewingResult && (
               <ResultPanel
                 result={result}
                 onSaveHistory={handleSaveHistory}

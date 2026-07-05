@@ -6,17 +6,21 @@ import './CoinDivination.css';
 interface CoinDivinationProps {
   phase: 'idle' | 'flipping' | 'complete';
   currentFlip: number;
+  hasResult: boolean;
   onFlipOnce: () => CoinFlipResult;
   onStart: () => void;
   onReset: () => void;
+  onViewResult: () => void;
 }
 
 const CoinDivination: React.FC<CoinDivinationProps> = ({
   phase,
   currentFlip,
+  hasResult,
   onFlipOnce,
   onStart,
   onReset,
+  onViewResult,
 }) => {
   const [flipping, setFlipping] = useState(false);
   const [lastResult, setLastResult] = useState<CoinFlipResult | null>(null);
@@ -99,6 +103,12 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
           {!flipping && currentFlip < 6 && (
             <button className="btn-primary coin-divination__flip-btn" onClick={handleFlip}>
               {currentFlip === 0 ? '摇第一次' : '继续摇卦'}
+            </button>
+          )}
+
+          {!flipping && currentFlip >= 6 && hasResult && (
+            <button className="btn-primary coin-divination__flip-btn" onClick={onViewResult} style={{ animation: 'fadeInUp 0.4s ease' }}>
+              查看卦象 →
             </button>
           )}
 

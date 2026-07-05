@@ -72,6 +72,8 @@ function getYearPillarIndex(year: number, month: number, day: number): number {
 function getMonthPillarIndex(yearGanIndex: number, month: number, day: number): number {
   // 确定节气月（寅月=正月，对应公历2月立春后）
   let jieMonth = 1;
+  // 小寒前（1月1-5日）仍属上年丑月（第12月）
+  if (month === 1 && day < 6) jieMonth = 12;
   for (let i = 0; i < JIE_QI.length; i++) {
     const jq = JIE_QI[i];
     const [m, d] = jq.approxDay.split('-').map(Number);
