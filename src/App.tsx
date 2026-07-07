@@ -22,6 +22,33 @@ const FortuneStickPage = React.lazy(() => import('./components/FortuneStickPage/
 const TarotPage = React.lazy(() => import('./components/TarotPage/TarotPage'));
 const AstrologyPage = React.lazy(() => import('./components/AstrologyPage/AstrologyPage'));
 
+// Error Boundary 防止子组件崩溃导致白屏
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode; onReset?: () => void },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode; onReset?: () => void }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: 40, textAlign: 'center', color: 'var(--gold, #d4a853)' }}>
+          <p style={{ fontSize: 18, marginBottom: 16 }}>页面渲染出错了，请刷新或返回首页</p>
+          <button className="btn-secondary" onClick={() => { this.setState({ hasError: false }); this.props.onReset?.(); }}>
+            返回首页
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 const App: React.FC = () => {
   const { view, navigate: rawNavigate } = useAppView();
   const navigate = useCallback((v: AppView) => { setSaved(false); setViewingResult(null); rawNavigate(v); }, [rawNavigate]);
@@ -75,6 +102,7 @@ const App: React.FC = () => {
       <Header title={pageTitles[view]} compact={view === 'home'} />
 
       <main className="app__main">
+        <ErrorBoundary onReset={() => { setSaved(false); reset(); navigate('home'); }}>
         {/* 首页 */}
         {view === 'home' && (
           <Home onNavigate={navigate} />
@@ -178,6 +206,7 @@ const App: React.FC = () => {
             <AstrologyPage />
           </React.Suspense>
         )}
+        </ErrorBoundary>
       </main>
 
       {/* 底部导航 */}

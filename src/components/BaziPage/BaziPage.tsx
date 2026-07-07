@@ -12,7 +12,14 @@ const BaziPage: React.FC = () => {
   const [gender, setGender] = useState<'男' | '女'>('男');
   const [result, setResult] = useState<BaziResult | null>(null);
 
+  const [error, setError] = useState('');
+
   const handleSubmit = () => {
+    if (year < 1900 || year > 2100) { setError('请输入1900-2100之间的年份'); return; }
+    if (month < 1 || month > 12) { setError('月份须在1-12之间'); return; }
+    const daysInMonth = new Date(year, month, 0).getDate();
+    if (day < 1 || day > daysInMonth) { setError(`${year}年${month}月的日期范围为1-${daysInMonth}`); return; }
+    setError('');
     const res = calculateBazi(year, month, day, hour, 0, gender, 116.4);
     setResult(res);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -58,6 +65,8 @@ const BaziPage: React.FC = () => {
           </select>
         </div>
       </div>
+
+      {error && <p className="page-form__error" style={{color:'#e74c3c',textAlign:'center',margin:'8px 0'}}>{error}</p>}
 
       <div className="page-form__actions">
         <button className="btn-primary" onClick={handleSubmit}>排盘测算</button>
