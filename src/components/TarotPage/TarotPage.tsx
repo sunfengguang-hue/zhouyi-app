@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { TarotResult, TarotSpreadType } from '../../types';
 import { drawTarotCards, getOrientationColor } from '../../utils/tarotCalc';
+import { ELEMENT_COLORS, ELEMENT_SYMBOLS } from '../../data/tarotCards';
 import './TarotPage.css';
 
 const SPREAD_OPTIONS: { type: TarotSpreadType; label: string; desc: string }[] = [
@@ -96,6 +97,24 @@ const TarotPage: React.FC = () => {
                 <div className={`tarot-card__face ${draw.orientation === 'reversed' ? 'tarot-card__face--reversed' : ''}`}>
                   <div className="tarot-card__number">{draw.card.number}</div>
                   <div className="tarot-card__name">{draw.card.name}</div>
+                  <div className="tarot-card__name-en">{draw.card.nameEn}</div>
+                </div>
+                {/* 元素徽章 */}
+                <div
+                  className="tarot-card__element"
+                  style={{
+                    backgroundColor: `${ELEMENT_COLORS[draw.card.element]}22`,
+                    borderColor: ELEMENT_COLORS[draw.card.element],
+                    color: ELEMENT_COLORS[draw.card.element],
+                  }}
+                >
+                  <span className="tarot-card__element-icon">{ELEMENT_SYMBOLS[draw.card.element]}</span>
+                  <span className="tarot-card__element-text">{draw.card.element}</span>
+                </div>
+                {/* 星体 */}
+                <div className="tarot-card__planet">
+                  <span className="tarot-card__planet-label">✦</span>
+                  <span>{draw.card.planet}</span>
                 </div>
                 <div className="tarot-card__orientation" style={{ color: getOrientationColor(draw.orientation) }}>
                   {draw.orientation === 'upright' ? '正位' : '逆位'}
@@ -112,9 +131,10 @@ const TarotPage: React.FC = () => {
           {/* 综合解读 */}
           <div className="tarot-result__summary">
             <h4>牌面解读</h4>
-            {result.summary.split('\n\n').map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
+            {result.summary.split('\n\n').map((para, i) => {
+              if (para === '---') return <hr key={i} className="tarot-result__divider" />;
+              return <p key={i}>{para}</p>;
+            })}
           </div>
 
           {/* 每张牌详情 */}
@@ -124,6 +144,15 @@ const TarotPage: React.FC = () => {
                 <h4>
                   {draw.position} · {draw.card.name}（{draw.orientation === 'upright' ? '正位' : '逆位'}）
                 </h4>
+                <div className="tarot-result__detail-meta">
+                  <span
+                    className="tarot-result__detail-element"
+                    style={{ color: ELEMENT_COLORS[draw.card.element] }}
+                  >
+                    {ELEMENT_SYMBOLS[draw.card.element]} {draw.card.element}
+                  </span>
+                  <span className="tarot-result__detail-planet">✦ {draw.card.planet}</span>
+                </div>
                 <p className="tarot-result__detail-desc">{draw.card.description}</p>
                 <p className="tarot-result__detail-meaning">
                   {draw.orientation === 'upright' ? draw.card.upright : draw.card.reversed}
@@ -131,6 +160,29 @@ const TarotPage: React.FC = () => {
               </div>
             ))}
           </div>
+
+          {/* 组合解读（仅三牌阵） */}
+          {result.spreadType === 'three' && result.combination && (
+            <div className="tarot-result__combination">
+              <h4>🔮 组合解读</h4>
+              <p className="tarot-result__combination-subtitle">
+                {result.draws.map((d, i) => (
+                  <span key={i}>
+                    {i > 0 && <span className="tarot-result__combination-arrow"> → </span>}
+                    <span
+                      className="tarot-result__combination-chip"
+                      style={{ borderColor: ELEMENT_COLORS[d.card.element], color: ELEMENT_COLORS[d.card.element] }}
+                    >
+                      {d.position}·{d.card.name}
+                    </span>
+                  </span>
+                ))}
+              </p>
+              {result.combination.split('\n\n').map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
+          )}
 
           {/* 操作 */}
           <div className="page-form__actions">

@@ -142,6 +142,10 @@ export interface BaziResult {
     gender: '男' | '女';
     longitude: number;
   };
+  nayin: { pillar: string; nayin: string }[];
+  dayMasterPersonality: { character: string; career: string; love: string; wealth: string };
+  shiShenDetails: { name: string; position: string; meaning: string }[];
+  daYun: { age: number; year: number; ganZhi: string; wuxing: string }[];
 }
 
 // ======================== 星座 ========================
@@ -152,6 +156,11 @@ export interface AstrologySign {
   ruler: string;       // 守护星
   dateRange: string;
   traits: string[];
+  personality: string;        // 性格详解 (2-3 paragraphs)
+  strength: string[];         // 优点 (3-5 items)
+  weakness: string[];         // 缺点 (3-5 items)
+  bestMatch: string;          // 最佳配对星座名
+  bestMatchDesc: string;      // 配对说明
   love: string;
   career: string;
   wealth: string;
@@ -168,6 +177,13 @@ export interface AstrologyResult {
     wealth: number;
     health: number;
     summary: string;
+  };
+  weeklyFortune: {
+    overall: string;    // 本周总体运势
+    career: string;     // 本周事业
+    love: string;       // 本周感情
+    wealth: string;     // 本周财运
+    advice: string;     // 本周建议
   };
   compatibleSigns: { sign: string; score: number }[];
   input: { month: number; day: number };
@@ -262,6 +278,8 @@ export interface TarotCard {
   reversed: string;       // 逆位含义
   keywords: string[];     // 关键词
   description: string;    // 牌面描述
+  element: string;        // 元素（火/水/风/土）
+  planet: string;         // 对应星体/星座
 }
 
 export type TarotSpreadType = 'single' | 'three';
@@ -277,5 +295,6 @@ export interface TarotResult {
   draws: TarotDraw[];
   question: string;
   summary: string;        // 综合解读
+  combination: string;    // 组合解读（三牌阵）
   timestamp: number;
 }

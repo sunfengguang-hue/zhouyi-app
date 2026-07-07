@@ -1,5 +1,5 @@
 import type { TarotDraw, TarotResult, TarotSpreadType, TarotOrientation } from '../types';
-import { MAJOR_ARCANA, SPREAD_POSITIONS, generateTarotSummary } from '../data/tarotCards';
+import { MAJOR_ARCANA, SPREAD_POSITIONS, generateTarotSummary, generateCombinationReading } from '../data/tarotCards';
 
 /**
  * Fisher-Yates洗牌
@@ -43,6 +43,7 @@ export function drawTarotCards(
     draws,
     question: question || '问事',
     summary: generateTarotSummary(draws),
+    combination: spreadType === 'three' ? generateCombinationReading(draws) : '',
     timestamp: Date.now(),
   };
 }

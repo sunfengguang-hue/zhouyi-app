@@ -37,6 +37,75 @@
 .bazi-result__day-master { font-family: var(--font-display); font-size: 28px; color: var(--gold); font-weight: bold; }
 .bazi-result__day-wx { font-size: 14px; color: var(--text-secondary); }
 
+/* 纳音五行 */
+.bazi-result__nayin { margin-bottom: 24px; padding: 16px; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); border-left: 3px solid var(--gold); }
+
+.bazi-nayin__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+.bazi-nayin__item {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 8px; background: rgba(0,0,0,0.2); border: 1px solid rgba(212,168,83,0.2); border-radius: var(--radius-sm);
+}
+
+.bazi-nayin__pillar { font-size: 12px; color: var(--text-secondary); letter-spacing: 2px; }
+.bazi-nayin__value { font-family: var(--font-display); font-size: 16px; color: var(--gold); font-weight: bold; letter-spacing: 2px; }
+
+/* 日主性格分析 */
+.bazi-result__personality { margin-bottom: 24px; }
+
+.bazi-personality__card {
+  background: rgba(0,0,0,0.15); border-radius: var(--radius-md); border: 1px solid var(--border-gold); overflow: hidden;
+}
+
+.bazi-personality__header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 20px; background: rgba(212,168,83,0.08); border-bottom: 1px solid var(--border-gold);
+}
+
+.bazi-personality__stem {
+  font-family: var(--font-display); font-size: 36px; color: var(--gold); font-weight: bold;
+  text-shadow: 0 0 12px rgba(212,168,83,0.25);
+}
+
+.bazi-personality__wx { font-size: 16px; color: var(--text-secondary); letter-spacing: 2px; }
+
+.bazi-personality__body { padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
+
+.bazi-personality__section {
+  padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.bazi-personality__section:last-child { border-bottom: none; padding-bottom: 0; }
+
+.bazi-personality__label {
+  font-size: 14px; color: var(--gold); letter-spacing: 3px; margin-bottom: 6px; font-weight: 600;
+}
+
+.bazi-personality__text {
+  font-size: 13px; color: var(--text-primary); line-height: 1.8; letter-spacing: 0.5px;
+}
+
+/* 十神详解 */
+.bazi-result__shishen { margin-bottom: 24px; }
+
+.bazi-shishen__list { display: flex; flex-direction: column; gap: 8px; }
+
+.bazi-shishen__item {
+  padding: 12px 16px; background: rgba(0,0,0,0.15); border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.2s;
+}
+.bazi-shishen__item:hover { border-color: var(--border-gold); }
+
+.bazi-shishen__head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+
+.bazi-shishen__name {
+  font-family: var(--font-display); font-size: 15px; color: var(--gold); font-weight: bold; letter-spacing: 2px;
+  padding: 2px 8px; background: rgba(212,168,83,0.1); border-radius: 4px;
+}
+
+.bazi-shishen__pos { font-size: 12px; color: var(--text-secondary); letter-spacing: 1px; }
+
+.bazi-shishen__desc { font-size: 13px; color: var(--text-primary); line-height: 1.7; letter-spacing: 0.5px; }
+
 /* 五行分布 */
 .bazi-result__section-title { font-family: var(--font-display); font-size: 16px; color: var(--gold); letter-spacing: 4px; margin-bottom: 12px; text-align: center; }
 
@@ -50,6 +119,41 @@
 .bazi-wx-item__fill { height: 100%; border-radius: 7px; transition: width 0.6s ease; min-width: 4px; }
 .bazi-wx-item__val { font-size: 13px; width: 24px; text-align: right; color: var(--text-secondary); }
 
+/* 大运流年 */
+.bazi-result__dayun { margin-bottom: 24px; position: relative; padding-bottom: 8px; }
+
+.bazi-dayun__timeline {
+  display: flex; gap: 6px; overflow-x: auto; padding: 12px 0 16px; scrollbar-width: thin;
+  scrollbar-color: rgba(212,168,83,0.3) transparent;
+}
+.bazi-dayun__timeline::-webkit-scrollbar { height: 4px; }
+.bazi-dayun__timeline::-webkit-scrollbar-track { background: transparent; }
+.bazi-dayun__timeline::-webkit-scrollbar-thumb { background: rgba(212,168,83,0.3); border-radius: 2px; }
+
+.bazi-dayun__item {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 12px 10px; min-width: 72px;
+  background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-sm);
+  flex-shrink: 0; position: relative; transition: border-color 0.2s;
+}
+.bazi-dayun__item:hover { border-color: var(--border-gold); }
+
+.bazi-dayun__age { font-size: 11px; color: var(--text-secondary); letter-spacing: 1px; white-space: nowrap; }
+
+.bazi-dayun__ganzhi {
+  font-family: var(--font-display); font-size: 20px; color: var(--gold); font-weight: bold; letter-spacing: 2px;
+}
+
+.bazi-dayun__wx { font-size: 13px; font-weight: bold; letter-spacing: 1px; }
+
+.bazi-dayun__year { font-size: 11px; color: var(--text-secondary); }
+
+.bazi-dayun__line {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+
 /* 神煞 */
 .bazi-result__shensha { margin-bottom: 20px; }
 .bazi-result__shensha-item { display: inline-block; margin: 4px; }
@@ -60,4 +164,7 @@
   .bazi-pillar__gan { font-size: 26px; }
   .bazi-pillar__zhi { font-size: 22px; }
   .bazi-result__info { gap: 8px; }
+  .bazi-nayin__grid { grid-template-columns: repeat(2, 1fr); }
+  .bazi-dayun__item { min-width: 64px; padding: 10px 8px; }
+  .bazi-dayun__ganzhi { font-size: 17px; }
 }

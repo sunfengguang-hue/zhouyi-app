@@ -37,6 +37,22 @@ const AstrologyPage: React.FC = () => {
 const elementColors: Record<string, string> = { '火': '#e74c3c', '土': '#e67e22', '风': '#9b59b6', '水': '#3498db' };
 const starLabels = ['☆☆☆☆☆','★☆☆☆☆','★★☆☆☆','★★★☆☆','★★★★☆','★★★★★'];
 
+const weeklyIcons: Record<string, string> = {
+  overall: '🌟',
+  career: '💼',
+  love: '❤️',
+  wealth: '💰',
+  advice: '💡',
+};
+
+const weeklyLabels: Record<string, string> = {
+  overall: '总体运势',
+  career: '事业运',
+  love: '感情运',
+  wealth: '财运',
+  advice: '本周建议',
+};
+
 const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => void }> = ({ result, onReset }) => {
   const r = result;
   const s = r.sign;
@@ -49,6 +65,8 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
     { label: '健康', val: r.todayFortune.health, icon: '🏥' },
   ];
 
+  const weeklyKeys = ['overall', 'career', 'love', 'wealth', 'advice'] as const;
+
   return (
     <div className="page-result astro-result">
       {/* 星座头部 */}
@@ -56,6 +74,30 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
         <div className="astro-symbol" style={{ color: ec, borderColor: ec }}>{s.symbol}</div>
         <h2 className="astro-name">{s.name}</h2>
         <p className="astro-range">{s.dateRange} · {s.element}象星座 · 守护星{s.ruler}</p>
+      </div>
+
+      {/* 性格详解 */}
+      <div className="astro-section">
+        <h3 className="astro-section__title">性格详解</h3>
+        <p className="astro-personality__text">{s.personality}</p>
+        <div className="astro-strength-weakness">
+          <div className="astro-sw-group">
+            <h4 className="astro-sw-label astro-strength__label">优点</h4>
+            <div className="astro-sw-tags">
+              {s.strength.map((t, i) => (
+                <span key={i} className="tag astro-strength">{t}</span>
+              ))}
+            </div>
+          </div>
+          <div className="astro-sw-group">
+            <h4 className="astro-sw-label astro-weakness__label">缺点</h4>
+            <div className="astro-sw-tags">
+              {s.weakness.map((t, i) => (
+                <span key={i} className="tag astro-weakness">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* 性格特质 */}
@@ -78,6 +120,22 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
               <span className="astro-fortune__icon">{f.icon}</span>
               <span className="astro-fortune__label">{f.label}</span>
               <span className="astro-fortune__stars" style={{color: ec}}>{starLabels[f.val]}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 本周运势 */}
+      <div className="astro-section astro-weekly-section">
+        <h3 className="astro-section__title">本周运势</h3>
+        <div className="astro-weekly">
+          {weeklyKeys.map(key => (
+            <div key={key} className="astro-weekly__item">
+              <div className="astro-weekly__header">
+                <span className="astro-weekly__icon">{weeklyIcons[key]}</span>
+                <span className="astro-weekly__label">{weeklyLabels[key]}</span>
+              </div>
+              <p className="astro-weekly__text">{r.weeklyFortune[key]}</p>
             </div>
           ))}
         </div>
@@ -116,6 +174,19 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
               <span className="astro-compat__score">{c.score}</span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* 最佳配对 */}
+      <div className="astro-section astro-bestmatch-section">
+        <h3 className="astro-section__title">最佳配对</h3>
+        <div className="astro-bestmatch">
+          <div className="astro-bestmatch__header">
+            <span className="astro-bestmatch__symbol">{s.symbol}</span>
+            <span className="astro-bestmatch__heart">💕</span>
+            <span className="astro-bestmatch__match-name">{s.bestMatch}</span>
+          </div>
+          <p className="astro-bestmatch__desc">{s.bestMatchDesc}</p>
         </div>
       </div>
 

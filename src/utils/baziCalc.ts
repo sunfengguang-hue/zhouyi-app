@@ -2,7 +2,7 @@ import type { BaziResult, BaziPillar, WuXing, ShiShen } from '../types';
 import {
   TIAN_GAN, DI_ZHI, TIAN_GAN_WUXING, DI_ZHI_WUXING,
   DI_ZHI_CANG_GAN, WU_HU_DUN, WU_SHU_DUN, JIE_QI,
-  getShiShen,
+  getShiShen, NAYIN_MAP, DAY_MASTER_PERSONALITY, SHISHEN_DESC,
 } from '../data/bazi';
 
 /** 是否闰年 */
@@ -260,6 +260,66 @@ export function calculateBazi(
   // 五行齐全
   if (Object.values(count).every(v => v > 0)) shenSha.push('五行俱全');
 
+  // 纳音五行
+  const pillarNames = ['年柱', '月柱', '日柱', '时柱'];
+  const pillarIndices = [yearIdx, monthIdx, dayIdx, hourIdx];
+  const nayin = pillarIndices.map((idx, i) => ({
+    pillar: pillarNames[i],
+    nayin: NAYIN_MAP[idx] || '未知',
+  }));
+
+  // 日主性格分析
+  const dayMasterPersonality = DAY_MASTER_PERSONALITY[dayGan] || {
+    character: '日主性格暂无详解', career: '', love: '', wealth: '',
+  };
+
+  // 十神详解（跳过日柱，日柱为日主自身）
+  const shiShenDetails: { name: string; position: string; meaning: string }[] = [];
+  const ssPillars = [
+    { pillar: yearPillar, name: '年柱' },
+    { pillar: monthPillar, name: '月柱' },
+    { pillar: hourPillar, name: '时柱' },
+  ];
+  for (const { pillar, name } of ssPillars) {
+    const ssName = pillar.ganSS;
+    shiShenDetails.push({
+      name: ssName,
+      position: `${name}天干`,
+      meaning: SHISHEN_DESC[ssName] || '',
+    });
+    // 地支藏干十神
+    for (const cg of pillar.zhiCangGan) {
+      shiShenDetails.push({
+        name: cg.ss,
+        position: `${name}地支藏${cg.gan}`,
+        meaning: SHISHEN_DESC[cg.ss] || '',
+      });
+    }
+  }
+
+  // 大运计算
+  const birthYear = sy;
+  const yearGanYY = (yearIdx % 10) % 2 === 0; // 阳干=true
+  const isMale = gender === '男';
+  const isForward = (isMale && yearGanYY) || (!isMale && !yearGanYY); // 阳男阴女顺行
+  const startAge = Math.abs(monthIdx - yearIdx) % 10 + 3;
+  const daYun: { age: number; year: number; ganZhi: string; wuxing: string }[] = [];
+  for (let i = 1; i <= 8; i++) {
+    const step = isForward ? i : -i;
+    const dyIdx = ((monthIdx + step) % 60 + 60) % 60;
+    const dyGanIdx = dyIdx % 10;
+    const dyZhiIdx = dyIdx % 12;
+    const dyGan = TIAN_GAN[dyGanIdx];
+    const dyZhi = DI_ZHI[dyZhiIdx];
+    const age = startAge + (i - 1) * 10;
+    daYun.push({
+      age,
+      year: birthYear + age,
+      ganZhi: `${dyGan}${dyZhi}`,
+      wuxing: TIAN_GAN_WUXING[dyGan],
+    });
+  }
+
   return {
     year: yearPillar,
     month: monthPillar,
@@ -278,5 +338,9 @@ export function calculateBazi(
       gender,
       longitude,
     },
+    nayin,
+    dayMasterPersonality,
+    shiShenDetails,
+    daYun,
   };
 }

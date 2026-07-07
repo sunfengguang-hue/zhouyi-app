@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { BaziResult } from '../../types';
 import { calculateBazi } from '../../utils/baziCalc';
+import { SHISHEN_DESC, DAY_MASTER_PERSONALITY } from '../../data/bazi';
 import './BaziPage.css';
 
 const BaziPage: React.FC = () => {
@@ -88,6 +89,17 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
     '偏弱': '#3498db', '弱': '#2ecc71',
   };
 
+  const wxColors: Record<string, string> = {
+    '金': '#f1c40f', '木': '#2ecc71', '水': '#3498db', '火': '#e74c3c', '土': '#e67e22',
+  };
+
+  // Deduplicate shiShenDetails by name+position for display
+  const uniqueShiShen = r.shiShenDetails.reduce((acc, item) => {
+    const key = `${item.position}-${item.name}`;
+    if (!acc.find(a => `${a.position}-${a.name}` === key)) acc.push(item);
+    return acc;
+  }, [] as typeof r.shiShenDetails);
+
   return (
     <div className="page-result bazi-result">
       <h2 className="bazi-result__title">四柱八字排盘</h2>
@@ -130,6 +142,64 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
         </div>
       </div>
 
+      {/* 纳音五行 */}
+      <div className="bazi-result__nayin">
+        <h3 className="bazi-result__section-title">纳音五行</h3>
+        <div className="bazi-nayin__grid">
+          {r.nayin.map((item, i) => (
+            <div key={i} className="bazi-nayin__item" style={{ animation: `fadeInUp 0.4s ease ${i * 0.1}s both` }}>
+              <span className="bazi-nayin__pillar">{item.pillar}</span>
+              <span className="bazi-nayin__value">{item.nayin}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 日主性格分析 */}
+      <div className="bazi-result__personality">
+        <h3 className="bazi-result__section-title">日主性格分析</h3>
+        <div className="bazi-personality__card">
+          <div className="bazi-personality__header">
+            <span className="bazi-personality__stem">{r.dayMaster}</span>
+            <span className="bazi-personality__wx">{r.dayMasterWX}</span>
+          </div>
+          <div className="bazi-personality__body">
+            <div className="bazi-personality__section">
+              <h5 className="bazi-personality__label">性格特质</h5>
+              <p className="bazi-personality__text">{r.dayMasterPersonality.character}</p>
+            </div>
+            <div className="bazi-personality__section">
+              <h5 className="bazi-personality__label">事业运势</h5>
+              <p className="bazi-personality__text">{r.dayMasterPersonality.career}</p>
+            </div>
+            <div className="bazi-personality__section">
+              <h5 className="bazi-personality__label">感情婚姻</h5>
+              <p className="bazi-personality__text">{r.dayMasterPersonality.love}</p>
+            </div>
+            <div className="bazi-personality__section">
+              <h5 className="bazi-personality__label">财运分析</h5>
+              <p className="bazi-personality__text">{r.dayMasterPersonality.wealth}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 十神详解 */}
+      <div className="bazi-result__shishen">
+        <h3 className="bazi-result__section-title">十神详解</h3>
+        <div className="bazi-shishen__list">
+          {uniqueShiShen.map((item, i) => (
+            <div key={i} className="bazi-shishen__item" style={{ animation: `fadeInUp 0.3s ease ${i * 0.06}s both` }}>
+              <div className="bazi-shishen__head">
+                <span className="bazi-shishen__name">{item.name}</span>
+                <span className="bazi-shishen__pos">{item.position}</span>
+              </div>
+              <p className="bazi-shishen__desc">{item.meaning}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* 五行分布 */}
       <div className="bazi-result__wuxing">
         <h3 className="bazi-result__section-title">五行分布</h3>
@@ -137,18 +207,33 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
           {wxNames.map(wx => {
             const val = r.wuxingCount[wx];
             const pct = wxTotal > 0 ? Math.round((val / wxTotal) * 100) : 0;
-            const colors: Record<string, string> = { '金': '#f1c40f', '木': '#2ecc71', '水': '#3498db', '火': '#e74c3c', '土': '#e67e22' };
             return (
               <div key={wx} className="bazi-wx-item">
                 <span className="bazi-wx-item__label">{wx}</span>
                 <div className="bazi-wx-item__bar">
-                  <div className="bazi-wx-item__fill" style={{ width: `${Math.max(pct, 4)}%`, background: colors[wx] }} />
+                  <div className="bazi-wx-item__fill" style={{ width: `${Math.max(pct, 4)}%`, background: wxColors[wx] }} />
                 </div>
                 <span className="bazi-wx-item__val">{val}</span>
               </div>
             );
           })}
         </div>
+      </div>
+
+      {/* 大运流年 */}
+      <div className="bazi-result__dayun">
+        <h3 className="bazi-result__section-title">大运流年</h3>
+        <div className="bazi-dayun__timeline">
+          {r.daYun.map((dy, i) => (
+            <div key={i} className="bazi-dayun__item" style={{ animation: `fadeInUp 0.4s ease ${i * 0.08}s both` }}>
+              <div className="bazi-dayun__age">{dy.age}-{dy.age + 9}岁</div>
+              <div className="bazi-dayun__ganzhi">{dy.ganZhi}</div>
+              <div className="bazi-dayun__wx" style={{ color: wxColors[dy.wuxing] || '#ccc' }}>{dy.wuxing}</div>
+              <div className="bazi-dayun__year">{dy.year}年</div>
+            </div>
+          ))}
+        </div>
+        <div className="bazi-dayun__line" />
       </div>
 
       {/* 神煞提示 */}
