@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { BaziResult } from '../../types';
-import { calculateBazi } from '../../utils/baziCalc';
+import { calculateBazi, getYearPillarInfo } from '../../utils/baziCalc';
 import { SHISHEN_DESC, DAY_MASTER_PERSONALITY } from '../../data/bazi';
 import './BaziPage.css';
 
@@ -389,6 +389,132 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
           </div>
         </div>
       )}
+
+      {/* 流年运势 */}
+      {(() => {
+        const currentYear = new Date().getFullYear();
+        const liuNian = getYearPillarInfo(currentYear);
+        const ss = liuNian.shiShen(r.dayMaster);
+        const yearWXIsFav = r.favorableWX.includes(liuNian.ganWX) || r.favorableWX.includes(liuNian.zhiWX);
+        const sameWX = liuNian.ganWX === r.dayMasterWX;
+
+        // 流年四维度预测（基于十神类型）
+        const forecasts: Record<string, { career: string; love: string; wealth: string; health: string }> = {
+          '比肩': {
+            career: '今年同行竞争激烈，合作关系增多。宜拓展人脉、组建团队，但需防合作伙伴反目。',
+            love: '社交圈活跃，桃花机会多但也容易出现第三者。已有伴侣者需加强沟通，防范外界干扰。',
+            wealth: '财运平稳但竞争激烈，正财为主。合伙投资需谨慎评估，独立经营反而更有主动权。',
+            health: '体力充沛但易因争强好胜而透支，注意劳逸结合，防范运动损伤。',
+          },
+          '劫财': {
+            career: '今年职场暗流涌动，表面和谐背后竞争激烈。宜守不宜攻，稳中求进为上策。',
+            love: '感情中容易出现竞争者或三角关系。单身者选择多但需谨慎，有伴者注意维护关系。',
+            wealth: '破财风险较高，不宜大额投资和冲动消费。守住本金是第一要务，偏财运不佳。',
+            health: '情绪波动较大，易因焦虑影响睡眠。建议多做舒缓运动，保持心态平和。',
+          },
+          '食神': {
+            career: '今年是展示才华的好年份，创意和表达能力突出。适合从事文化、艺术、教育相关工作。',
+            love: '感情生活丰富多彩，浪漫气息浓厚。单身者易遇心动对象，有伴者感情升温。',
+            wealth: '财运温和上升，以正财和稳定收入为主。适合长期投资，不宜短线投机。',
+            health: '食欲旺盛，需注意饮食均衡防发胖。整体健康状况良好，适合培养运动习惯。',
+          },
+          '伤官': {
+            career: '今年才华横溢但锋芒过露，易与上级产生摩擦。宜低调行事，将创新力用于解决实际问题。',
+            love: '感情中个性张扬，容易吸引异性但也容易产生矛盾。学会包容和退让是今年的感情功课。',
+            wealth: '偏财运不错，有意外收入的机会。但切忌贪心，见好就收是上策。',
+            health: '精神压力大，易有神经衰弱倾向。建议定期放松，多接触大自然。',
+          },
+          '偏财': {
+            career: '今年有意外机遇和商业嗅觉，适合跨界发展和副业拓展。抓住稍纵即逝的机会。',
+            love: '桃花运旺盛，异性缘极佳。但需分辨真心与假意，勿因一时冲动而做出感情决定。',
+            wealth: '偏财运强劲，投资眼光敏锐。但也意味着风险较高，做好止损准备再出手。',
+            health: '应酬增多，注意饮食节制和酒精摄入。定期检查肝胆功能。',
+          },
+          '正财': {
+            career: '今年事业稳步上升，努力会得到应有的回报。适合深耕现有领域，不宜频繁跳槽。',
+            love: '感情稳定踏实，适合谈婚论嫁或加深承诺。单身者可通过相亲或朋友介绍遇到合适对象。',
+            wealth: '正财运旺盛，薪资收入有增长空间。适合稳健理财和定投，不适合高风险投资。',
+            health: '身体状况平稳，但需注意因工作繁忙而忽视休息。保持规律作息很重要。',
+          },
+          '七杀': {
+            career: '今年事业压力大但机遇也大，有破格提拔或转型的可能。宜主动出击，化压力为动力。',
+            love: '感情中强势主导的倾向明显，需注意不要过于霸道。有伴者给对方一些空间，单身者魅力十足。',
+            wealth: '财运起伏较大，有暴起暴落的风险。适合做确定性高的投资，避免赌博心态。',
+            health: '压力对身体的影响不可忽视，尤其注意心血管和肝脏。定期体检，学会减压。',
+          },
+          '正官': {
+            career: '今年有利于升职加薪和获得认可，贵人运佳。宜遵循规则、踏实做事，不宜冒险和违规操作。',
+            love: '感情正统稳定，有利于确定关系和步入婚姻。单身者会遇到正经靠谱的交往对象。',
+            wealth: '财运与事业挂钩，升职意味着收入增长。正财为主，偏财运一般。',
+            health: '因工作压力可能导致亚健康，注意颈椎、腰椎问题。定时起身活动，做做拉伸。',
+          },
+          '偏印': {
+            career: '今年适合学习深造和钻研专业技能。冷门领域反而可能带来突破，独辟蹊径胜过随大流。',
+            love: '感情偏内敛和理性，不擅表达可能导致误解。有伴者需要更多主动沟通，单身者享受独处也无妨。',
+            wealth: '财运平平，不宜大规模投资。但适合投资自己——学习、考证、技能提升都是好选择。',
+            health: '思虑过多易伤脾胃，消化不良是今年需注意的问题。保持饮食规律，少吃生冷。',
+          },
+          '正印': {
+            career: '今年有贵人相助，学业和资质方面有好消息。适合考证、进修和接受培训，为未来发展铺路。',
+            love: '感情中受到长辈或朋友的关怀和帮助。有伴者关系温馨，单身者可通过家人介绍认识对象。',
+            wealth: '财运以稳定为主，有长辈或上级在经济上给予支持的可能。适合保守理财。',
+            health: '整体健康状况良好，但需注意因安逸而放松锻炼。保持适度运动，防体重增长。',
+          },
+        };
+
+        const f = forecasts[ss] || forecasts['比肩'];
+        const overallTone = yearWXIsFav ? '流年五行与命局喜用相合，整体运势向好' : '流年五行与命局存在一定张力，需更加审慎应对';
+
+        return (
+          <div className="bazi-result__liunian" style={{ animation: 'fadeInUp 0.5s ease 0.3s both' }}>
+            <h3 className="bazi-result__section-title">{currentYear}流年运势</h3>
+
+            {/* 流年基本信息 */}
+            <div className="bazi-liunian__header">
+              <div className="bazi-liunian__info">
+                <span className="bazi-liunian__year">{currentYear}年</span>
+                <span className="bazi-liunian__ganzhi">{liuNian.ganZhi}</span>
+                <span className="bazi-liunian__nayin">{liuNian.nayin}</span>
+              </div>
+              <div className="bazi-liunian__relation">
+                <span className="bazi-liunian__shishen">{ss}</span>
+                <span className="bazi-liunian__wx">
+                  {liuNian.ganWX}{liuNian.zhiWX}年
+                  {sameWX && ' · 与日主同属'}
+                  {yearWXIsFav && !sameWX && ' · 属喜用'}
+                  {!yearWXIsFav && !sameWX && ' · 非喜用'}
+                </span>
+              </div>
+            </div>
+
+            <p className="bazi-liunian__summary">{overallTone}。流年天干{liuNian.gan}（{liuNian.ganWX}）与日主{r.dayMaster}（{r.dayMasterWX}）构成「{ss}」关系，{ss.includes('财') ? '财运是今年的重要主题' : ss.includes('官') || ss.includes('杀') ? '事业和权力是今年的核心议题' : ss.includes('印') ? '学习和成长是今年的主旋律' : ss.includes('食') || ss.includes('伤') ? '才华表达是今年的亮点' : '人际和竞争是今年的关键词'}。</p>
+
+            {/* 四维预测 */}
+            <div className="bazi-liunian__forecasts">
+              <div className="bazi-liunian__card">
+                <span className="bazi-liunian__icon">💼</span>
+                <h4>事业</h4>
+                <p>{f.career}</p>
+              </div>
+              <div className="bazi-liunian__card">
+                <span className="bazi-liunian__icon">❤️</span>
+                <h4>感情</h4>
+                <p>{f.love}</p>
+              </div>
+              <div className="bazi-liunian__card">
+                <span className="bazi-liunian__icon">💰</span>
+                <h4>财运</h4>
+                <p>{f.wealth}</p>
+              </div>
+              <div className="bazi-liunian__card">
+                <span className="bazi-liunian__icon">🏥</span>
+                <h4>健康</h4>
+                <p>{f.health}</p>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       <div className="page-form__actions">
         <button className="btn-secondary" onClick={onReset}>重新测算</button>

@@ -97,12 +97,30 @@ function getMonthPillarIndex(yearGanIndex: number, month: number, day: number): 
  * 由天干序号和地支序号计算六十甲子序号
  */
 function getJiaZiIndex(ganIndex: number, zhiIndex: number): number {
-  // 六十甲子：干支同步推进，序号n对应 干=n%10, 支=n%12
-  // 已知干、支求n：n % 10 = ganIndex 且 n % 12 = zhiIndex
   for (let n = 0; n < 60; n++) {
     if (n % 10 === ganIndex && n % 12 === zhiIndex) return n;
   }
   return 0;
+}
+
+/**
+ * 获取任意年份的干支信息（用于流年分析）
+ * 以立春为年界，1984年为甲子年
+ */
+export function getYearPillarInfo(year: number) {
+  const idx = ((year - 1984) % 60 + 60) % 60;
+  const ganIdx = idx % 10;
+  const zhiIdx = idx % 12;
+  const gan = TIAN_GAN[ganIdx];
+  const zhi = DI_ZHI[zhiIdx];
+  return {
+    ganZhi: `${gan}${zhi}`,
+    gan, zhi,
+    ganWX: TIAN_GAN_WUXING[gan] as WuXing,
+    zhiWX: DI_ZHI_WUXING[zhi] as WuXing,
+    nayin: NAYIN_MAP[idx] || '',
+    shiShen: (dayGan: string) => getShiShen(dayGan, gan),
+  };
 }
 
 /**

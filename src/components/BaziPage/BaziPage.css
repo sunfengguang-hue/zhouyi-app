@@ -249,6 +249,124 @@
   line-height: 1.4;
 }
 
+/* 流年运势 */
+.bazi-result__liunian {
+  margin-bottom: 24px;
+  padding: 20px 16px;
+  background: linear-gradient(135deg, rgba(0,0,0,0.18) 0%, rgba(212,168,83,0.06) 100%);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(212,168,83,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.bazi-result__liunian::before {
+  content: '年';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 80px;
+  color: rgba(212,168,83,0.04);
+  pointer-events: none;
+}
+
+.bazi-liunian__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bazi-liunian__info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.bazi-liunian__year {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--gold);
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.bazi-liunian__ganzhi {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text-primary);
+  letter-spacing: 3px;
+  padding: 2px 10px;
+  background: rgba(212,168,83,0.1);
+  border-radius: 4px;
+}
+.bazi-liunian__nayin {
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+.bazi-liunian__relation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bazi-liunian__shishen {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 600;
+  padding: 2px 8px;
+  background: rgba(212,168,83,0.15);
+  border: 1px solid rgba(212,168,83,0.3);
+  border-radius: 4px;
+  letter-spacing: 2px;
+}
+.bazi-liunian__wx {
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+.bazi-liunian__summary {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 2;
+  letter-spacing: 0.5px;
+  text-align: justify;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(212,168,83,0.2);
+}
+
+.bazi-liunian__forecasts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.bazi-liunian__card {
+  padding: 12px;
+  background: rgba(0,0,0,0.15);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--gold);
+}
+.bazi-liunian__card h4 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin: 4px 0 6px;
+}
+.bazi-liunian__card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+.bazi-liunian__icon {
+  font-size: 20px;
+}
+
 @media (max-width: 480px) {
   .bazi-result__pillars { gap: 8px; }
   .bazi-pillar { min-width: 70px; padding: 12px 8px; }
@@ -259,4 +377,7 @@
   .bazi-dayun__item { min-width: 64px; padding: 10px 8px; }
   .bazi-dayun__ganzhi { font-size: 17px; }
   .bazi-shensha__grid { grid-template-columns: 1fr; }
+  .bazi-liunian__header { flex-direction: column; align-items: flex-start; }
+  .bazi-liunian__forecasts { grid-template-columns: 1fr; }
+  .bazi-liunian__year { font-size: 17px; }
 }
