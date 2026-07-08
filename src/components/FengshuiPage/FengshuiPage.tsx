@@ -51,7 +51,17 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
   const r = result;
   const luckyDirs = r.directions.filter(d => d.lucky);
   const unluckyDirs = r.directions.filter(d => !d.lucky);
+  const [hoveredSector, setHoveredSector] = useState<number | null>(null);
   const cx = 150, cy = 150, R = 130, Rmid = 95, Rinner = 55;
+
+  const scrollToDirection = (dirName: string) => {
+    const el = document.getElementById(`fs-dir-${dirName}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('fs-result__card--highlight');
+      setTimeout(() => el.classList.remove('fs-result__card--highlight'), 1500);
+    }
+  };
 
   // Build SVG compass sectors
   const dirAngles = [0, 45, 90, 135, 180, 225, 270, 315]; // 东=0°, 东南=45°, 南=90°...
@@ -84,16 +94,24 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
           <circle cx={cx} cy={cy} r={R + 8} fill="none" stroke="rgba(212,168,83,0.3)" strokeWidth="1" />
           <circle cx={cx} cy={cy} r={R + 3} fill="none" stroke="rgba(212,168,83,0.5)" strokeWidth="2" />
 
-          {/* 八方扇区 */}
+          {/* 八方扇区 - 可点击 */}
           {r.directions.map((d, i) => {
             const startA = dirAngles[i] - 22.5;
             const endA = dirAngles[i] + 22.5;
             const lucky = d.lucky;
+            const isHovered = hoveredSector === i;
             return (
               <path key={i} d={sectorArc(startA, endA, R, Rmid)}
-                fill={lucky ? 'rgba(46,204,113,0.12)' : 'rgba(231,76,60,0.10)'}
+                fill={isHovered
+                  ? (lucky ? 'rgba(46,204,113,0.25)' : 'rgba(231,76,60,0.22)')
+                  : (lucky ? 'rgba(46,204,113,0.12)' : 'rgba(231,76,60,0.10)')
+                }
                 stroke={lucky ? 'rgba(46,204,113,0.4)' : 'rgba(231,76,60,0.3)'}
-                strokeWidth="1" />
+                strokeWidth={isHovered ? '2' : '1'}
+                style={{ cursor: 'pointer', transition: 'fill 0.2s, stroke-width 0.2s' }}
+                onClick={() => scrollToDirection(d.direction)}
+                onMouseEnter={() => setHoveredSector(i)}
+                onMouseLeave={() => setHoveredSector(null)} />
             );
           })}
 
@@ -191,7 +209,7 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
           {luckyDirs.map((d, i) => {
             const detail = r.directionDetails.find(dd => dd.direction === d.direction);
             return (
-              <div key={i} className="fs-result__card fs-result__card--lucky" style={{ animation: `fadeInUp 0.4s ease ${i*0.1}s both` }}>
+              <div key={i} id={`fs-dir-${d.direction}`} className="fs-result__card fs-result__card--lucky" style={{ animation: `fadeInUp 0.4s ease ${i*0.1}s both` }}>
                 <div className="fs-result__card-header">
                   <span className="fs-result__card-dir">{TRIGRAM_SYMBOLS[d.direction]} {d.direction}方</span>
                   <span className="fs-result__card-star tag tag-gold">{d.youXing}</span>
@@ -220,7 +238,7 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
             const detail = r.directionDetails.find(dd => dd.direction === d.direction);
             const cure = r.cures.find(c => c.direction === d.direction);
             return (
-              <div key={i} className="fs-result__card fs-result__card--unlucky" style={{ animation: `fadeInUp 0.4s ease ${i*0.1}s both` }}>
+              <div key={i} id={`fs-dir-${d.direction}`} className="fs-result__card fs-result__card--unlucky" style={{ animation: `fadeInUp 0.4s ease ${i*0.1}s both` }}>
                 <div className="fs-result__card-header">
                   <span className="fs-result__card-dir">{TRIGRAM_SYMBOLS[d.direction]} {d.direction}方</span>
                   <span className="fs-result__card-star tag tag-vermillion">{d.youXing}</span>

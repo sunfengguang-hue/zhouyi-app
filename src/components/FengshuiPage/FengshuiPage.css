@@ -21,9 +21,26 @@
 .fs-result__section { margin-bottom: 24px; }
 .fs-result__section-title { font-family: var(--font-display); font-size: 16px; color: var(--gold); letter-spacing: 4px; text-align: center; margin-bottom: 12px; }
 .fs-result__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.fs-result__card { padding: 14px; border-radius: var(--radius-md); }
+.fs-result__card { padding: 14px; border-radius: var(--radius-md); transition: box-shadow 0.3s, border-color 0.3s; }
 .fs-result__card--lucky { background: rgba(46,204,113,0.08); border: 1px solid rgba(46,204,113,0.3); }
 .fs-result__card--unlucky { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); }
+.fs-result__card--highlight {
+  animation: cardHighlight 1.5s ease;
+}
+.fs-result__card--highlight.fs-result__card--lucky {
+  box-shadow: 0 0 20px rgba(46,204,113,0.3);
+  border-color: rgba(46,204,113,0.7);
+}
+.fs-result__card--highlight.fs-result__card--unlucky {
+  box-shadow: 0 0 20px rgba(231,76,60,0.3);
+  border-color: rgba(231,76,60,0.7);
+}
+@keyframes cardHighlight {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.03); }
+  30% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
 .fs-result__card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .fs-result__card-dir { font-family: var(--font-display); font-size: 15px; color: var(--text-primary); letter-spacing: 2px; }
 .fs-result__card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
