@@ -207,16 +207,122 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
           {wxNames.map(wx => {
             const val = r.wuxingCount[wx];
             const pct = wxTotal > 0 ? Math.round((val / wxTotal) * 100) : 0;
+            const isFavorable = r.favorableWX.includes(wx);
             return (
               <div key={wx} className="bazi-wx-item">
-                <span className="bazi-wx-item__label">{wx}</span>
+                <span className="bazi-wx-item__label">
+                  {wx}
+                  {isFavorable && <span className="bazi-wx-item__tag bazi-wx-item__tag--xi">喜</span>}
+                </span>
                 <div className="bazi-wx-item__bar">
                   <div className="bazi-wx-item__fill" style={{ width: `${Math.max(pct, 4)}%`, background: wxColors[wx] }} />
                 </div>
                 <span className="bazi-wx-item__val">{val}</span>
+                <span className="bazi-wx-item__pct">{pct}%</span>
               </div>
             );
           })}
+        </div>
+
+        {/* 五行生克圆图 */}
+        <div className="bazi-wx-circle-wrap">
+          <svg className="bazi-wx-circle" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+            {/* 5 nodes arranged in circle: 木(top-left), 火(top-right), 土(center-bottom-right), 金(center-bottom-left), 水(bottom) */}
+            {(() => {
+              const cx = 130, cy = 130, R = 95;
+              // Order: 木→火→土→金→水 (generation cycle order)
+              const wxOrder: Array<'木'|'火'|'土'|'金'|'水'> = ['木','火','土','金','水'];
+              const angles = [-90, -18, 54, 126, 198]; // evenly spaced starting from top
+              const toRad = (d: number) => d * Math.PI / 180;
+              const maxVal = Math.max(...Object.values(r.wuxingCount), 1);
+              const nodes = wxOrder.map((wx, i) => {
+                const a = toRad(angles[i]);
+                return {
+                  wx,
+                  x: cx + R * Math.cos(a),
+                  y: cy + R * Math.sin(a),
+                  count: r.wuxingCount[wx],
+                  pct: wxTotal > 0 ? Math.round((r.wuxingCount[wx] / wxTotal) * 100) : 0,
+                  isFav: r.favorableWX.includes(wx),
+                  r: 18 + (r.wuxingCount[wx] / maxVal) * 12, // 18-30 radius based on count
+                };
+              });
+
+              return (
+                <>
+                  {/* 相生 arrows (outer): 木→火→土→金→水→木 */}
+                  {nodes.map((n, i) => {
+                    const next = nodes[(i + 1) % 5];
+                    const dx = next.x - n.x, dy = next.y - n.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const ux = dx / dist, uy = dy / dist;
+                    const x1 = n.x + ux * (n.r + 4), y1 = n.y + uy * (n.r + 4);
+                    const x2 = next.x - ux * (next.r + 6), y2 = next.y - uy * (next.r + 6);
+                    const mx = (x1 + x2) / 2 + (-(y2 - y1)) * 0.15;
+                    const my = (y1 + y2) / 2 + ((x2 - x1)) * 0.15;
+                    return (
+                      <path key={`gen-${i}`} d={`M${x1},${y1} Q${mx},${my} ${x2},${y2}`}
+                        fill="none" stroke="rgba(46,204,113,0.4)" strokeWidth="1.5"
+                        markerEnd="url(#arrowGen)" />
+                    );
+                  })}
+                  {/* 相克 arrows (inner star): 木→土→水→火→金→木 */}
+                  {[0,1,2,3,4].map(i => {
+                    const from = nodes[i];
+                    const to = nodes[(i + 2) % 5];
+                    const dx = to.x - from.x, dy = to.y - from.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const ux = dx / dist, uy = dy / dist;
+                    const x1 = from.x + ux * (from.r + 4), y1 = from.y + uy * (from.r + 4);
+                    const x2 = to.x - ux * (to.r + 6), y2 = to.y - uy * (to.r + 6);
+                    return (
+                      <line key={`over-${i}`} x1={x1} y1={y1} x2={x2} y2={y2}
+                        stroke="rgba(231,76,60,0.25)" strokeWidth="1"
+                        strokeDasharray="4 3" markerEnd="url(#arrowOver)" />
+                    );
+                  })}
+                  {/* Arrow markers */}
+                  <defs>
+                    <marker id="arrowGen" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <path d="M0,0 L6,3 L0,6 Z" fill="rgba(46,204,113,0.6)" />
+                    </marker>
+                    <marker id="arrowOver" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                      <path d="M0,0 L6,3 L0,6 Z" fill="rgba(231,76,60,0.4)" />
+                    </marker>
+                  </defs>
+                  {/* Element nodes */}
+                  {nodes.map((n, i) => (
+                    <g key={i}>
+                      <circle cx={n.x} cy={n.y} r={n.r}
+                        fill={`${wxColors[n.wx]}22`}
+                        stroke={n.isFav ? 'rgba(212,168,83,0.8)' : `${wxColors[n.wx]}88`}
+                        strokeWidth={n.isFav ? 2.5 : 1.5} />
+                      <text x={n.x} y={n.y - 2} textAnchor="middle" dominantBaseline="central"
+                        fill={wxColors[n.wx]} fontSize="15" fontWeight="bold"
+                        fontFamily="'STKaiti','KaiTi',serif">
+                        {n.wx}
+                      </text>
+                      <text x={n.x} y={n.y + 12} textAnchor="middle" dominantBaseline="central"
+                        fill="rgba(255,255,255,0.5)" fontSize="9">
+                        {n.pct}%
+                      </text>
+                      {n.isFav && (
+                        <text x={n.x} y={n.y - n.r - 6} textAnchor="middle" dominantBaseline="central"
+                          fill="rgba(212,168,83,0.8)" fontSize="9" fontWeight="bold">
+                          喜
+                        </text>
+                      )}
+                    </g>
+                  ))}
+                  {/* Legend */}
+                  <line x1="10" y1="248" x2="30" y2="248" stroke="rgba(46,204,113,0.5)" strokeWidth="1.5" />
+                  <text x="34" y="248" dominantBaseline="central" fill="rgba(255,255,255,0.4)" fontSize="9">相生</text>
+                  <line x1="70" y1="248" x2="90" y2="248" stroke="rgba(231,76,60,0.4)" strokeWidth="1" strokeDasharray="4 3" />
+                  <text x="94" y="248" dominantBaseline="central" fill="rgba(255,255,255,0.4)" fontSize="9">相克</text>
+                </>
+              );
+            })()}
+          </svg>
         </div>
       </div>
 
