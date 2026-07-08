@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { AppView } from '../../types';
 import { getLunarInfo } from '../../utils/lunarCalendar';
+import { drawFortuneStick, getLevelColor } from '../../utils/fortuneStickCalc';
 import './Home.css';
 
 interface HomeProps {
@@ -134,6 +135,10 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     return RECOMMEND_MODULES[idx];
   }, [todaySeed]);
 
+  // 今日灵签（同日同签）
+  const dailyStick = useMemo(() => drawFortuneStick('每日一问'), []);
+  const stickLevelColor = getLevelColor(dailyStick.stick.level);
+
   // 今日日期显示
   const todayStr = useMemo(() => {
     const d = new Date();
@@ -197,6 +202,19 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         <div className="home__recommend-badge">今日推荐</div>
         <div className="home__recommend-text">{recommend.reason}</div>
         <span className="home__recommend-arrow">立即体验 ›</span>
+      </button>
+
+      {/* 今日灵签 */}
+      <button className="home__daily-stick" onClick={() => onNavigate('fortune')} style={{ animation: 'fadeInUp 0.6s ease 0.35s both' }}>
+        <div className="home__daily-stick__badge">今日灵签</div>
+        <div className="home__daily-stick__content">
+          <div className="home__daily-stick__header">
+            <span className="home__daily-stick__title">第{dailyStick.stick.id}签 · {dailyStick.stick.title}</span>
+            <span className="home__daily-stick__level" style={{ color: stickLevelColor, borderColor: stickLevelColor }}>{dailyStick.stick.level}</span>
+          </div>
+          <p className="home__daily-stick__poem">{dailyStick.stick.poem.split('\n').slice(0, 2).join(' ')}</p>
+          <span className="home__daily-stick__more">查看详解 ›</span>
+        </div>
       </button>
 
       <div className="home__grid">
