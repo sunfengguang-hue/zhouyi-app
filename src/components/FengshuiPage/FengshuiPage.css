@@ -4,6 +4,18 @@
 .fs-result__mingua { text-align: center; margin-bottom: 24px; font-size: 14px; }
 .fs-result__gua-name { font-family: var(--font-display); font-size: 16px; color: var(--text-primary); letter-spacing: 2px; }
 
+/* 吉凶概览 */
+.fs-result__summary {
+  display: flex; justify-content: center; align-items: center; gap: 16px;
+  margin-bottom: 20px; padding: 12px 20px;
+  background: rgba(0,0,0,0.2); border-radius: var(--radius-md);
+  border: 1px solid rgba(212,168,83,0.15);
+}
+.fs-result__summary-item { font-size: 14px; color: var(--text-secondary); letter-spacing: 1px; }
+.fs-result__summary-item--lucky { color: #2ecc71; font-weight: 600; }
+.fs-result__summary-item--unlucky { color: #e74c3c; font-weight: 600; }
+.fs-result__summary-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.15); }
+
 /* SVG罗盘 */
 .compass-svg-wrap {
   width: 300px; height: 300px; margin: 0 auto 32px;

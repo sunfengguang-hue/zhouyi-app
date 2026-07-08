@@ -20,6 +20,9 @@ const FengshuiPage: React.FC = () => {
   return (
     <div className="page-form">
       <p className="page-form__intro-fs">八宅明镜法 · 定命卦 · 明八方吉凶</p>
+      <p style={{ textAlign: 'center', fontSize: '12px', color: 'rgba(255,255,255,0.4)', lineHeight: '1.6', margin: '0 0 20px', letterSpacing: '0.5px' }}>
+        八宅风水以出生年定命卦（东四命/西四命），<br/>配合房屋坐向，判八方游星吉凶，指导家居布局。
+      </p>
       <div className="page-form__row">
         <div className="page-form__group">
           <label className="page-form__label">出生年份</label>
@@ -85,6 +88,21 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
         <span className="tag tag-gold">{r.group}</span>
         <span className="fs-result__gua-name">命卦：{r.mingGua}卦</span>
         <span className="text-secondary"> · {r.houseSitting}</span>
+      </div>
+
+      {/* 吉凶概览 */}
+      <div className="fs-result__summary" style={{ animation: 'fadeInUp 0.5s ease 0.1s both' }}>
+        <span className="fs-result__summary-item fs-result__summary-item--lucky">
+          {luckyDirs.length}吉方
+        </span>
+        <span className="fs-result__summary-divider" />
+        <span className="fs-result__summary-item fs-result__summary-item--unlucky">
+          {unluckyDirs.length}凶方
+        </span>
+        <span className="fs-result__summary-divider" />
+        <span className="fs-result__summary-item">
+          {r.houseSitting}
+        </span>
       </div>
 
       {/* SVG罗盘 */}
