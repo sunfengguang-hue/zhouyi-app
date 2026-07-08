@@ -6,29 +6,47 @@ import './AstrologyPage.css';
 const AstrologyPage: React.FC = () => {
   const [month, setMonth] = useState(1);
   const [day, setDay] = useState(1);
+  const [error, setError] = useState('');
   const [result, setResult] = useState<AstrologyResult | null>(null);
+
+  const daysInMonth = new Date(2024, month, 0).getDate(); // 2024 is leap year
+  const handleMonthChange = (m: number) => {
+    setMonth(m);
+    const maxDay = new Date(2024, m, 0).getDate();
+    if (day > maxDay) setDay(maxDay);
+  };
+
+  const handleQuery = () => {
+    if (day > daysInMonth) {
+      setError(`${month}月最多${daysInMonth}天`);
+      return;
+    }
+    setError('');
+    setResult(calcAstrology(month, day));
+  };
 
   if (result) return <AstrologyResultView result={result} onReset={() => setResult(null)} />;
 
   return (
     <div className="page-form">
-      <p className="astro-intro">输入出生月日，查星座性格与今日运势</p>
+      <p className="astro-intro">西洋占星术 · 十二星座性格解析 · 每日运势预测 · 本周运势前瞻</p>
       <div className="page-form__row">
         <div className="page-form__group">
           <label className="page-form__label">月份</label>
-          <select className="page-form__select" value={month} onChange={e=>setMonth(+e.target.value)}>
+          <select className="page-form__select" value={month} onChange={e=>handleMonthChange(+e.target.value)}>
             {Array.from({length:12},(_,i)=><option key={i} value={i+1}>{i+1}月</option>)}
           </select>
         </div>
         <div className="page-form__group">
           <label className="page-form__label">日期</label>
           <select className="page-form__select" value={day} onChange={e=>setDay(+e.target.value)}>
-            {Array.from({length:31},(_,i)=><option key={i} value={i+1}>{i+1}日</option>)}
+            {Array.from({length:daysInMonth},(_,i)=><option key={i} value={i+1}>{i+1}日</option>)}
           </select>
         </div>
       </div>
+      {error && <p style={{color:'#e74c3c',textAlign:'center',margin:'8px 0',fontSize:'13px'}}>{error}</p>}
       <div className="page-form__actions">
-        <button className="btn-primary" onClick={()=>setResult(calcAstrology(month, day))}>查看运势</button>
+        <button className="btn-primary" onClick={handleQuery}>查看运势</button>
       </div>
     </div>
   );

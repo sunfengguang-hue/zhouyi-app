@@ -119,6 +119,15 @@ const NamingPage: React.FC = () => {
       {analyzeResult && (
         <div className="page-result naming-result">
           <h2 className="naming-result__title">{analyzeResult.fullName} · 名字分析</h2>
+          {analyzeResult.unknownChars && analyzeResult.unknownChars.length > 0 && (
+            <div style={{
+              textAlign:'center', padding:'10px 16px', margin:'0 auto 16px',
+              maxWidth:'400px', background:'rgba(230,126,34,0.12)', border:'1px solid rgba(230,126,34,0.3)',
+              borderRadius:'8px', fontSize:'13px', color:'#e67e22', lineHeight:'1.6'
+            }}>
+              字库未收录「{analyzeResult.unknownChars.join('、')}」，笔画数按默认6画计算，结果仅供参考
+            </div>
+          )}
           <div className="naming-analyze">
             {/* 综合评分 */}
             <div className="naming-analyze__score-box" style={{ animation: 'fadeInUp 0.5s ease 0.1s both' }}>

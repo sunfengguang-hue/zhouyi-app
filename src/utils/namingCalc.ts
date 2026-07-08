@@ -177,10 +177,16 @@ export function analyzeName(surname: string, givenName: string): NameResult | nu
   const surnameStrokes = SURNAMES[surname];
   if (!surnameStrokes) return null;
   const nameChars: NameChar[] = [];
+  const unknownChars: string[] = [];
   for (const ch of givenName) {
     const found = NAME_CHARS.find(c => c.char === ch);
     if (found) nameChars.push(found);
-    else nameChars.push({ char: ch, pinyin: '', strokes: 6, wuxing: '土', meaning: '未知', gender: '中', radical: '?' });
+    else {
+      unknownChars.push(ch);
+      nameChars.push({ char: ch, pinyin: '', strokes: 6, wuxing: '土', meaning: '未知', gender: '中', radical: '?' });
+    }
   }
-  return buildNameResult(surname, surnameStrokes, nameChars);
+  const result = buildNameResult(surname, surnameStrokes, nameChars);
+  if (unknownChars.length > 0) result.unknownChars = unknownChars;
+  return result;
 }
