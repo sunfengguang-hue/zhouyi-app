@@ -70,14 +70,14 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
   return (
     <div className="page-result astro-result">
       {/* 星座头部 */}
-      <div className="astro-header">
+      <div className="astro-header" style={{ animation: 'fadeInUp 0.6s ease 0.1s both' }}>
         <div className="astro-symbol" style={{ color: ec, borderColor: ec }}>{s.symbol}</div>
         <h2 className="astro-name">{s.name}</h2>
         <p className="astro-range">{s.dateRange} · {s.element}象星座 · 守护星{s.ruler}</p>
       </div>
 
       {/* 性格详解 */}
-      <div className="astro-section">
+      <div className="astro-section" style={{ animation: 'fadeInUp 0.5s ease 0.2s both' }}>
         <h3 className="astro-section__title">性格详解</h3>
         <p className="astro-personality__text">{s.personality}</p>
         <div className="astro-strength-weakness">
@@ -101,7 +101,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
       </div>
 
       {/* 性格特质 */}
-      <div className="astro-section">
+      <div className="astro-section" style={{ animation: 'fadeInUp 0.5s ease 0.3s both' }}>
         <h3 className="astro-section__title">性格特质</h3>
         <div className="astro-traits">
           {s.traits.map((t, i) => (
@@ -111,7 +111,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
       </div>
 
       {/* 今日运势 */}
-      <div className="astro-section">
+      <div className="astro-section" style={{ animation: 'fadeInUp 0.5s ease 0.4s both' }}>
         <h3 className="astro-section__title">今日运势</h3>
         <p className="astro-summary text-gold">{r.todayFortune.summary}</p>
         <div className="astro-fortune-grid">
@@ -126,7 +126,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
       </div>
 
       {/* 本周运势 */}
-      <div className="astro-section astro-weekly-section">
+      <div className="astro-section astro-weekly-section" style={{ animation: 'fadeInUp 0.5s ease 0.5s both' }}>
         <h3 className="astro-section__title">本周运势</h3>
         <div className="astro-weekly">
           {weeklyKeys.map(key => (
@@ -142,7 +142,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
       </div>
 
       {/* 运势详情 */}
-      <div className="astro-section">
+      <div className="astro-section" style={{ animation: 'fadeInUp 0.5s ease 0.6s both' }}>
         <h3 className="astro-section__title">运势详解</h3>
         <div className="astro-detail">
           <div className="astro-detail__item"><span className="astro-detail__icon">💼</span><p>{s.career}</p></div>
@@ -153,7 +153,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
       </div>
 
       {/* 幸运元素 */}
-      <div className="astro-section">
+      <div className="astro-section" style={{ animation: 'fadeInUp 0.5s ease 0.7s both' }}>
         <h3 className="astro-section__title">幸运元素</h3>
         <div className="astro-lucky">
           <span className="tag tag-gold">幸运色：{s.luckyColor}</span>
@@ -162,7 +162,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
       </div>
 
       {/* 配对 */}
-      <div className="astro-section">
+      <div className="astro-section" style={{ animation: 'fadeInUp 0.5s ease 0.8s both' }}>
         <h3 className="astro-section__title">星座配对</h3>
         <div className="astro-compat">
           {r.compatibleSigns.map((c, i) => (
@@ -178,7 +178,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
       </div>
 
       {/* 最佳配对 */}
-      <div className="astro-section astro-bestmatch-section">
+      <div className="astro-section astro-bestmatch-section" style={{ animation: 'fadeInUp 0.5s ease 0.9s both' }}>
         <h3 className="astro-section__title">最佳配对</h3>
         <div className="astro-bestmatch">
           <div className="astro-bestmatch__header">
