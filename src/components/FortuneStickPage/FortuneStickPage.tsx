@@ -9,20 +9,33 @@ const FortuneStickPage: React.FC = () => {
   const [shaking, setShaking] = useState(false);
   const [shakePhase, setShakePhase] = useState(0);
   const [resultReady, setResultReady] = useState(false);
+  const [flash, setFlash] = useState(false);
+
+  const tierClass: Record<string, string> = {
+    '上上签': 'fortune-result--best',
+    '上签': 'fortune-result--good',
+    '中签': 'fortune-result--neutral',
+    '下签': 'fortune-result--bad',
+    '下下签': 'fortune-result--worst',
+  };
 
   const handleDraw = () => {
     setShaking(true);
     setShakePhase(0);
     setResultReady(false);
+    setFlash(false);
 
-    // Phase progression for visual feedback
     setTimeout(() => setShakePhase(1), 500);
     setTimeout(() => setShakePhase(2), 1000);
     setTimeout(() => {
-      setResult(drawFortuneStick(question));
+      const r = drawFortuneStick(question);
+      setResult(r);
       setShaking(false);
-      // Small delay then show result with animation
-      setTimeout(() => setResultReady(true), 50);
+      setFlash(true);
+      setTimeout(() => {
+        setFlash(false);
+        setResultReady(true);
+      }, 600);
     }, 1800);
   };
 
@@ -71,10 +84,13 @@ const FortuneStickPage: React.FC = () => {
         </div>
       )}
 
+      {/* Flash overlay */}
+      {flash && <div className="fortune-flash" />}
+
       {result && resultReady && (
-        <div className="fortune-result">
+        <div className={`fortune-result ${tierClass[result.stick.level] || ''}`}>
           {/* 签号与等级 */}
-          <div className="fortune-result__header" style={{ animation: 'fortuneReveal 0.5s ease both' }}>
+          <div className="fortune-result__header" style={{ animation: 'stampReveal 0.6s ease both' }}>
             <div className="fortune-result__number">第 {result.stick.id} 签</div>
             <div className="fortune-result__level" style={{ color: getLevelColor(result.stick.level), borderColor: getLevelColor(result.stick.level) }}>
               {result.stick.level}
@@ -82,7 +98,7 @@ const FortuneStickPage: React.FC = () => {
           </div>
 
           {/* 签题 */}
-          <h2 className="fortune-result__title" style={{ animation: 'fortuneReveal 0.5s ease 0.1s both' }}>{result.stick.title}</h2>
+          <h2 className="fortune-result__title" style={{ animation: 'fortuneReveal 0.5s ease 0.15s both' }}>{result.stick.title}</h2>
 
           {/* 所问之事 */}
           {result.question !== '问事' && (
@@ -90,7 +106,7 @@ const FortuneStickPage: React.FC = () => {
           )}
 
           {/* 签诗 */}
-          <div className="fortune-result__poem" style={{ animation: 'fortuneReveal 0.5s ease 0.2s both' }}>
+          <div className="fortune-result__poem" style={{ animation: 'scrollUnroll 0.8s ease 0.25s both' }}>
             {result.stick.poem.split('\n').map((line, i) => (
               <p key={i}>{line}</p>
             ))}
@@ -109,7 +125,7 @@ const FortuneStickPage: React.FC = () => {
           </div>
 
           {/* 仙机提示 */}
-          <div className="fortune-result__advice" style={{ animation: 'fortuneReveal 0.5s ease 0.5s both' }}>
+          <div className="fortune-result__advice" style={{ animation: 'fortuneReveal 0.5s ease 0.55s both' }}>
             <h4>仙机提示</h4>
             <div className="fortune-result__advice-group">
               <div className="fortune-result__advice-label fortune-result__advice-label--good">
@@ -117,7 +133,7 @@ const FortuneStickPage: React.FC = () => {
               </div>
               <div className="fortune-result__advice-tags">
                 {result.stick.advice.good.map((item, i) => (
-                  <span key={i} className="fortune-result__advice-good">{item}</span>
+                  <span key={i} className="fortune-result__advice-good" style={{ animation: `popIn 0.3s ease ${0.6 + i * 0.06}s both` }}>{item}</span>
                 ))}
               </div>
             </div>
@@ -127,7 +143,7 @@ const FortuneStickPage: React.FC = () => {
               </div>
               <div className="fortune-result__advice-tags">
                 {result.stick.advice.bad.map((item, i) => (
-                  <span key={i} className="fortune-result__advice-bad">{item}</span>
+                  <span key={i} className="fortune-result__advice-bad" style={{ animation: `popIn 0.3s ease ${0.8 + i * 0.06}s both` }}>{item}</span>
                 ))}
               </div>
             </div>

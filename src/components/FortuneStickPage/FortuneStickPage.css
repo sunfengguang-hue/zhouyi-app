@@ -64,13 +64,68 @@
   100% { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes stampReveal {
+  0% { opacity: 0; transform: scale(1.6); }
+  50% { opacity: 1; transform: scale(0.95); }
+  70% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scrollUnroll {
+  0% { opacity: 0; max-height: 0; transform: scaleY(0.3); transform-origin: top; }
+  40% { opacity: 0.6; max-height: 200px; }
+  100% { opacity: 1; max-height: 500px; transform: scaleY(1); transform-origin: top; }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes flashFade {
+  0% { opacity: 0; }
+  30% { opacity: 0.8; }
+  100% { opacity: 0; }
+}
+
 .fortune-page__shaking-text {
   font-family: var(--font-display); font-size: 18px; color: var(--gold);
   letter-spacing: 4px; animation: pulse 0.8s ease infinite;
 }
 
 /* 结果 */
-.fortune-result { width: 100%; max-width: 560px; }
+.fortune-result { width: 100%; max-width: 560px; position: relative; }
+
+/* Flash overlay */
+.fortune-flash {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle, rgba(212,168,83,0.6) 0%, rgba(212,168,83,0) 70%);
+  z-index: 100; pointer-events: none;
+  animation: flashFade 0.6s ease-out forwards;
+}
+
+/* 签等级视觉主题 */
+.fortune-result--best {
+  box-shadow: 0 0 40px rgba(255,215,0,0.15), 0 0 80px rgba(255,215,0,0.08);
+}
+.fortune-result--best .fortune-result__title {
+  text-shadow: 0 0 20px rgba(255,215,0,0.4), 0 0 40px rgba(255,215,0,0.15);
+}
+.fortune-result--good .fortune-result__title {
+  text-shadow: 0 0 15px rgba(46,204,113,0.3);
+}
+.fortune-result--worst .fortune-result__poem {
+  border-color: rgba(231,76,60,0.3);
+  background: rgba(231,76,60,0.04);
+}
+.fortune-result--worst .fortune-result__title {
+  color: rgba(231,76,60,0.8);
+  text-shadow: 0 0 10px rgba(231,76,60,0.2);
+}
+.fortune-result--bad .fortune-result__poem {
+  border-color: rgba(230,126,34,0.25);
+}
 
 .fortune-result__header {
   display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 12px;
