@@ -49,6 +49,13 @@ class ErrorBoundary extends React.Component<
   }
 }
 
+const TaijiLoader: React.FC = () => (
+  <div className="app__loading">
+    <div className="taiji-spinner" />
+    <p className="app__loading-text">推演中...</p>
+  </div>
+);
+
 const App: React.FC = () => {
   const { view, navigate: rawNavigate } = useAppView();
   const navigate = useCallback((v: AppView) => { setSaved(false); setViewingResult(null); rawNavigate(v); }, [rawNavigate]);
@@ -167,42 +174,42 @@ const App: React.FC = () => {
 
         {/* 生辰八字 */}
         {view === 'bazi' && (
-          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+          <React.Suspense fallback={<TaijiLoader />}>
             <BaziPage />
           </React.Suspense>
         )}
 
         {/* 风水罗盘 */}
         {view === 'fengshui' && (
-          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+          <React.Suspense fallback={<TaijiLoader />}>
             <FengshuiPage />
           </React.Suspense>
         )}
 
         {/* 起名测名 */}
         {view === 'naming' && (
-          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+          <React.Suspense fallback={<TaijiLoader />}>
             <NamingPage />
           </React.Suspense>
         )}
 
         {/* 抽签问事 */}
         {view === 'fortune' && (
-          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+          <React.Suspense fallback={<TaijiLoader />}>
             <FortuneStickPage />
           </React.Suspense>
         )}
 
         {/* 塔罗占卜 */}
         {view === 'tarot' && (
-          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+          <React.Suspense fallback={<TaijiLoader />}>
             <TarotPage />
           </React.Suspense>
         )}
 
         {/* 星座运势 */}
         {view === 'astrology' && (
-          <React.Suspense fallback={<div className="app__loading">加载中...</div>}>
+          <React.Suspense fallback={<TaijiLoader />}>
             <AstrologyPage />
           </React.Suspense>
         )}

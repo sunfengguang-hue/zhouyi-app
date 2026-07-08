@@ -236,6 +236,23 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
         <div className="bazi-dayun__line" />
       </div>
 
+      {/* 大运详解 */}
+      <div className="bazi-result__dayun-detail">
+        <h3 className="bazi-result__section-title">大运详解</h3>
+        <div className="bazi-dayun-detail__list">
+          {r.daYun.map((dy, i) => (
+            <div key={i} className="bazi-dayun-detail__item" style={{ animation: `fadeInUp 0.4s ease ${i * 0.08}s both` }}>
+              <div className="bazi-dayun-detail__header">
+                <span className="bazi-dayun-detail__ganzhi">{dy.ganZhi}</span>
+                <span className="bazi-dayun-detail__age">{dy.age}-{dy.age + 9}岁</span>
+                <span className="bazi-dayun-detail__wx" style={{ color: wxColors[dy.wuxing] || '#ccc' }}>{dy.wuxing}运</span>
+              </div>
+              <p className="bazi-dayun-detail__text">{dy.interp}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* 神煞提示 */}
       {r.shenSha.length > 0 && (
         <div className="bazi-result__shensha">

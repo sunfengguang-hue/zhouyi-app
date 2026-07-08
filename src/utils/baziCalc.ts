@@ -3,6 +3,7 @@ import {
   TIAN_GAN, DI_ZHI, TIAN_GAN_WUXING, DI_ZHI_WUXING,
   DI_ZHI_CANG_GAN, WU_HU_DUN, WU_SHU_DUN, JIE_QI,
   getShiShen, NAYIN_MAP, DAY_MASTER_PERSONALITY, SHISHEN_DESC,
+  DAYUN_INTERP,
 } from '../data/bazi';
 
 /** 是否闰年 */
@@ -303,7 +304,8 @@ export function calculateBazi(
   const isMale = gender === '男';
   const isForward = (isMale && yearGanYY) || (!isMale && !yearGanYY); // 阳男阴女顺行
   const startAge = Math.abs(monthIdx - yearIdx) % 10 + 3;
-  const daYun: { age: number; year: number; ganZhi: string; wuxing: string }[] = [];
+  const daYun: { age: number; year: number; ganZhi: string; wuxing: string; interp: string }[] = [];
+  const dayWX = dayPillar.ganWX;
   for (let i = 1; i <= 8; i++) {
     const step = isForward ? i : -i;
     const dyIdx = ((monthIdx + step) % 60 + 60) % 60;
@@ -311,12 +313,14 @@ export function calculateBazi(
     const dyZhiIdx = dyIdx % 12;
     const dyGan = TIAN_GAN[dyGanIdx];
     const dyZhi = DI_ZHI[dyZhiIdx];
+    const dyWX = TIAN_GAN_WUXING[dyGan];
     const age = startAge + (i - 1) * 10;
     daYun.push({
       age,
       year: birthYear + age,
       ganZhi: `${dyGan}${dyZhi}`,
-      wuxing: TIAN_GAN_WUXING[dyGan],
+      wuxing: dyWX,
+      interp: DAYUN_INTERP[dayWX]?.[dyWX] || '运势平稳，宜顺势而为。',
     });
   }
 

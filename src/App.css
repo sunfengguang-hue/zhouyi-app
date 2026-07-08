@@ -50,13 +50,59 @@
   animation: fadeInUp 0.5s ease;
 }
 
+/* 太极加载动画 */
 .app__loading {
-  text-align: center;
-  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 20px;
+}
+
+.app__loading-text {
   color: var(--gold);
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: 4px;
   animation: pulse 1.5s ease infinite;
+}
+
+.taiji-spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  position: relative;
+  animation: taijiSpin 1.2s linear infinite;
+  background: conic-gradient(
+    from 0deg,
+    var(--gold) 0deg,
+    var(--gold) 180deg,
+    rgba(20, 20, 30, 0.9) 180deg,
+    rgba(20, 20, 30, 0.9) 360deg
+  );
+  border: 2px solid rgba(212, 168, 83, 0.5);
+  box-shadow: 0 0 20px rgba(212, 168, 83, 0.25);
+}
+.taiji-spinner::before,
+.taiji-spinner::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+.taiji-spinner::before {
+  width: 10px; height: 10px;
+  top: 4px; left: 50%; transform: translateX(-50%);
+  background: rgba(20, 20, 30, 0.9);
+}
+.taiji-spinner::after {
+  width: 10px; height: 10px;
+  bottom: 4px; left: 50%; transform: translateX(-50%);
+  background: var(--gold);
+}
+
+@keyframes taijiSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* 通用页面表单样式 */

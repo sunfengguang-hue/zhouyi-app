@@ -145,7 +145,7 @@ export interface BaziResult {
   nayin: { pillar: string; nayin: string }[];
   dayMasterPersonality: { character: string; career: string; love: string; wealth: string };
   shiShenDetails: { name: string; position: string; meaning: string }[];
-  daYun: { age: number; year: number; ganZhi: string; wuxing: string }[];
+  daYun: { age: number; year: number; ganZhi: string; wuxing: string; interp: string }[];
 }
 
 // ======================== 星座 ========================

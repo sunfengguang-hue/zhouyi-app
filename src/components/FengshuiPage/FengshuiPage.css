@@ -4,22 +4,17 @@
 .fs-result__mingua { text-align: center; margin-bottom: 24px; font-size: 14px; }
 .fs-result__gua-name { font-family: var(--font-display); font-size: 16px; color: var(--text-primary); letter-spacing: 2px; }
 
-/* 罗盘 */
-.compass { position: relative; width: 260px; height: 260px; margin: 0 auto 32px; }
-.compass__ring--outer { position: absolute; inset: 0; border: 2px solid var(--border-gold); border-radius: 50%; }
-.compass__dir {
-  position: absolute; top: 50%; left: 50%; width: 60px; margin-left: -30px; margin-top: -12px;
-  text-align: center; transform-origin: 0 0; pointer-events: none;
+/* SVG罗盘 */
+.compass-svg-wrap {
+  width: 300px; height: 300px; margin: 0 auto 32px;
+  animation: compassReveal 1.2s ease-out both;
 }
-.compass__dir-name { display: block; font-family: var(--font-display); font-size: 14px; color: var(--text-primary); }
-.compass__dir--lucky .compass__dir-star { color: #2ecc71; }
-.compass__dir--unlucky .compass__dir-star { color: #e74c3c; }
-.compass__dir-star { display: block; font-size: 11px; letter-spacing: 1px; }
-.compass__center {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 64px; height: 64px; border-radius: 50%; background: rgba(212,168,83,0.15);
-  border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-size: 22px; color: var(--gold); font-weight: bold;
+.compass-svg { width: 100%; height: 100%; overflow: visible; }
+
+@keyframes compassReveal {
+  0% { opacity: 0; transform: rotate(-120deg) scale(0.8); }
+  60% { opacity: 1; transform: rotate(8deg) scale(1.02); }
+  100% { opacity: 1; transform: rotate(0) scale(1); }
 }
 
 /* 方位卡 */
@@ -69,8 +64,7 @@
 .fs-compat__remedy p { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
 
 @media (max-width: 480px) {
-  .compass { width: 220px; height: 220px; }
-  .compass__dir { transform-origin: 0 0; width: 50px; margin-left: -25px; margin-top: -10px; }
+  .compass-svg-wrap { width: 260px; height: 260px; }
   .fs-result__grid { grid-template-columns: 1fr; }
   .fs-mingua-detail { flex-direction: column; align-items: center; text-align: center; }
 }

@@ -4,6 +4,11 @@ import { calculateFengshui } from '../../utils/fengshuiCalc';
 import { SITTING_OPTIONS } from '../../data/fengshui';
 import './FengshuiPage.css';
 
+const TRIGRAM_SYMBOLS: Record<string, string> = {
+  '东': '☳', '东南': '☴', '南': '☲', '西南': '☷',
+  '西': '☱', '西北': '☰', '北': '☵', '东北': '☶',
+};
+
 const FengshuiPage: React.FC = () => {
   const [year, setYear] = useState(1990);
   const [gender, setGender] = useState<'男'|'女'>('男');
@@ -46,6 +51,22 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
   const r = result;
   const luckyDirs = r.directions.filter(d => d.lucky);
   const unluckyDirs = r.directions.filter(d => !d.lucky);
+  const cx = 150, cy = 150, R = 130, Rmid = 95, Rinner = 55;
+
+  // Build SVG compass sectors
+  const dirAngles = [0, 45, 90, 135, 180, 225, 270, 315]; // 东=0°, 东南=45°, 南=90°...
+  const sectorArc = (startDeg: number, endDeg: number, rOuter: number, rInner: number) => {
+    const toRad = (d: number) => (d - 90) * Math.PI / 180;
+    const x1 = cx + rOuter * Math.cos(toRad(startDeg));
+    const y1 = cy + rOuter * Math.sin(toRad(startDeg));
+    const x2 = cx + rOuter * Math.cos(toRad(endDeg));
+    const y2 = cy + rOuter * Math.sin(toRad(endDeg));
+    const x3 = cx + rInner * Math.cos(toRad(endDeg));
+    const y3 = cy + rInner * Math.sin(toRad(endDeg));
+    const x4 = cx + rInner * Math.cos(toRad(startDeg));
+    const y4 = cy + rInner * Math.sin(toRad(startDeg));
+    return `M${x1},${y1} A${rOuter},${rOuter} 0 0,1 ${x2},${y2} L${x3},${y3} A${rInner},${rInner} 0 0,0 ${x4},${y4} Z`;
+  };
 
   return (
     <div className="page-result fengshui-result">
@@ -56,23 +77,85 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
         <span className="text-secondary"> · {r.houseSitting}</span>
       </div>
 
-      {/* 罗盘 */}
-      <div className="compass">
-        <div className="compass__ring compass__ring--outer">
+      {/* SVG罗盘 */}
+      <div className="compass-svg-wrap">
+        <svg className="compass-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          {/* 外圈装饰 */}
+          <circle cx={cx} cy={cy} r={R + 8} fill="none" stroke="rgba(212,168,83,0.3)" strokeWidth="1" />
+          <circle cx={cx} cy={cy} r={R + 3} fill="none" stroke="rgba(212,168,83,0.5)" strokeWidth="2" />
+
+          {/* 八方扇区 */}
           {r.directions.map((d, i) => {
-            const angle = i * 45 - 90;
+            const startA = dirAngles[i] - 22.5;
+            const endA = dirAngles[i] + 22.5;
+            const lucky = d.lucky;
             return (
-              <div key={i} className={`compass__dir ${d.lucky ? 'compass__dir--lucky' : 'compass__dir--unlucky'}`}
-                style={{ transform: `rotate(${angle}deg) translateY(-120px)` }}>
-                <span className="compass__dir-name">{d.direction}</span>
-                <span className="compass__dir-star">{d.youXing}</span>
-              </div>
+              <path key={i} d={sectorArc(startA, endA, R, Rmid)}
+                fill={lucky ? 'rgba(46,204,113,0.12)' : 'rgba(231,76,60,0.10)'}
+                stroke={lucky ? 'rgba(46,204,113,0.4)' : 'rgba(231,76,60,0.3)'}
+                strokeWidth="1" />
             );
           })}
-        </div>
-        <div className="compass__center">
-          <span>{r.mingGua}</span>
-        </div>
+
+          {/* 内圈 */}
+          <circle cx={cx} cy={cy} r={Rmid} fill="none" stroke="rgba(212,168,83,0.35)" strokeWidth="1.5" />
+          <circle cx={cx} cy={cy} r={Rinner} fill="none" stroke="rgba(212,168,83,0.25)" strokeWidth="1" />
+
+          {/* 分隔线 */}
+          {dirAngles.map((a, i) => {
+            const toRad = (d: number) => (d - 90) * Math.PI / 180;
+            const x1 = cx + Rmid * Math.cos(toRad(a - 22.5));
+            const y1 = cy + Rmid * Math.sin(toRad(a - 22.5));
+            const x2 = cx + R * Math.cos(toRad(a - 22.5));
+            const y2 = cy + R * Math.sin(toRad(a - 22.5));
+            return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(212,168,83,0.3)" strokeWidth="0.8" />;
+          })}
+
+          {/* 卦象符号 + 方位名 + 游星 */}
+          {r.directions.map((d, i) => {
+            const toRad = (deg: number) => (deg - 90) * Math.PI / 180;
+            const angle = dirAngles[i];
+            const rLabel = (R + Rmid) / 2;
+            const rTri = (Rmid + Rinner) / 2;
+            const lx = cx + rLabel * Math.cos(toRad(angle));
+            const ly = cy + rLabel * Math.sin(toRad(angle));
+            const tx = cx + rTri * Math.cos(toRad(angle));
+            const ty = cy + rTri * Math.sin(toRad(angle));
+            const lucky = d.lucky;
+            return (
+              <g key={`label-${i}`}>
+                {/* 卦象 */}
+                <text x={tx} y={ty} textAnchor="middle" dominantBaseline="central"
+                  fill="rgba(212,168,83,0.7)" fontSize="16" fontFamily="serif">
+                  {TRIGRAM_SYMBOLS[d.direction] || ''}
+                </text>
+                {/* 方位名 */}
+                <text x={lx} y={ly - 7} textAnchor="middle" dominantBaseline="central"
+                  fill={lucky ? '#6ecf8a' : '#e8706f'} fontSize="13" fontWeight="600"
+                  fontFamily="'STKaiti','KaiTi',serif" letterSpacing="1">
+                  {d.direction}
+                </text>
+                {/* 游星 */}
+                <text x={lx} y={ly + 8} textAnchor="middle" dominantBaseline="central"
+                  fill={lucky ? 'rgba(110,207,138,0.8)' : 'rgba(232,112,111,0.8)'} fontSize="10">
+                  {d.youXing}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* 中心命卦 */}
+          <circle cx={cx} cy={cy} r={Rinner - 8} fill="rgba(212,168,83,0.1)" stroke="rgba(212,168,83,0.6)" strokeWidth="2" />
+          <circle cx={cx} cy={cy} r={Rinner - 18} fill="rgba(212,168,83,0.08)" stroke="rgba(212,168,83,0.3)" strokeWidth="1" />
+          <text x={cx} y={cy - 4} textAnchor="middle" dominantBaseline="central"
+            fill="#d4a853" fontSize="24" fontWeight="bold" fontFamily="'STKaiti','KaiTi',serif">
+            {r.mingGua}
+          </text>
+          <text x={cx} y={cy + 16} textAnchor="middle" dominantBaseline="central"
+            fill="rgba(212,168,83,0.6)" fontSize="10" letterSpacing="2">
+            命卦
+          </text>
+        </svg>
       </div>
 
       {/* 命卦详解 */}
@@ -110,7 +193,7 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
             return (
               <div key={i} className="fs-result__card fs-result__card--lucky" style={{ animation: `fadeInUp 0.4s ease ${i*0.1}s both` }}>
                 <div className="fs-result__card-header">
-                  <span className="fs-result__card-dir">{d.direction}方</span>
+                  <span className="fs-result__card-dir">{TRIGRAM_SYMBOLS[d.direction]} {d.direction}方</span>
                   <span className="fs-result__card-star tag tag-gold">{d.youXing}</span>
                 </div>
                 <p className="fs-result__card-desc">{d.suggestion}</p>
@@ -139,7 +222,7 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
             return (
               <div key={i} className="fs-result__card fs-result__card--unlucky" style={{ animation: `fadeInUp 0.4s ease ${i*0.1}s both` }}>
                 <div className="fs-result__card-header">
-                  <span className="fs-result__card-dir">{d.direction}方</span>
+                  <span className="fs-result__card-dir">{TRIGRAM_SYMBOLS[d.direction]} {d.direction}方</span>
                   <span className="fs-result__card-star tag tag-vermillion">{d.youXing}</span>
                 </div>
                 <p className="fs-result__card-desc">{d.suggestion}</p>
