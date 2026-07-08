@@ -210,6 +210,10 @@ export interface FengshuiResult {
   houseFacing: string;
   bestDirections: string[]; // 最佳方位
   input: { birthYear: number; gender: '男' | '女'; sitting: string };
+  mingGuaDesc: string;           // 命卦详解
+  houseCompatibility: { match: boolean; analysis: string; remedy: string }; // 宅命匹配
+  directionDetails: { direction: string; youXing: string; detail: string; colors: string; elements: string }[]; // 方位详解
+  cures: { direction: string; youXing: string; cure: string }[]; // 化解建议
 }
 
 // ======================== 起名 ========================
@@ -249,6 +253,8 @@ export interface FortuneStick {
   level: FortuneStickLevel; // 签等
   poem: string;         // 签诗（四句）
   interpretation: string; // 解曰
+  story: string;          // 典故/历史故事 (2-3 sentences)
+  advice: { good: string[]; bad: string[] }; // 仙机提示 (宜/忌 items)
   meaning: {
     overall: string;    // 总体解读
     career: string;     // 事业

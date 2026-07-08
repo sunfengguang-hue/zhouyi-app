@@ -6,16 +6,23 @@
 
 .home__intro {
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
   animation: fadeIn 0.8s ease;
 }
 
 .home__intro-taiji {
-  font-size: 56px;
+  font-size: 64px;
   color: var(--gold);
   margin-bottom: 8px;
-  animation: float 4s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite, taijiGlow 3s ease-in-out infinite;
   text-shadow: 0 0 30px rgba(212, 168, 83, 0.3);
+  display: inline-block;
+  filter: drop-shadow(0 0 20px rgba(212, 168, 83, 0.2));
+}
+
+@keyframes taijiGlow {
+  0%, 100% { text-shadow: 0 0 20px rgba(212, 168, 83, 0.2); transform: scale(1); }
+  50% { text-shadow: 0 0 40px rgba(212, 168, 83, 0.5), 0 0 80px rgba(212, 168, 83, 0.15); transform: scale(1.05); }
 }
 
 .home__intro-title {
@@ -34,6 +41,160 @@
   opacity: 0.8;
 }
 
+/* 今日宜忌 */
+.home__daily {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(245, 230, 200, 0.06) 0%, rgba(245, 230, 200, 0.02) 100%);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--radius-lg);
+  animation: fadeInUp 0.6s ease 0.2s both;
+}
+
+.home__daily-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.home__daily-date {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 3px;
+}
+
+.home__daily-content {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.home__daily-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.home__daily-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  padding: 2px 12px;
+  border-radius: 4px;
+}
+
+.home__daily-label--yi {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.1);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.home__daily-label--ji {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.home__daily-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.home__daily-tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 1px;
+}
+
+.home__daily-tag--yi {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.08);
+  border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.home__daily-tag--ji {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.08);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.home__daily-divider {
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--border-gold), transparent);
+  align-self: stretch;
+}
+
+/* 今日推荐 */
+.home__recommend {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, rgba(212, 168, 83, 0.12) 0%, rgba(212, 168, 83, 0.04) 100%);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-lg);
+  transition: var(--transition);
+  text-align: left;
+  animation: fadeInUp 0.6s ease 0.3s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.home__recommend::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.home__recommend:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px var(--shadow-gold);
+}
+
+.home__recommend-badge {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--bg-primary);
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  padding: 3px 10px;
+  border-radius: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.home__recommend-text {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.home__recommend-arrow {
+  flex-shrink: 0;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  transition: var(--transition);
+}
+
+.home__recommend:hover .home__recommend-arrow {
+  transform: translateX(4px);
+}
+
+/* Module grid */
 .home__grid {
   display: flex;
   flex-direction: column;
@@ -148,12 +309,16 @@
 }
 
 @media (max-width: 480px) {
-  .home__intro-taiji { font-size: 44px; }
+  .home__intro-taiji { font-size: 48px; }
   .home__intro-title { font-size: 24px; letter-spacing: 8px; }
   .home__card { padding: 16px; gap: 12px; }
   .home__card-icon { width: 48px; height: 48px; font-size: 20px; }
   .home__card-title { font-size: 17px; }
   .home__card-desc { font-size: 12px; }
+  .home__daily { padding: 12px; }
+  .home__daily-tag { font-size: 11px; padding: 1px 6px; }
+  .home__recommend { flex-wrap: wrap; padding: 12px 14px; gap: 8px; }
+  .home__recommend-text { font-size: 13px; }
 }
 
 @media (max-width: 360px) {

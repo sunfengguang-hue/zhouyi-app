@@ -82,6 +82,37 @@ const FortuneStickPage: React.FC = () => {
             <p>{result.stick.interpretation}</p>
           </div>
 
+          {/* 典故 */}
+          <div className="fortune-result__story">
+            <h4>典故</h4>
+            <p>{result.stick.story}</p>
+          </div>
+
+          {/* 仙机提示 */}
+          <div className="fortune-result__advice">
+            <h4>仙机提示</h4>
+            <div className="fortune-result__advice-group">
+              <div className="fortune-result__advice-label fortune-result__advice-label--good">
+                <span>宜</span>
+              </div>
+              <div className="fortune-result__advice-tags">
+                {result.stick.advice.good.map((item, i) => (
+                  <span key={i} className="fortune-result__advice-good">{item}</span>
+                ))}
+              </div>
+            </div>
+            <div className="fortune-result__advice-group">
+              <div className="fortune-result__advice-label fortune-result__advice-label--bad">
+                <span>忌</span>
+              </div>
+              <div className="fortune-result__advice-tags">
+                {result.stick.advice.bad.map((item, i) => (
+                  <span key={i} className="fortune-result__advice-bad">{item}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* 总体解读 */}
           <div className="fortune-result__overall">
             <h4>总体</h4>

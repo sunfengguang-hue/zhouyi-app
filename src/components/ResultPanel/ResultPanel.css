@@ -33,7 +33,7 @@
   text-shadow: 0 0 15px rgba(212, 168, 83, 0.2);
 }
 
-/* Tabs */
+/* ── Tabs ── */
 .result-panel__tabs {
   display: flex;
   justify-content: center;
@@ -67,7 +67,7 @@
   font-weight: bold;
 }
 
-/* Content */
+/* ── Content ── */
 .result-panel__content {
   min-height: 200px;
 }
@@ -109,9 +109,19 @@
   margin: 16px 0;
 }
 
-/* 爻辞 */
+/* ── 爻辞 ── */
 .result-panel__yao {
   margin-bottom: 4px;
+  padding: 8px 12px;
+  border-left: 3px solid transparent;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: var(--transition);
+}
+
+.result-panel__yao--changed {
+  border-left: 3px solid var(--gold);
+  background: rgba(212, 168, 83, 0.06);
+  box-shadow: 0 0 12px rgba(212, 168, 83, 0.15), inset 0 0 20px rgba(212, 168, 83, 0.04);
 }
 
 .result-panel__yao-header {
@@ -148,11 +158,117 @@
   margin-top: 2px;
 }
 
-/* 解读 */
+/* ── 变爻 badge ── */
+.result-panel__change-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: var(--bg-primary);
+  white-space: nowrap;
+  line-height: 1.4;
+  animation: badgePulse 2.5s ease infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(212, 168, 83, 0); }
+  50%       { box-shadow: 0 0 10px rgba(212, 168, 83, 0.6); }
+}
+
+/* ── 综合分析 ── */
+.result-panel__summary {
+  margin-bottom: 20px;
+  padding: 20px 20px 16px;
+  background: rgba(0, 0, 0, 0.18);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.result-panel__summary-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.result-panel__summary-text {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 2;
+  letter-spacing: 0.5px;
+  text-align: justify;
+}
+
+/* ── 卦象上下信息 ── */
+.result-panel__trigram-info {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-gold);
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  line-height: 1.8;
+}
+
+.result-panel__trigram-info strong {
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 14px;
+}
+
+/* ── 变卦启示 ── */
+.result-panel__change-insight {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-gold);
+  background: linear-gradient(
+    135deg,
+    rgba(212, 168, 83, 0.10) 0%,
+    rgba(30, 40, 70, 0.40) 60%,
+    rgba(212, 168, 83, 0.08) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.result-panel__change-insight::before {
+  content: '☯';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 48px;
+  opacity: 0.06;
+  pointer-events: none;
+  color: var(--gold);
+}
+
+.result-panel__change-insight-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.result-panel__change-insight-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.9;
+  text-align: justify;
+}
+
+/* ── 四维解读 ── */
 .result-panel__interp {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .result-panel__interp-item {
@@ -184,7 +300,20 @@
   line-height: 1.8;
 }
 
-/* 操作按钮 */
+/* ── 补充建议 ── */
+.result-panel__interp-advice {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(212, 168, 83, 0.2);
+  font-style: italic;
+  opacity: 0.85;
+  letter-spacing: 0.3px;
+}
+
+/* ── 操作按钮 ── */
 .result-panel__actions {
   display: flex;
   justify-content: center;
@@ -195,7 +324,10 @@
 }
 
 @media (max-width: 768px) {
-  .result-panel__hexagrams { gap: 16px; }
+  .result-panel__hexagrams   { gap: 16px; }
   .result-panel__judgment-quote { font-size: 16px; }
-  .result-panel__tab { font-size: 13px; padding: 8px 10px; }
+  .result-panel__tab          { font-size: 13px; padding: 8px 10px; }
+  .result-panel__summary      { padding: 16px 14px 12px; }
+  .result-panel__summary-text { font-size: 14px; }
+  .result-panel__change-insight { padding: 14px; }
 }

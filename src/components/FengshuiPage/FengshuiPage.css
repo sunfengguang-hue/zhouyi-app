@@ -33,8 +33,44 @@
 .fs-result__card-dir { font-family: var(--font-display); font-size: 15px; color: var(--text-primary); letter-spacing: 2px; }
 .fs-result__card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
 
+/* 方位详解（卡片内展开） */
+.fs-result__card-detail { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(212,168,83,0.15); }
+.fs-result__card-detail-text { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+.fs-result__card-meta { display: flex; flex-direction: column; gap: 4px; }
+.fs-result__card-meta-item { font-size: 11px; color: var(--gold); opacity: 0.85; }
+
+/* 化解建议（凶方卡片内） */
+.fs-result__card-cure { margin-top: 10px; padding: 10px; background: rgba(231,76,60,0.06); border-radius: 6px; }
+.fs-result__card-cure-label { font-size: 11px; color: #e74c3c; font-weight: 600; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+.fs-result__card-cure p { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+
+/* 命卦详解 */
+.fs-mingua-detail { display: flex; gap: 16px; align-items: flex-start; padding: 16px; border-radius: var(--radius-md); background: rgba(212,168,83,0.06); border: 1px solid rgba(212,168,83,0.25); }
+.fs-mingua-detail__icon {
+  flex-shrink: 0; width: 56px; height: 56px; border-radius: 50%; background: rgba(212,168,83,0.15);
+  border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 24px; color: var(--gold); font-weight: bold;
+}
+.fs-mingua-detail__text { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin: 0; }
+
+/* 宅命匹配 */
+.fs-compat { padding: 16px; border-radius: var(--radius-md); }
+.fs-compat--match { background: rgba(46,204,113,0.08); border: 1px solid rgba(46,204,113,0.3); }
+.fs-compat--mismatch { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.3); }
+.fs-compat__badge {
+  display: inline-block; padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;
+  letter-spacing: 2px; margin-bottom: 10px;
+}
+.fs-compat--match .fs-compat__badge { background: rgba(46,204,113,0.2); color: #2ecc71; }
+.fs-compat--mismatch .fs-compat__badge { background: rgba(231,76,60,0.2); color: #e74c3c; }
+.fs-compat__analysis { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin: 0; }
+.fs-compat__remedy { margin-top: 12px; padding: 10px; background: rgba(212,168,83,0.08); border-radius: 6px; }
+.fs-compat__remedy-label { font-size: 12px; color: var(--gold); font-weight: 600; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+.fs-compat__remedy p { font-size: 12px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+
 @media (max-width: 480px) {
   .compass { width: 220px; height: 220px; }
   .compass__dir { transform-origin: 0 0; width: 50px; margin-left: -25px; margin-top: -10px; }
   .fs-result__grid { grid-template-columns: 1fr; }
+  .fs-mingua-detail { flex-direction: column; align-items: center; text-align: center; }
 }

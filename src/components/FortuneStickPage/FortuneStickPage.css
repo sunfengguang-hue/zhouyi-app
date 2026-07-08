@@ -67,6 +67,60 @@
   font-size: 13px; color: var(--text-secondary); line-height: 1.7;
 }
 
+/* 典故 */
+.fortune-result__story {
+  text-align: left; padding: 20px 18px; margin-bottom: 20px;
+  background: linear-gradient(135deg, rgba(245,230,200,0.08), rgba(212,168,83,0.06));
+  border: 1px solid var(--border-gold); border-radius: var(--radius-md);
+  position: relative;
+}
+.fortune-result__story::before {
+  content: '\201C'; position: absolute; top: 6px; left: 10px;
+  font-size: 32px; color: rgba(212,168,83,0.2); font-family: serif; line-height: 1;
+}
+.fortune-result__story h4 {
+  font-family: var(--font-display); font-size: 15px; color: var(--gold);
+  letter-spacing: 3px; margin-bottom: 10px;
+}
+.fortune-result__story p {
+  font-size: 14px; color: var(--text-secondary); line-height: 1.9;
+  letter-spacing: 1px; text-indent: 2em;
+}
+
+/* 仙机提示 */
+.fortune-result__advice {
+  padding: 18px; margin-bottom: 20px;
+  background: rgba(0,0,0,0.15); border-radius: var(--radius-md);
+  border: 1px solid rgba(212,168,83,0.15);
+}
+.fortune-result__advice h4 {
+  font-family: var(--font-display); font-size: 15px; color: var(--gold);
+  letter-spacing: 3px; margin-bottom: 14px; text-align: center;
+}
+.fortune-result__advice-group {
+  margin-bottom: 12px;
+}
+.fortune-result__advice-group:last-child { margin-bottom: 0; }
+.fortune-result__advice-label {
+  font-family: var(--font-display); font-size: 14px; letter-spacing: 2px;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.fortune-result__advice-label--good { color: #6ecf8a; }
+.fortune-result__advice-label--bad { color: #e8706f; }
+.fortune-result__advice-tags {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.fortune-result__advice-good {
+  display: inline-block; padding: 4px 14px; font-size: 13px; letter-spacing: 1px;
+  border-radius: 20px; color: #6ecf8a;
+  background: rgba(110,207,138,0.1); border: 1px solid rgba(110,207,138,0.3);
+}
+.fortune-result__advice-bad {
+  display: inline-block; padding: 4px 14px; font-size: 13px; letter-spacing: 1px;
+  border-radius: 20px; color: #e8706f;
+  background: rgba(232,112,111,0.1); border: 1px solid rgba(232,112,111,0.3);
+}
+
 @media (max-width: 480px) {
   .fortune-result__title { font-size: 22px; letter-spacing: 4px; }
   .fortune-result__poem p { font-size: 16px; }
