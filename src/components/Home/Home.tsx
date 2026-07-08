@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { AppView } from '../../types';
+import { getLunarInfo } from '../../utils/lunarCalendar';
 import './Home.css';
 
 interface HomeProps {
@@ -140,6 +141,14 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     return `${d.getMonth() + 1}月${d.getDate()}日 · 星期${weekDays[d.getDay()]}`;
   }, []);
 
+  // 农历信息
+  const lunarInfo = useMemo(() => getLunarInfo(), []);
+
+  const lunarStr = useMemo(() => {
+    if (!lunarInfo.lunarMonth) return '';
+    return `农历 ${lunarInfo.ganZhi}${lunarInfo.shengXiao}年 · ${lunarInfo.lunarMonth}${lunarInfo.lunarDay}`;
+  }, [lunarInfo]);
+
   return (
     <div className="home">
       <div className="home__intro">
@@ -152,6 +161,15 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       <div className="home__daily">
         <div className="home__daily-header">
           <span className="home__daily-date">{todayStr}</span>
+          {lunarStr && (
+            <div className="home__daily-lunar">{lunarStr}</div>
+          )}
+          {lunarInfo.solarTerm && (
+            <div className="home__daily-term">
+              <span className="home__daily-term-dot">●</span>
+              今日{lunarInfo.solarTerm}
+            </div>
+          )}
         </div>
         <div className="home__daily-content">
           <div className="home__daily-group">

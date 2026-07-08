@@ -10,32 +10,21 @@ const NamingPage: React.FC = () => {
   const [gender, setGender] = useState<'男' | '女'>('男');
   const [preferWX, setPreferWX] = useState<WuXing | 'auto'>('auto');
   const [results, setResults] = useState<NameResult[] | null>(null);
-
-  // 测名
   const [analyzeGiven, setAnalyzeGiven] = useState('');
   const [analyzeResult, setAnalyzeResult] = useState<NameResult | null>(null);
   const [analyzeError, setAnalyzeError] = useState('');
 
-  const handleRecommend = () => {
-    setResults(recommendNames(surname, gender, preferWX, 12));
-    setAnalyzeResult(null);
-  };
-
+  const handleRecommend = () => { setResults(recommendNames(surname, gender, preferWX, 12)); setAnalyzeResult(null); };
   const handleAnalyze = () => {
     if (!analyzeGiven.trim()) return;
     const r = analyzeName(surname, analyzeGiven.trim());
-    if (!r) {
-      setAnalyzeError('未找到该姓氏，暂不支持分析');
-      setAnalyzeResult(null);
-      return;
-    }
-    setAnalyzeError('');
-    setAnalyzeResult(r);
-    setResults(null);
+    if (!r) { setAnalyzeError('未找到该姓氏，暂不支持分析'); setAnalyzeResult(null); return; }
+    setAnalyzeError(''); setAnalyzeResult(r); setResults(null);
   };
 
   const scoreColor = (s: number) => s >= 90 ? '#2ecc71' : s >= 80 ? '#f1c40f' : '#e67e22';
   const geNames = ['天格', '人格', '地格', '外格', '总格'];
+  const wxColors: Record<string, string> = { '金': '#f1c40f', '木': '#2ecc71', '水': '#3498db', '火': '#e74c3c', '土': '#e67e22' };
 
   return (
     <div className="page-form naming-page">
@@ -56,8 +45,7 @@ const NamingPage: React.FC = () => {
             <div className="page-form__group">
               <label className="page-form__label">性别</label>
               <select className="page-form__select" value={gender} onChange={e=>setGender(e.target.value as '男'|'女')}>
-                <option value="男">男</option>
-                <option value="女">女</option>
+                <option value="男">男</option><option value="女">女</option>
               </select>
             </div>
           </div>
@@ -69,9 +57,7 @@ const NamingPage: React.FC = () => {
               <option value="水">水</option><option value="火">火</option><option value="土">土</option>
             </select>
           </div>
-          <div className="page-form__actions">
-            <button className="btn-primary" onClick={handleRecommend}>推荐吉名</button>
-          </div>
+          <div className="page-form__actions"><button className="btn-primary" onClick={handleRecommend}>推荐吉名</button></div>
         </>
       )}
 
@@ -89,9 +75,7 @@ const NamingPage: React.FC = () => {
               <input className="page-form__input" placeholder="输入名字（不含姓）" value={analyzeGiven} onChange={e=>setAnalyzeGiven(e.target.value)} />
             </div>
           </div>
-          <div className="page-form__actions">
-            <button className="btn-primary" onClick={handleAnalyze}>测算吉凶</button>
-          </div>
+          <div className="page-form__actions"><button className="btn-primary" onClick={handleAnalyze}>测算吉凶</button></div>
         </>
       )}
 
@@ -114,7 +98,11 @@ const NamingPage: React.FC = () => {
                   ))}
                 </div>
                 <p className="naming-card__sancai">三才：{r.sancai.tian}{r.sancai.ren}{r.sancai.di} · <span className={`text-${r.sancai.luck==='吉'?'gold':'secondary'}`}>{r.sancai.luck}</span></p>
-                <p className="naming-card__meaning">{r.meaning}</p>
+                <p className="naming-card__meaning">{r.fullNameMeaning}</p>
+                <div className="naming-card__pron">
+                  <span className="naming-card__pron-label">音韵</span>
+                  <span className="naming-card__pron-score" style={{color:scoreColor(r.pronunciation.score)}}>{r.pronunciation.score}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -132,10 +120,13 @@ const NamingPage: React.FC = () => {
         <div className="page-result naming-result">
           <h2 className="naming-result__title">{analyzeResult.fullName} · 名字分析</h2>
           <div className="naming-analyze">
+            {/* 综合评分 */}
             <div className="naming-analyze__score-box">
               <span className="naming-analyze__score" style={{color:scoreColor(analyzeResult.score)}}>{analyzeResult.score}</span>
               <span className="naming-analyze__score-label">综合评分</span>
             </div>
+
+            {/* 五格数理 */}
             <div className="naming-analyze__wuge">
               <h4>五格数理</h4>
               {geNames.map((gn, gi) => (
@@ -147,10 +138,55 @@ const NamingPage: React.FC = () => {
                 </div>
               ))}
             </div>
+
+            {/* 三才配置 */}
             <div className="naming-analyze__sancai">
               <h4>三才配置</h4>
               <p>{analyzeResult.sancai.tian}（天）· {analyzeResult.sancai.ren}（人）· {analyzeResult.sancai.di}（地）</p>
               <p className={`tag tag-${analyzeResult.sancai.luck==='凶'?'vermillion':'gold'}`}>{analyzeResult.sancai.luck}：{analyzeResult.sancai.desc}</p>
+            </div>
+
+            {/* 名字寓意 */}
+            <div className="naming-analyze__section">
+              <h4>名字寓意</h4>
+              <p className="naming-analyze__meaning-text">{analyzeResult.fullNameMeaning}</p>
+            </div>
+
+            {/* 逐字分析 */}
+            <div className="naming-analyze__section">
+              <h4>逐字分析</h4>
+              <div className="naming-analyze__chars">
+                {analyzeResult.charDetails.map((cd, i) => (
+                  <div key={i} className="naming-analyze__char-card">
+                    <div className="naming-analyze__char-head">
+                      <span className="naming-analyze__char-name">{cd.char}</span>
+                      <span className="naming-analyze__char-wx" style={{color: wxColors[cd.wuxing] || '#ccc'}}>五行{cd.wuxing}</span>
+                    </div>
+                    <div className="naming-analyze__char-info">
+                      <span>康熙笔画：{cd.strokes}画</span>
+                      <span>部首：{cd.radical}</span>
+                    </div>
+                    <p className="naming-analyze__char-meaning">{cd.meaning}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 音韵分析 */}
+            <div className="naming-analyze__section">
+              <h4>音韵分析</h4>
+              <div className="naming-analyze__pron">
+                <span className="naming-analyze__pron-score" style={{color:scoreColor(analyzeResult.pronunciation.score)}}>
+                  {analyzeResult.pronunciation.score}分
+                </span>
+                <p className="naming-analyze__pron-text">{analyzeResult.pronunciation.analysis}</p>
+              </div>
+            </div>
+
+            {/* 生肖建议 */}
+            <div className="naming-analyze__section">
+              <h4>生肖宜忌</h4>
+              <p className="naming-analyze__zodiac-text">{analyzeResult.zodiacAdvice}</p>
             </div>
           </div>
         </div>

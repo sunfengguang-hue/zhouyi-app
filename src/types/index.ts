@@ -224,6 +224,7 @@ export interface NameChar {
   wuxing: WuXing;      // 五行
   meaning: string;     // 寓意
   gender: '男' | '女' | '中';
+  radical: string;     // 部首
 }
 
 export interface NameResult {
@@ -241,6 +242,10 @@ export interface NameResult {
   score: number;       // 综合评分 0-100
   meaning: string;     // 名字寓意
   chars: NameChar[];
+  pronunciation: { score: number; analysis: string }; // 音韵评分
+  charDetails: { char: string; wuxing: string; strokes: number; meaning: string; radical: string }[]; // 逐字分析
+  fullNameMeaning: string; // 合成寓意（2-3句）
+  zodiacAdvice: string; // 生肖宜忌建议
 }
 
 
@@ -288,7 +293,7 @@ export interface TarotCard {
   planet: string;         // 对应星体/星座
 }
 
-export type TarotSpreadType = 'single' | 'three';
+export type TarotSpreadType = 'single' | 'three' | 'relationship';
 
 export interface TarotDraw {
   card: TarotCard;

@@ -63,6 +63,34 @@
   letter-spacing: 3px;
 }
 
+.home__daily-lunar {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  margin-top: 6px;
+  opacity: 0.85;
+}
+
+.home__daily-term {
+  font-size: 11px;
+  color: var(--gold-dark);
+  letter-spacing: 1px;
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  background: rgba(212, 168, 83, 0.08);
+  border: 1px solid var(--border-gold);
+  border-radius: 10px;
+}
+
+.home__daily-term-dot {
+  font-size: 6px;
+  color: var(--gold);
+}
+
 .home__daily-content {
   display: flex;
   align-items: stretch;

@@ -140,6 +140,7 @@ export const MAJOR_ARCANA: TarotCard[] = [
 export const SPREAD_POSITIONS = {
   single: ['当前指引'],
   three: ['过去', '现在', '未来'],
+  relationship: ['你', '对方', '关系现状', '挑战', '发展方向'],
 };
 
 // 元素颜色映射
@@ -164,6 +165,126 @@ export const ELEMENT_SYMBOLS: Record<string, string> = {
  */
 export function generateCombinationReading(draws: TarotDraw[]): string {
   if (draws.length < 3) return '';
+
+  // === 关系牌阵（5张牌） ===
+  if (draws.length >= 5) {
+    const [you, other, current, challenge, direction] = draws;
+    const cards = [you.card, other.card, current.card, challenge.card, direction.card];
+    const elements = cards.map(c => c.element);
+    const orientations = draws.map(d => d.orientation);
+
+    const paragraphs: string[] = [];
+
+    // 第一部分：你与对方的能量对比
+    const youOrient = orientations[0] === 'upright' ? '正位' : '逆位';
+    const otherOrient = orientations[1] === 'upright' ? '正位' : '逆位';
+    const youMeaning = youOrient === '正位' ? you.card.upright : you.card.reversed;
+    const otherMeaning = otherOrient === '正位' ? other.card.upright : other.card.reversed;
+
+    const sameElement = elements[0] === elements[1];
+    const compatibleElements: Record<string, string[]> = {
+      '火': ['风'],  '风': ['火'],
+      '水': ['土'],  '土': ['水'],
+    };
+    const isCompatible = compatibleElements[elements[0]]?.includes(elements[1]);
+
+    if (sameElement) {
+      paragraphs.push(
+        `你抽到了${you.card.name}（${youOrient}），对方是${other.card.name}（${otherOrient}），两张牌同属${elements[0]}元素——` +
+        `这意味着你们在能量频率上有着天然的共鸣。你们看待世界的方式相似，` +
+        `彼此之间容易产生默契和理解。但同元素也意味着你们的盲点可能重叠，` +
+        `需要警惕在相同方向上一起走偏而无人踩刹车。`
+      );
+    } else if (isCompatible) {
+      paragraphs.push(
+        `你的${you.card.name}（${youOrient}）属于${elements[0]}元素，对方的${other.card.name}（${otherOrient}）属于${elements[1]}元素——` +
+        `${elements[0]}与${elements[1]}在五行中互为助力，你们之间存在着天然的互补关系。` +
+        `你带来的${elements[0] === '火' ? '激情与行动力' : elements[0] === '风' ? '思维与灵感' : elements[0] === '水' ? '情感深度与直觉' : '稳定与务实'}，` +
+        `恰好被对方的${elements[1] === '火' ? '热情驱动力' : elements[1] === '风' ? '理性沟通力' : elements[1] === '水' ? '情感共鸣力' : '落地执行力'}所承接。` +
+        `这是一对彼此成就的组合。`
+      );
+    } else {
+      paragraphs.push(
+        `你的${you.card.name}（${youOrient}）属于${elements[0]}元素，对方的${other.card.name}（${otherOrient}）属于${elements[1]}元素——` +
+        `两种元素之间存在张力，这既是吸引的源泉也是摩擦的根源。` +
+        `你们的不同恰恰是彼此学习的功课：你的世界里有对方缺少的东西，反之亦然。` +
+        `关键在于是将差异视为威胁还是礼物。`
+      );
+    }
+
+    // 第二部分：关系现状分析
+    const currentOrient = orientations[2] === 'upright' ? '正位' : '逆位';
+    const currentMeaning = currentOrient === '正位' ? current.card.upright : current.card.reversed;
+
+    paragraphs.push(
+      `关系现状牌出现了${current.card.name}（${currentOrient}）——${currentMeaning}。` +
+      `${currentOrient === '正位'
+        ? `这张牌显示当前关系正处于一个相对健康的阶段，${current.card.keywords.join('、')}是此刻关系的主旋律。你们之间的能量流动是顺畅的，彼此能够感受到对方的存在和重要性。`
+        : `逆位的${current.card.name}暗示当前关系中存在一些未被正视的问题。${current.card.reversed.split('、').slice(0, 2).join('与')}的能量正在暗中影响你们的互动模式，也许是时候坐下来坦诚地聊一聊了。`
+      }` +
+      `${current.card.description.slice(0, 60)}——这个意象恰恰映射了你们关系此刻最真实的画面。`
+    );
+
+    // 第三部分：挑战与成长方向
+    const challengeOrient = orientations[3] === 'upright' ? '正位' : '逆位';
+    const directionOrient = orientations[4] === 'upright' ? '正位' : '逆位';
+    const challengeMeaning = challengeOrient === '正位' ? challenge.card.upright : challenge.card.reversed;
+    const directionMeaning = directionOrient === '正位' ? direction.card.upright : direction.card.reversed;
+
+    paragraphs.push(
+      `挑战牌${challenge.card.name}（${challengeOrient}）揭示了这段关系中最需要面对的课题：${challengeMeaning}。` +
+      `${challengeOrient === '正位'
+        ? `这个挑战是显性的，你们可能已经感受到了它的存在，但尚未找到最佳的应对方式。`
+        : `逆位暗示这个挑战可能被你们有意无意地回避着，越不敢面对它越会在暗处发酵。`
+      }` +
+      `而发展方向牌${direction.card.name}（${directionOrient}）为你们指出了破局之道——${directionMeaning}。` +
+      `${directionOrient === '正位'
+        ? `沿着这张牌所指引的方向前行，${direction.card.keywords.join('与')}将成为关系进化的催化剂。`
+        : `这张牌逆位提醒你们不要急于求成，先消化内在的功课再向外寻求改变。`
+      }`
+    );
+
+    // 第四部分：综合关系建议
+    const relationshipAdvice: Record<string, string> = {
+      '愚者': '给关系注入新鲜感，一起尝试从未做过的事',
+      '魔术师': '主动创造你们想要的关系模式，一切工具已在手中',
+      '女祭司': '倾听关系中未说出口的声音，直觉会告诉你答案',
+      '女皇': '用温柔和滋养对待彼此，给爱一个舒适生长的环境',
+      '皇帝': '建立清晰的关系规则和边界，稳定感是亲密的基础',
+      '教皇': '在关系里尊重彼此的传统和信仰，找到共同的价值观',
+      '恋人': '回到爱的本质——你们是否真正选择了彼此？',
+      '战车': '一起确立共同目标，并肩作战会让感情更加坚固',
+      '力量': '以耐心和包容对待对方的缺点，温柔比强势更有力量',
+      '隐者': '给彼此一些独处的空间，距离有时反而拉近心的距离',
+      '命运之轮': '接受关系的自然起伏，不必在每个低谷都恐慌',
+      '正义': '在关系中保持公平和诚实，因果法则同样适用于感情',
+      '倒吊人': '试着从对方的角度看问题，你会发现一个全新的世界',
+      '死神': '勇敢地告别关系中已经死去的旧模式，让新的互动方式诞生',
+      '节制': '学会调和关系中的极端倾向，找到让双方都舒适的平衡点',
+      '恶魔': '审视关系中的不健康依赖或控制模式，打破束缚双方的锁链',
+      '塔': '不要害怕关系中的震荡，有时剧烈的冲击才能震碎虚假的平衡',
+      '星星': '在关系中保持希望和信念，美好的愿景会引导你们前行',
+      '月亮': '不要急于在情绪的迷雾中下结论，等直觉与理性重新对齐',
+      '太阳': '尽情享受关系中的快乐时光，阳光下的爱最真实最纯粹',
+      '审判': '关系正在召唤你们走向更深层的承诺，准备好回应了吗？',
+      '世界': '你们的关系正在走向一个圆满的节点，好好珍惜这份完整',
+    };
+
+    const dirAdvice = relationshipAdvice[direction.card.name] || '保持开放与信任，关系自有其智慧';
+    const youAdvice = relationshipAdvice[you.card.name] || '做真实的自己，是关系最好的起点';
+
+    paragraphs.push(
+      `💡 关系综合建议：对你而言，${youAdvice}。` +
+      `而对于关系的未来方向，${dirAdvice}。` +
+      `五张牌的整体信息是：${
+        orientations.filter(o => o === 'upright').length >= 3
+          ? '正位牌居多，说明这段关系整体的能量是积极向上的，把握住当前的势头。'
+          : '逆位牌较多，暗示关系中仍有不少未解的功课需要双方共同面对，但挑战本身就是成长的邀请函。'
+      }`
+    );
+
+    return paragraphs.join('\n\n');
+  }
 
   const [past, present, future] = draws;
   const cards = [past.card, present.card, future.card];

@@ -7,6 +7,7 @@ import './TarotPage.css';
 const SPREAD_OPTIONS: { type: TarotSpreadType; label: string; desc: string }[] = [
   { type: 'single', label: '单牌占卜', desc: '一张牌给你今日指引' },
   { type: 'three', label: '时间之流', desc: '过去·现在·未来三牌阵' },
+  { type: 'relationship', label: '关系牌阵', desc: '探索两人关系的深层动态' },
 ];
 
 const TarotPage: React.FC = () => {
@@ -161,8 +162,8 @@ const TarotPage: React.FC = () => {
             ))}
           </div>
 
-          {/* 组合解读（仅三牌阵） */}
-          {result.spreadType === 'three' && result.combination && (
+          {/* 组合解读（多牌阵） */}
+          {result.spreadType !== 'single' && result.combination && (
             <div className="tarot-result__combination">
               <h4>🔮 组合解读</h4>
               <p className="tarot-result__combination-subtitle">

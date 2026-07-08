@@ -43,7 +43,7 @@ export function drawTarotCards(
     draws,
     question: question || '问事',
     summary: generateTarotSummary(draws),
-    combination: spreadType === 'three' ? generateCombinationReading(draws) : '',
+    combination: spreadType === 'three' || spreadType === 'relationship' ? generateCombinationReading(draws) : '',
     timestamp: Date.now(),
   };
 }

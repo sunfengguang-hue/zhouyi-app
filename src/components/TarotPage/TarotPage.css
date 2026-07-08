@@ -173,6 +173,43 @@
   margin-bottom: 0;
 }
 
+/* Relationship spread (5 cards) */
+.tarot-result__cards--relationship {
+  gap: 10px;
+}
+.tarot-result__cards--relationship .tarot-card {
+  width: 112px;
+  padding: 12px 8px;
+}
+.tarot-result__cards--relationship .tarot-card__face {
+  width: 68px;
+  height: 98px;
+}
+.tarot-result__cards--relationship .tarot-card__number {
+  font-size: 22px;
+}
+.tarot-result__cards--relationship .tarot-card__name {
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+.tarot-result__cards--relationship .tarot-card__name-en {
+  font-size: 7px;
+}
+.tarot-result__cards--relationship .tarot-card__element {
+  font-size: 10px;
+  padding: 2px 6px;
+}
+.tarot-result__cards--relationship .tarot-card__planet {
+  font-size: 10px;
+}
+.tarot-result__cards--relationship .tarot-card__orientation {
+  font-size: 12px;
+}
+.tarot-result__cards--relationship .tarot-card__keyword {
+  font-size: 9px;
+  padding: 1px 5px;
+}
+
 @media (max-width: 480px) {
   .tarot-card { width: 130px; padding: 12px 8px; }
   .tarot-card__face { width: 72px; height: 104px; }
@@ -182,4 +219,26 @@
   .tarot-page__spreads { flex-direction: column; }
   .tarot-result__combination { padding: 14px; }
   .tarot-result__combination p { font-size: 13px; }
+
+  /* Relationship spread mobile: 3+2 row layout */
+  .tarot-result__cards--relationship {
+    gap: 8px;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .tarot-result__cards--relationship .tarot-card {
+    width: 100px;
+    padding: 10px 6px;
+  }
+  .tarot-result__cards--relationship .tarot-card__face {
+    width: 60px;
+    height: 86px;
+  }
+  .tarot-result__cards--relationship .tarot-card__number {
+    font-size: 20px;
+  }
+  .tarot-result__cards--relationship .tarot-card__name {
+    font-size: 11px;
+  }
 }
