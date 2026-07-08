@@ -351,7 +351,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onSaveHistory, shareR
           changedPositions={changedLines}
         />
         {changedHexagram && (
-          <div className="result-panel__arrow">→</div>
+          <div className="result-panel__arrow">⟶</div>
         )}
         {changedHexagram && (
           <HexagramDisplay

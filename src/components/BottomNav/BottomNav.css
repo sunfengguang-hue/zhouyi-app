@@ -79,15 +79,23 @@
 
 /* 给内容留出底部空间 */
 @media (max-width: 480px) {
-  .bottom-nav { height: 54px; }
+  .bottom-nav { height: auto; min-height: 54px; }
+  .bottom-nav__scroll {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    overflow: visible;
+    padding: 4px;
+    gap: 2px;
+  }
   .bottom-nav__icon { font-size: 15px; }
   .bottom-nav__label { font-size: 9px; }
-  .bottom-nav__item { min-width: 40px; padding: 4px 2px; }
+  .bottom-nav__item { min-width: unset; padding: 4px 2px; }
 }
 
 @media (max-width: 360px) {
-  .bottom-nav { height: 50px; }
+  .bottom-nav { height: auto; min-height: 50px; }
   .bottom-nav__icon { font-size: 14px; }
   .bottom-nav__label { font-size: 9px; letter-spacing: 0; }
-  .bottom-nav__item { min-width: 36px; }
+  .bottom-nav__item { min-width: unset; }
 }

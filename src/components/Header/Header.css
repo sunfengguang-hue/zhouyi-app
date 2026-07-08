@@ -8,8 +8,14 @@
   font-size: 48px;
   color: var(--gold);
   margin-bottom: 8px;
-  animation: float 4s ease-in-out infinite;
+  animation: float 4s ease-in-out infinite, taijiSpin 30s linear infinite;
   text-shadow: 0 0 30px rgba(212, 168, 83, 0.3);
+  display: inline-block;
+}
+
+@keyframes taijiSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .header__title {

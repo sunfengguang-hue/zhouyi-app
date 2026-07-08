@@ -221,12 +221,18 @@ function analyzeWuxing(
 }
 
 /**
- * 真太阳时校正
+ * 真太阳时校正：经度差 + 均时差（Equation of Time）
  */
 function getSolarTime(date: Date, longitude: number): Date {
-  // 经度每差1度，时间差4分钟；以120度（北京时间基准）为标准
-  const offsetMinutes = (longitude - 120) * 4;
-  return new Date(date.getTime() + offsetMinutes * 60 * 1000);
+  // 经度校正：每差1度=4分钟，以120°E（北京时间基准）为标准
+  const lngOffsetMin = (longitude - 120) * 4;
+
+  // 均时差校正：地球轨道偏心率+黄赤交角导致太阳时与平太阳时偏差
+  const dayOfYear = Math.floor((date.getTime() - new Date(date.getFullYear(), 0, 0).getTime()) / 86400000);
+  const B = (360 * (dayOfYear - 81) / 364) * Math.PI / 180;
+  const eotMin = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
+
+  return new Date(date.getTime() + (lngOffsetMin + eotMin) * 60 * 1000);
 }
 
 /**
@@ -253,7 +259,11 @@ export function calculateBazi(
   // 计算四柱序号
   const yearIdx = getYearPillarIndex(sy, sm, sd);
   const monthIdx = getMonthPillarIndex(yearIdx % 10, sm, sd);
-  const dayIdx = getDayIndexSinceBase(sy, sm, sd);
+  let dayIdx = getDayIndexSinceBase(sy, sm, sd);
+
+  // 晚子时（23点后）：日柱推进到次日
+  if (sh >= 23) dayIdx += 1;
+
   const hourIdx = getHourPillarIndex(dayIdx % 10, sh);
 
   // 解析四柱（日柱先算，其余以日干定十神）

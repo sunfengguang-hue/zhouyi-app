@@ -33,31 +33,33 @@ const HexagramDisplay: React.FC<HexagramDisplayProps> = ({
           const isChanged = changedPositions.includes(actualPosition);
 
           return (
-            <div
-              key={displayIndex}
-              className="hexagram-display__line"
-              style={{
-                animation: `fadeInUp 0.4s ease ${displayIndex * 0.1}s both`,
-              }}
-            >
-              <span className="hexagram-display__line-pos">
-                {['上', '五', '四', '三', '二', '初'][displayIndex]}
-              </span>
-              <div className={`hexagram-display__line-bar ${isYang ? 'hexagram-display__line-bar--yang' : 'hexagram-display__line-bar--yin'} ${isChanged ? 'hexagram-display__line-bar--changed' : ''}`}>
-                {isYang ? (
-                  <div className="hexagram-display__yang-bar" />
-                ) : (
-                  <div className="hexagram-display__yin-bar">
-                    <div className="hexagram-display__yin-segment" />
-                    <div className="hexagram-display__yin-gap" />
-                    <div className="hexagram-display__yin-segment" />
-                  </div>
+            <React.Fragment key={displayIndex}>
+              {displayIndex === 3 && <div className="hexagram-display__trigram-sep" />}
+              <div
+                className="hexagram-display__line"
+                style={{
+                  animation: `fadeInUp 0.4s ease ${displayIndex * 0.1}s both`,
+                }}
+              >
+                <span className="hexagram-display__line-pos">
+                  {['上', '五', '四', '三', '二', '初'][displayIndex]}
+                </span>
+                <div className={`hexagram-display__line-bar ${isYang ? 'hexagram-display__line-bar--yang' : 'hexagram-display__line-bar--yin'} ${isChanged ? 'hexagram-display__line-bar--changed' : ''}`}>
+                  {isYang ? (
+                    <div className="hexagram-display__yang-bar" />
+                  ) : (
+                    <div className="hexagram-display__yin-bar">
+                      <div className="hexagram-display__yin-segment" />
+                      <div className="hexagram-display__yin-gap" />
+                      <div className="hexagram-display__yin-segment" />
+                    </div>
+                  )}
+                </div>
+                {isChanged && (
+                  <span className="hexagram-display__changed-mark">〇</span>
                 )}
               </div>
-              {isChanged && (
-                <span className="hexagram-display__changed-mark">〇</span>
-              )}
-            </div>
+            </React.Fragment>
           );
         })}
       </div>

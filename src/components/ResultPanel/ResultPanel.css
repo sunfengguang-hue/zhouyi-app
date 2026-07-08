@@ -14,10 +14,12 @@
 }
 
 .result-panel__arrow {
-  font-size: 28px;
+  font-size: 32px;
   color: var(--gold);
   align-self: center;
   animation: pulse 2s ease infinite;
+  text-shadow: 0 0 12px rgba(212, 168, 83, 0.4);
+  letter-spacing: 2px;
 }
 
 .result-panel__judgment-text {
