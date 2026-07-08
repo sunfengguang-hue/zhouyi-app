@@ -86,7 +86,9 @@ const TarotPage: React.FC = () => {
       {drawing && (
         <div className="tarot-page__drawing">
           <div className="tarot-page__drawing-cards">
-            <span>🂠</span><span>🂠</span><span>🂠</span>
+            <span style={{ animation: 'tarotWobble 0.6s ease 0s infinite alternate' }}>🂠</span>
+            <span style={{ animation: 'tarotWobble 0.6s ease 0.15s infinite alternate' }}>🂠</span>
+            <span style={{ animation: 'tarotWobble 0.6s ease 0.3s infinite alternate' }}>🂠</span>
           </div>
           <p>洗牌翻牌中...</p>
           <p className="tarot-page__drawing-sub">让直觉引导你</p>

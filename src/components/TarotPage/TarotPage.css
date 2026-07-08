@@ -38,6 +38,11 @@
   100% { transform: translateY(0) rotate(0deg); }
 }
 
+@keyframes tarotWobble {
+  0% { transform: translateY(0) rotate(-4deg) scale(1); }
+  100% { transform: translateY(-8px) rotate(4deg) scale(1.05); }
+}
+
 /* Result */
 .tarot-result { width: 100%; max-width: 600px; }
 .tarot-result__question {
