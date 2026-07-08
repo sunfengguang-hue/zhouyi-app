@@ -193,6 +193,34 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
             fill="rgba(212,168,83,0.6)" fontSize="10" letterSpacing="2">
             命卦
           </text>
+
+          {/* 朝向标记 */}
+          {(() => {
+            const dirMap: Record<string, number> = { '东': 0, '东南': 45, '南': 90, '西南': 135, '西': 180, '西北': 225, '北': 270, '东北': 315 };
+            const facingAngle = dirMap[r.houseFacing];
+            if (facingAngle === undefined) return null;
+            const toRad = (d: number) => (d - 90) * Math.PI / 180;
+            const aRad = toRad(facingAngle);
+            const tipR = R + 14;
+            const baseR = R + 6;
+            const tx = cx + tipR * Math.cos(aRad);
+            const ty = cy + tipR * Math.sin(aRad);
+            const bx1 = cx + baseR * Math.cos(aRad - 0.15);
+            const by1 = cy + baseR * Math.sin(aRad - 0.15);
+            const bx2 = cx + baseR * Math.cos(aRad + 0.15);
+            const by2 = cy + baseR * Math.sin(aRad + 0.15);
+            return (
+              <g>
+                <polygon points={`${tx},${ty} ${bx1},${by1} ${bx2},${by2}`}
+                  fill="#d4a853" opacity="0.8" />
+                <text x={cx + (R + 22) * Math.cos(aRad)} y={cy + (R + 22) * Math.sin(aRad)}
+                  textAnchor="middle" dominantBaseline="central"
+                  fill="#d4a853" fontSize="8" fontWeight="bold" letterSpacing="1">
+                  朝
+                </text>
+              </g>
+            );
+          })()}
         </svg>
       </div>
 
