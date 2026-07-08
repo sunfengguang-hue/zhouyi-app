@@ -249,17 +249,158 @@ export function calculateBazi(
   const pillars = [yearPillar, monthPillar, dayPillar, hourPillar];
   const { count, strength, favorable } = analyzeWuxing(pillars);
 
-  // 神煞（简化提示）
+  // ==================== 神煞系统（以日干/日支查四柱地支） ====================
   const shenSha: string[] = [];
   const dayZhi = dayPillar.zhi;
+  const allZhi = [yearPillar.zhi, monthPillar.zhi, dayPillar.zhi, hourPillar.zhi];
+  const allGan = [yearPillar.gan, monthPillar.gan, dayPillar.gan, hourPillar.gan];
+
+  // 天乙贵人（日干查四柱地支）
+  const TIAN_YI: Record<string, string[]> = {
+    '甲': ['丑','未'], '戊': ['丑','未'],
+    '乙': ['子','申'], '己': ['子','申'],
+    '丙': ['酉','亥'], '丁': ['酉','亥'],
+    '庚': ['丑','未'], '辛': ['寅','午'],
+    '壬': ['卯','巳'], '癸': ['卯','巳'],
+  };
+  for (const zhi of allZhi) {
+    if (TIAN_YI[dayGan]?.includes(zhi)) {
+      shenSha.push('天乙贵人（逢凶化吉，贵人相助）');
+      break;
+    }
+  }
+
+  // 文昌贵人（日干查四柱地支）
+  const WEN_CHANG: Record<string, string> = {
+    '甲': '巳', '乙': '午', '丙': '申', '丁': '酉', '戊': '申',
+    '己': '酉', '庚': '亥', '辛': '子', '壬': '寅', '癸': '卯',
+  };
+  for (const zhi of allZhi) {
+    if (zhi === WEN_CHANG[dayGan]) {
+      shenSha.push('文昌贵人（主聪明好学，利于考试）');
+      break;
+    }
+  }
+
+  // 驿马（日支查四柱地支）
+  const YI_MA: Record<string, string> = {
+    '申': '寅', '子': '寅', '辰': '寅',
+    '寅': '申', '午': '申', '戌': '申',
+    '亥': '巳', '卯': '巳', '未': '巳',
+    '巳': '亥', '酉': '亥', '丑': '亥',
+  };
+  for (const zhi of allZhi) {
+    if (zhi === YI_MA[dayZhi]) {
+      shenSha.push('驿马星（主奔波远行，动中求财）');
+      break;
+    }
+  }
+
+  // 桃花/咸池（日支查四柱地支）
+  const TAO_HUA: Record<string, string> = {
+    '申': '酉', '子': '酉', '辰': '酉',
+    '寅': '卯', '午': '卯', '戌': '卯',
+    '亥': '子', '卯': '子', '未': '子',
+    '巳': '午', '酉': '午', '丑': '午',
+  };
+  for (const zhi of allZhi) {
+    if (zhi === TAO_HUA[dayZhi]) {
+      shenSha.push('桃花/咸池（主人缘魅力，异性缘佳）');
+      break;
+    }
+  }
+
+  // 羊刃（日干查四柱地支）
+  const YANG_REN: Record<string, string> = {
+    '甲': '卯', '乙': '寅', '丙': '午', '丁': '巳',
+    '戊': '午', '己': '巳', '庚': '酉', '辛': '申',
+    '壬': '子', '癸': '亥',
+  };
+  for (const zhi of allZhi) {
+    if (zhi === YANG_REN[dayGan]) {
+      shenSha.push('羊刃（主刚烈果断，身旺则忌，身弱反喜）');
+      break;
+    }
+  }
+
+  // 禄神（日干查四柱地支）
+  const LU_SHEN: Record<string, string> = {
+    '甲': '寅', '乙': '卯', '丙': '巳', '丁': '午',
+    '戊': '巳', '己': '午', '庚': '申', '辛': '酉',
+    '壬': '亥', '癸': '子',
+  };
+  for (const zhi of allZhi) {
+    if (zhi === LU_SHEN[dayGan]) {
+      shenSha.push('禄神（主衣食无忧，福禄绵长）');
+      break;
+    }
+  }
+
+  // 金舆（日干查四柱地支，主配偶贤美、出行有车马之便）
+  const JIN_YU: Record<string, string> = {
+    '甲': '辰', '乙': '巳', '丙': '未', '丁': '申',
+    '戊': '未', '己': '申', '庚': '戌', '辛': '亥',
+    '壬': '丑', '癸': '寅',
+  };
+  for (const zhi of allZhi) {
+    if (zhi === JIN_YU[dayGan]) {
+      shenSha.push('金舆星（主出行便利，配偶贤美）');
+      break;
+    }
+  }
+
+  // 将星（日支查四柱地支，主权柄威望）
+  const JIANG_XING: Record<string, string> = {
+    '申': '子', '子': '子', '辰': '子',
+    '寅': '午', '午': '午', '戌': '午',
+    '亥': '酉', '卯': '酉', '未': '酉',
+    '巳': '卯', '酉': '卯', '丑': '卯',
+  };
+  for (const zhi of allZhi) {
+    if (zhi === JIANG_XING[dayZhi]) {
+      shenSha.push('将星（主有威望领导力，宜掌权）');
+      break;
+    }
+  }
+
+  // 华盖（日支查年支）
   const HUA_GAI: Record<string, string> = {
     '申':'辰','子':'辰','辰':'辰', '寅':'戌','午':'戌','戌':'戌',
     '亥':'未','卯':'未','未':'未', '巳':'丑','酉':'丑','丑':'丑',
   };
-  if (yearPillar.zhi === HUA_GAI[dayPillar.zhi]) shenSha.push('华盖星（主聪明才艺）');
-  if (DI_ZHI_CANG_GAN[dayZhi].includes(dayGan)) shenSha.push('地支藏干得禄');
+  if (yearPillar.zhi === HUA_GAI[dayZhi]) shenSha.push('华盖星（主聪明才艺，孤高清傲）');
+
+  // 天德贵人（月支查四柱天干）
+  const TIAN_DE_GAN: Record<string, string> = {
+    '寅': '丁', '卯': '申', '辰': '壬', '巳': '辛',
+    '午': '亥', '未': '甲', '申': '癸', '酉': '艮',
+    '戌': '丙', '亥': '乙', '子': '巳', '丑': '庚',
+  };
+  const monthZhi = monthPillar.zhi;
+  for (const gan of allGan) {
+    if (gan === TIAN_DE_GAN[monthZhi]) {
+      shenSha.push('天德贵人（主逢凶化吉，一生少灾）');
+      break;
+    }
+  }
+
+  // 月德贵人（月支查四柱天干）
+  const YUE_DE_GAN: Record<string, string> = {
+    '寅': '丙', '卯': '甲', '辰': '壬', '巳': '庚',
+    '午': '丙', '未': '甲', '申': '壬', '酉': '庚',
+    '戌': '丙', '亥': '甲', '子': '壬', '丑': '庚',
+  };
+  for (const gan of allGan) {
+    if (gan === YUE_DE_GAN[monthZhi]) {
+      shenSha.push('月德贵人（主仁慈温和，一生平安）');
+      break;
+    }
+  }
+
+  // 地支藏干得禄
+  if (DI_ZHI_CANG_GAN[dayZhi].includes(dayGan)) shenSha.push('日坐禄地（根气深厚，自立自强）');
   // 五行齐全
-  if (Object.values(count).every(v => v > 0)) shenSha.push('五行俱全');
+  if (Object.values(count).every(v => v > 0)) shenSha.push('五行俱全（阴阳调和，一生平顺）');
 
   // 纳音五行
   const pillarNames = ['年柱', '月柱', '日柱', '时柱'];

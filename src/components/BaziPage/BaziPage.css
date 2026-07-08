@@ -184,7 +184,45 @@
 
 /* 神煞 */
 .bazi-result__shensha { margin-bottom: 20px; }
-.bazi-result__shensha-item { display: inline-block; margin: 4px; }
+.bazi-shensha__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.bazi-shensha__card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: rgba(212, 168, 83, 0.08);
+  border: 1px solid rgba(212, 168, 83, 0.2);
+  border-radius: var(--radius-md);
+  transition: background 0.2s, border-color 0.2s;
+}
+.bazi-shensha__card:hover {
+  background: rgba(212, 168, 83, 0.15);
+  border-color: rgba(212, 168, 83, 0.4);
+}
+.bazi-shensha__icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.bazi-shensha__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.bazi-shensha__name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 600;
+}
+.bazi-shensha__desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
 
 @media (max-width: 480px) {
   .bazi-result__pillars { gap: 8px; }
@@ -195,4 +233,5 @@
   .bazi-nayin__grid { grid-template-columns: repeat(2, 1fr); }
   .bazi-dayun__item { min-width: 64px; padding: 10px 8px; }
   .bazi-dayun__ganzhi { font-size: 17px; }
+  .bazi-shensha__grid { grid-template-columns: 1fr; }
 }

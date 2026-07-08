@@ -59,7 +59,7 @@
 }
 
 .coin-divination__progress {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .coin-divination__progress-label {
@@ -85,9 +85,76 @@
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   min-height: 120px;
   align-items: center;
+}
+
+/* 卦象构建动画区 */
+.coin-divination__hexagram-build {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto 24px;
+  padding: 16px;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(212,168,83,0.2);
+  max-width: 260px;
+}
+
+@keyframes hexLineReveal {
+  0% { opacity: 0; transform: scaleX(0); }
+  100% { opacity: 1; transform: scaleX(1); }
+}
+
+.coin-divination__hex-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  transform-origin: center;
+}
+
+.coin-divination__hex-pos {
+  font-size: 11px;
+  color: var(--text-secondary);
+  width: 20px;
+  text-align: right;
+  flex-shrink: 0;
+  font-family: var(--font-display);
+}
+
+.coin-divination__hex-bar-yin {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.coin-divination__hex-bar {
+  height: 6px;
+  border-radius: 3px;
+  flex: 1;
+}
+
+.coin-divination__hex-bar--yang {
+  background: linear-gradient(90deg, var(--gold), #e6c870);
+  box-shadow: 0 0 6px rgba(212,168,83,0.3);
+}
+
+.coin-divination__hex-bar--yin {
+  background: linear-gradient(90deg, var(--cloud-gray), #b0b0b0);
+  box-shadow: 0 0 4px rgba(200,200,200,0.2);
+}
+
+.coin-divination__hex-change {
+  font-size: 10px;
+  color: #e74c3c;
+  font-weight: bold;
+  width: 16px;
+  flex-shrink: 0;
+  text-align: left;
 }
 
 /* 结果 */
@@ -123,6 +190,14 @@
 
 .coin-divination__flip-btn {
   margin-bottom: 24px;
+  font-size: 18px;
+  padding: 14px 48px;
+  animation: gentlePulse 2s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(212,168,83,0.3); }
+  50% { box-shadow: 0 2px 20px rgba(212,168,83,0.6); }
 }
 
 .coin-divination__flipping-text {
@@ -132,57 +207,24 @@
   margin-bottom: 24px;
 }
 
-/* 已摇爻象历史 */
-.coin-divination__history {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-gold);
-}
-
-.coin-divination__history-title {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  letter-spacing: 2px;
-}
-
-.coin-divination__history-items {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.coin-divination__history-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.coin-divination__history-pos {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.coin-divination__history-line {
-  font-size: 28px;
-  color: var(--gold);
-}
-
-.coin-divination__history-line--yin {
-  color: var(--cloud-gray);
-}
-
 /* 完成态 */
 .coin-divination__complete {
   text-align: center;
+  padding: 24px 0;
   animation: fadeInUp 0.6s ease;
 }
 
 .coin-divination__complete-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
+  font-size: 56px;
+  color: var(--gold);
+  text-shadow: 0 0 30px rgba(212,168,83,0.4);
+  animation: completePulse 1.5s ease-in-out infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes completePulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(212,168,83,0.3); transform: scale(1); }
+  50% { text-shadow: 0 0 40px rgba(212,168,83,0.6); transform: scale(1.05); }
 }
 
 .coin-divination__complete-text {
@@ -193,8 +235,15 @@
   margin-bottom: 24px;
 }
 
+.coin-divination__complete-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   .coin-divination__coins { gap: 16px; }
   .coin-divination__idle-coins { gap: 14px; }
   .coin-preview { font-size: 36px; }
+  .coin-divination__hexagram-build { max-width: 220px; }
 }

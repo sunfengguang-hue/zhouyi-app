@@ -25,10 +25,12 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
   const [flipping, setFlipping] = useState(false);
   const [lastResult, setLastResult] = useState<CoinFlipResult | null>(null);
   const [coinResults, setCoinResults] = useState<number[][]>([]);
+  const [showComplete, setShowComplete] = useState(false);
 
   const handleStart = useCallback(() => {
     setCoinResults([]);
     setLastResult(null);
+    setShowComplete(false);
     onStart();
   }, [onStart]);
 
@@ -41,8 +43,12 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
 
     setTimeout(() => {
       setFlipping(false);
+      // Check if this was the 6th flip
+      if (coinResults.length + 1 >= 6) {
+        setShowComplete(true);
+      }
     }, 1200);
-  }, [flipping, phase, onFlipOnce]);
+  }, [flipping, phase, onFlipOnce, coinResults.length]);
 
   const positionNames = ['初', '二', '三', '四', '五', '上'];
 
@@ -80,13 +86,42 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
             </span>
           </div>
 
+          {/* 六爻卦象构建动画 */}
+          {coinResults.length > 0 && (
+            <div className="coin-divination__hexagram-build">
+              {coinResults.map((coins, i) => {
+                const sum = coins[0] + coins[1] + coins[2];
+                const isYang = sum === 7 || sum === 9;
+                const isChange = sum === 6 || sum === 9;
+                return (
+                  <div
+                    key={i}
+                    className={`coin-divination__hex-line coin-divination__hex-line--${isYang ? 'yang' : 'yin'} ${isChange ? 'coin-divination__hex-line--change' : ''}`}
+                    style={{ animation: `hexLineReveal 0.4s ease ${i * 0.05}s both` }}
+                  >
+                    <span className="coin-divination__hex-pos">{positionNames[i]}</span>
+                    {isYang ? (
+                      <div className="coin-divination__hex-bar coin-divination__hex-bar--yang" />
+                    ) : (
+                      <div className="coin-divination__hex-bar-yin">
+                        <div className="coin-divination__hex-bar coin-divination__hex-bar--yin" />
+                        <div className="coin-divination__hex-bar coin-divination__hex-bar--yin" />
+                      </div>
+                    )}
+                    {isChange && <span className="coin-divination__hex-change">变</span>}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
           <div className="coin-divination__coins">
             <Coin flipping={flipping} value={lastResult ? lastResult.coins[0] : null} />
             <Coin flipping={flipping} value={lastResult ? lastResult.coins[1] : null} />
             <Coin flipping={flipping} value={lastResult ? lastResult.coins[2] : null} />
           </div>
 
-          {lastResult && !flipping && (
+          {lastResult && !flipping && !showComplete && (
             <div className="coin-divination__result" style={{ animation: 'fadeInUp 0.4s ease' }}>
               <span className={`coin-divination__sum coin-divination__sum--${lastResult.sum}`}>
                 三枚之和：{lastResult.sum}
@@ -100,21 +135,26 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
             </div>
           )}
 
-          {!flipping && currentFlip < 6 && (
-            <button className="btn-primary coin-divination__flip-btn" onClick={handleFlip}>
-              {currentFlip === 0 ? '摇第一次' : '继续摇卦'}
-            </button>
+          {/* 完成庆祝动画 */}
+          {showComplete && hasResult && (
+            <div className="coin-divination__complete" style={{ animation: 'fadeInUp 0.6s ease' }}>
+              <div className="coin-divination__complete-icon">☰</div>
+              <p className="coin-divination__complete-text">六爻已成</p>
+              <div className="coin-divination__complete-actions">
+                <button className="btn-primary" onClick={onViewResult}>
+                  查看卦象 →
+                </button>
+                <button className="btn-secondary" onClick={onReset}>
+                  再算一卦
+                </button>
+              </div>
+            </div>
           )}
 
-          {!flipping && currentFlip >= 6 && hasResult && (
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', animation: 'fadeInUp 0.4s ease' }}>
-              <button className="btn-primary coin-divination__flip-btn" onClick={onViewResult}>
-                查看卦象 →
-              </button>
-              <button className="btn-secondary" onClick={onReset}>
-                再算一卦
-              </button>
-            </div>
+          {!flipping && currentFlip < 6 && !showComplete && (
+            <button className="btn-primary coin-divination__flip-btn" onClick={handleFlip}>
+              {currentFlip === 0 ? '摇第一次' : `摇第${currentFlip + 1}次`}
+            </button>
           )}
 
           {flipping && (
@@ -122,32 +162,8 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
               铜钱旋转中...
             </div>
           )}
-
-          {/* 已完成的爻 */}
-          {coinResults.length > 0 && (
-            <div className="coin-divination__history">
-              <p className="coin-divination__history-title">已摇爻象：</p>
-              <div className="coin-divination__history-items">
-                {coinResults.map((coins, i) => {
-                  const sum = coins[0] + coins[1] + coins[2];
-                  return (
-                    <div key={i} className="coin-divination__history-item">
-                      <span className="coin-divination__history-pos">
-                        {positionNames[i]}爻
-                      </span>
-                      <span className={`coin-divination__history-line coin-divination__history-line--${sum === 7 || sum === 9 ? 'yang' : 'yin'}`}>
-                        {sum === 6 || sum === 8 ? '⚋' : '⚊'}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
         </div>
       )}
-
-
     </div>
   );
 };

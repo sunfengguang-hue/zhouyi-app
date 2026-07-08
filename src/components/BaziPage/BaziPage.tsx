@@ -257,9 +257,30 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
       {r.shenSha.length > 0 && (
         <div className="bazi-result__shensha">
           <h3 className="bazi-result__section-title">神煞</h3>
-          {r.shenSha.map((s, i) => (
-            <p key={i} className="bazi-result__shensha-item tag tag-gold">{s}</p>
-          ))}
+          <div className="bazi-shensha__grid">
+            {r.shenSha.map((s, i) => {
+              const match = s.match(/^(.+?)（(.+?)）$/);
+              const name = match ? match[1] : s;
+              const desc = match ? match[2] : '';
+              const icons: Record<string, string> = {
+                '天乙贵人': '🌟', '文昌贵人': '📚', '驿马星': '🐴',
+                '桃花/咸池': '🌸', '羊刃': '⚔️', '禄神': '💰',
+                '金舆星': '🚗', '将星': '🏴', '华盖星': '🎭',
+                '天德贵人': '🛡️', '月德贵人': '🌙', '日坐禄地': '🏠',
+                '五行俱全': '☯️',
+              };
+              const icon = icons[name] || '✨';
+              return (
+                <div key={i} className="bazi-shensha__card" style={{ animation: `fadeInUp 0.3s ease ${i * 0.06}s both` }}>
+                  <span className="bazi-shensha__icon">{icon}</span>
+                  <div className="bazi-shensha__body">
+                    <span className="bazi-shensha__name">{name}</span>
+                    {desc && <span className="bazi-shensha__desc">{desc}</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 

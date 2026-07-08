@@ -276,15 +276,53 @@ export function calcAstrology(month: number, day: number): AstrologyResult {
   const wealth = 2 + Math.floor(seededRandom(seed + 2) * 4);
   const health = 2 + Math.floor(seededRandom(seed + 3) * 4);
 
-  const summaries = [
-    '今日运势顺畅，宜把握机会积极行动',
-    '今日宜静不宜动，多思考少冲动',
-    '今日人际关系佳，贵人相助',
-    '今日需注意细节，避免疏忽出错',
-    '今日财运不错，适合处理财务事宜',
-    '今日情绪平稳，适合规划未来',
-  ];
-  const summaryIdx = Math.floor(seededRandom(seed + 4) * summaries.length);
+  const dailySummaries: Record<string, string[]> = {
+    '火': [
+      '今日热情高涨，行动力十足，适合主动出击把握机遇',
+      '今日精力旺盛，社交活跃，人际关系升温，贵人运佳',
+      '今日灵感迸发，创意涌现，适合展示才华和提案',
+      '今日宜积极行动，但注意控制脾气，沟通需温和',
+      '今日冲劲十足，事业上有突破性进展的可能',
+      '今日桃花运旺，社交场合容易吸引目光，大胆表达',
+      '今日适合运动健身释放能量，保持身心平衡',
+      '今日财运活跃，适合快速决策，但忌冲动消费',
+    ],
+    '土': [
+      '今日稳扎稳打，脚踏实地，每一步都有收获',
+      '今日财运上扬，适合处理理财和商务相关事宜',
+      '今日适合制定计划，做好细节把控，为未来蓄力',
+      '今日团队协作顺畅，与同事配合默契，产出高效',
+      '今日宜沉淀积累，学习新技能为将来打好基础',
+      '今日感情稳定踏实，适合与伴侣深入交流增进理解',
+      '今日健康运佳，适合养生调理，注意饮食规律',
+      '今日贵人运好，工作中的努力会被看见和认可',
+    ],
+    '风': [
+      '今日思维活跃，沟通频繁，把握关键对话和信息',
+      '今日适合头脑风暴，创意连连，灵感不断',
+      '今日社交达人，人脉拓展迅速，合作机会浮现',
+      '今日学习运佳，适合阅读进修，吸收新知识',
+      '今日表达欲强，适合演讲谈判和提案汇报',
+      '今日信息量大，注意筛选重点，不要三心二意',
+      '今日桃花运佳，在社交互动中容易遇到有趣的人',
+      '今日灵活应变是制胜法宝，保持开放心态接纳变化',
+    ],
+    '水': [
+      '今日直觉敏锐，情感丰富，适合处理人际关系',
+      '今日内心平静，适合冥想反思，梳理情感需求',
+      '今日灵感充沛，适合艺术创作和情感表达',
+      '今日宜低调行事，幕后策划比张扬更有效',
+      '今日感情有新进展的可能，单身者桃花暗涌',
+      '今日理财宜以守为攻，保持现金流比追求高收益重要',
+      '今日注意情绪管理，遇到压力时深呼吸冷静处理',
+      '今日适合处理积压的事务，面对它才能放下它',
+    ],
+  };
+
+  const element = sign.element;
+  const pool = dailySummaries[element] || dailySummaries['火'];
+  const summaryIdx = Math.floor(seededRandom(seed + 4) * pool.length);
+  const summary = pool[summaryIdx];
 
   // 配对星座（取相性最高的）
   const compatibleSigns = ZODIAC_SIGNS.map(s => ({
@@ -297,7 +335,7 @@ export function calcAstrology(month: number, day: number): AstrologyResult {
 
   return {
     sign,
-    todayFortune: { career, love, wealth, health, summary: summaries[summaryIdx] },
+    todayFortune: { career, love, wealth, health, summary },
     weeklyFortune,
     compatibleSigns,
     input: { month, day },
