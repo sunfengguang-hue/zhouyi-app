@@ -245,7 +245,6 @@ export const NAME_CHARS: NameChar[] = [
   { char: '璨', pinyin: 'can', strokes: 18, wuxing: '金', meaning: '璀璨夺目', gender: '中', radical: '王' },
   { char: '钧', pinyin: 'jun', strokes: 12, wuxing: '金', meaning: '雷霆万钧', gender: '男', radical: '钅' },
   { char: '珏', pinyin: 'jue', strokes: 10, wuxing: '金', meaning: '双玉成对', gender: '女', radical: '王' },
-  { char: '瑶', pinyin: 'yao', strokes: 15, wuxing: '金', meaning: '美玉琼瑶', gender: '女', radical: '王' },
   { char: '琪', pinyin: 'qi', strokes: 13, wuxing: '金', meaning: '珍奇美玉', gender: '中', radical: '王' },
   { char: '钦', pinyin: 'qin', strokes: 12, wuxing: '金', meaning: '钦佩敬仰', gender: '男', radical: '钅' },
   { char: '钢', pinyin: 'gang', strokes: 16, wuxing: '金', meaning: '钢铁意志', gender: '男', radical: '钅' },

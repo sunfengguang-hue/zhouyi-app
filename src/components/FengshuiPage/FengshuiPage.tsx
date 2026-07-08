@@ -23,7 +23,7 @@ const FengshuiPage: React.FC = () => {
       <div className="page-form__row">
         <div className="page-form__group">
           <label className="page-form__label">出生年份</label>
-          <input className="page-form__input" type="number" min={1924} max={2003} value={year} onChange={e => setYear(+e.target.value)} />
+          <input className="page-form__input" type="number" min={1924} max={2025} value={year} onChange={e => setYear(+e.target.value)} />
         </div>
         <div className="page-form__group">
           <label className="page-form__label">性别</label>
@@ -111,7 +111,9 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
                 style={{ cursor: 'pointer', transition: 'fill 0.2s, stroke-width 0.2s' }}
                 onClick={() => scrollToDirection(d.direction)}
                 onMouseEnter={() => setHoveredSector(i)}
-                onMouseLeave={() => setHoveredSector(null)} />
+                onMouseLeave={() => setHoveredSector(null)}
+                onTouchStart={() => setHoveredSector(i)}
+                onTouchEnd={() => setHoveredSector(null)} />
             );
           })}
 

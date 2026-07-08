@@ -271,10 +271,10 @@ export function calcAstrology(month: number, day: number): AstrologyResult {
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate() + month * 50 + day;
 
-  const career = 2 + Math.floor(seededRandom(seed) * 4);
-  const love = 2 + Math.floor(seededRandom(seed + 1) * 4);
-  const wealth = 2 + Math.floor(seededRandom(seed + 2) * 4);
-  const health = 2 + Math.floor(seededRandom(seed + 3) * 4);
+  const career = 1 + Math.floor(seededRandom(seed) * 5);
+  const love = 1 + Math.floor(seededRandom(seed + 1) * 5);
+  const wealth = 1 + Math.floor(seededRandom(seed + 2) * 5);
+  const health = 1 + Math.floor(seededRandom(seed + 3) * 5);
 
   const dailySummaries: Record<string, string[]> = {
     '火': [

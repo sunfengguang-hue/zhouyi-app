@@ -146,12 +146,21 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
       <div className="bazi-result__nayin">
         <h3 className="bazi-result__section-title">纳音五行</h3>
         <div className="bazi-nayin__grid">
-          {r.nayin.map((item, i) => (
-            <div key={i} className="bazi-nayin__item" style={{ animation: `fadeInUp 0.4s ease ${i * 0.1}s both` }}>
-              <span className="bazi-nayin__pillar">{item.pillar}</span>
-              <span className="bazi-nayin__value">{item.nayin}</span>
-            </div>
-          ))}
+          {r.nayin.map((item, i) => {
+            const wxChar = item.nayin.slice(-1);
+            const wxIcons: Record<string, string> = { '金': '✦', '木': '✿', '水': '≋', '火': '✧', '土': '▣' };
+            const pillarMeaning = ['祖上·少年运', '父母·青年运', '自身·中年运', '子女·晚年运'];
+            const wxColor = wxColors[wxChar] || '#ccc';
+            return (
+              <div key={i} className="bazi-nayin__item" style={{ animation: `fadeInUp 0.4s ease ${i * 0.1}s both` }}>
+                <span className="bazi-nayin__pillar">{item.pillar}</span>
+                <span className="bazi-nayin__icon" style={{ color: wxColor }}>{wxIcons[wxChar] || '◇'}</span>
+                <span className="bazi-nayin__value">{item.nayin}</span>
+                <span className="bazi-nayin__wx" style={{ color: wxColor }}>{wxChar}</span>
+                <span className="bazi-nayin__meaning">{pillarMeaning[i]}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 

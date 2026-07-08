@@ -2,22 +2,41 @@ import type { TarotDraw, TarotResult, TarotSpreadType, TarotOrientation } from '
 import { MAJOR_ARCANA, SPREAD_POSITIONS, generateTarotSummary, generateCombinationReading } from '../data/tarotCards';
 
 /**
- * Fisher-Yates洗牌
+ * 日期种子伪随机（与星座/抽签模块保持一致性）
+ */
+function getDailySeed(): number {
+  const today = new Date();
+  return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+}
+
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed * 9301 + 49297) * 233280;
+  return x - Math.floor(x);
+}
+
+let _seedCounter = getDailySeed();
+function nextRandom(): number {
+  _seedCounter += 1;
+  return seededRandom(_seedCounter);
+}
+
+/**
+ * Fisher-Yates洗牌（日期种子，同日同结果）
  */
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(nextRandom() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
 }
 
 /**
- * 随机决定正逆位
+ * 随机决定正逆位（日期种子）
  */
 function randomOrientation(): TarotOrientation {
-  return Math.random() > 0.35 ? 'upright' : 'reversed';
+  return nextRandom() > 0.35 ? 'upright' : 'reversed';
 }
 
 /**
