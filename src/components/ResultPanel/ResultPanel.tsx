@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import type { DivinationResult } from '../../types';
+import type { DivinationResult, HexagramData } from '../../types';
 import HexagramDisplay from '../HexagramDisplay/HexagramDisplay';
+import { getHexagramRelationships } from '../../utils/hexagramCalc';
 import './ResultPanel.css';
 
 interface ResultPanelProps {
@@ -282,6 +283,35 @@ function getInterpretationAdvice(upper: string, lower: string): InterpretationAd
   return { career, love, wealth, health };
 }
 
+// ── 卦象关系卡片 ──────────────────────────────────────────────────────────────
+
+const HexRelationCard: React.FC<{
+  label: string;
+  icon: string;
+  hexagram: HexagramData;
+  selfName: string;
+  description: string;
+}> = ({ label, icon, hexagram, selfName, description }) => {
+  const isSame = hexagram.fullName === selfName;
+  return (
+    <div className="result-panel__hex-rel-card">
+      <div className="result-panel__hex-rel-header">
+        <span className="result-panel__hex-rel-icon">{icon}</span>
+        <span className="result-panel__hex-rel-label">{label}</span>
+      </div>
+      <div className="result-panel__hex-rel-name">{hexagram.fullName}</div>
+      {!isSame && (
+        <p className="result-panel__hex-rel-judgment">「{hexagram.judgment.slice(0, 30)}{hexagram.judgment.length > 30 ? '…' : ''}」</p>
+      )}
+      <p className="result-panel__hex-rel-desc">
+        {isSame
+          ? `${label}与本卦相同（${hexagram.name}），说明此卦内外一致、表里如一，力量高度集中。`
+          : description}
+      </p>
+    </div>
+  );
+};
+
 // ── component ──────────────────────────────────────────────────────────────────
 
 const ResultPanel: React.FC<ResultPanelProps> = ({ result, onSaveHistory, shareRef }) => {
@@ -306,6 +336,9 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onSaveHistory, shareR
         changedHexagram.lowerTrigram,
       )
     : null;
+
+  // 卦象关系：互卦、错卦、综卦
+  const relationships = getHexagramRelationships(lines);
 
   return (
     <div className="result-panel" style={{ animation: 'fadeInUp 0.6s ease' }}>
@@ -480,6 +513,34 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onSaveHistory, shareR
                     <p className="result-panel__interp-text">{hexagram.interpretation.health}</p>
                     <p className="result-panel__interp-advice">{advice.health}</p>
                   </div>
+                </div>
+              </div>
+
+              {/* 卦象关系：互卦·错卦·综卦 */}
+              <div className="result-panel__hex-relations">
+                <h4 className="result-panel__hex-relations-title">卦象关系</h4>
+                <div className="result-panel__hex-relations-grid">
+                  <HexRelationCard
+                    label="互卦"
+                    icon="☯"
+                    hexagram={relationships.nuclear}
+                    selfName={hexagram.fullName}
+                    description="取本卦第2-4爻为下、第3-5爻为上，揭示事物内在动力与隐藏因素"
+                  />
+                  <HexRelationCard
+                    label="错卦"
+                    icon="⇌"
+                    hexagram={relationships.opposite}
+                    selfName={hexagram.fullName}
+                    description="本卦每爻阴阳互换，代表事物的对立面与互补视角"
+                  />
+                  <HexRelationCard
+                    label="综卦"
+                    icon="⟲"
+                    hexagram={relationships.reversed}
+                    selfName={hexagram.fullName}
+                    description="本卦上下翻转，代表从对方或相反角度看同一件事"
+                  />
                 </div>
               </div>
             </div>

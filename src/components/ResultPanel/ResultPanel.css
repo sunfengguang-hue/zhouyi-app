@@ -346,6 +346,89 @@
   letter-spacing: 0.3px;
 }
 
+/* ── 卦象关系 ── */
+.result-panel__hex-relations {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-gold);
+}
+
+.result-panel__hex-relations-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.result-panel__hex-relations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.result-panel__hex-rel-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 14px 10px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(212, 168, 83, 0.12);
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+
+.result-panel__hex-rel-card:hover {
+  border-color: rgba(212, 168, 83, 0.35);
+  background: rgba(212, 168, 83, 0.06);
+}
+
+.result-panel__hex-rel-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.result-panel__hex-rel-icon {
+  font-size: 18px;
+  color: var(--gold);
+}
+
+.result-panel__hex-rel-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.result-panel__hex-rel-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text-primary);
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.result-panel__hex-rel-judgment {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+
+.result-panel__hex-rel-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  opacity: 0.7;
+}
+
 /* ── 操作按钮 ── */
 .result-panel__actions {
   display: flex;
@@ -367,4 +450,6 @@
   .result-panel__trigram-card { padding: 8px 14px; min-width: 100px; }
   .result-panel__trigram-card strong { font-size: 14px; }
   .result-panel__trigram-meta { font-size: 10px; }
+  .result-panel__hex-relations-grid { grid-template-columns: 1fr; gap: 8px; }
+  .result-panel__hex-rel-card { padding: 12px 10px; }
 }

@@ -86,3 +86,68 @@ export function getChangedHexagramFromLines(
   const changedLines = getChangedLines(lines);
   return getHexagramFromLines(changedLines);
 }
+
+// ── 卦象关系计算 ────────────────────────────────────────────────────────────────
+
+/**
+ * 将爻值转为阴阳静态值 (7=阳, 8=阴)
+ * 用于卦象关系计算时忽略变爻状态
+ */
+function toStaticLines(lines: HexagramLines): HexagramLines {
+  return lines.map(v => getLineType(v) === 'yang' ? 7 : 8) as HexagramLines;
+}
+
+/**
+ * 互卦 (Nuclear Hexagram)
+ * 取本卦的第2-3-4爻为下卦，第3-4-5爻为上卦
+ * 揭示事物的内在动力与隐藏因素
+ */
+export function getNuclearHexagram(lines: HexagramLines): HexagramData {
+  const staticLines = toStaticLines(lines);
+  // 下卦 = 第2,3,4爻 (索引 1,2,3)
+  const nuclearLower = [staticLines[1], staticLines[2], staticLines[3]] as [number, number, number];
+  // 上卦 = 第3,4,5爻 (索引 2,3,4)
+  const nuclearUpper = [staticLines[2], staticLines[3], staticLines[4]] as [number, number, number];
+
+  const upper = trigramFromValues(nuclearUpper);
+  const lower = trigramFromValues(nuclearLower);
+  const key = `${upper}_${lower}`;
+  return hexagramsMap[key] || hexagramsMap['乾_乾']!;
+}
+
+/**
+ * 错卦 (Opposite Hexagram)
+ * 将本卦每一爻阴阳互换（阳变阴，阴变阳）
+ * 代表事物的对立面与互补视角
+ */
+export function getOppositeHexagram(lines: HexagramLines): HexagramData {
+  const staticLines = toStaticLines(lines);
+  const oppositeLines = staticLines.map(v => v === 7 ? 8 : 7) as HexagramLines;
+  return getHexagramFromLines(oppositeLines);
+}
+
+/**
+ * 综卦 (Reversed Hexagram)
+ * 将本卦上下翻转（第1爻变第6爻，第2爻变第5爻，依此类推）
+ * 代表从对方或相反角度看同一件事
+ */
+export function getReversedHexagram(lines: HexagramLines): HexagramData {
+  const staticLines = toStaticLines(lines);
+  const reversedLines = [...staticLines].reverse() as HexagramLines;
+  return getHexagramFromLines(reversedLines);
+}
+
+/**
+ * 一次性获取所有卦象关系
+ */
+export function getHexagramRelationships(lines: HexagramLines): {
+  nuclear: HexagramData;
+  opposite: HexagramData;
+  reversed: HexagramData;
+} {
+  return {
+    nuclear: getNuclearHexagram(lines),
+    opposite: getOppositeHexagram(lines),
+    reversed: getReversedHexagram(lines),
+  };
+}
