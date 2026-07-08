@@ -74,6 +74,7 @@ export interface DivinationResult {
   changedLines: number[];            // 变爻的位置列表 (1-6)
   lines: HexagramLines;             // 六爻数值 (从下到上)
   timestamp: number;
+  question?: string;                // 问卦的问题
 }
 
 // 历史记录项

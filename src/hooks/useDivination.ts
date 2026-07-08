@@ -24,9 +24,11 @@ const initialState: DivinationState = {
 
 export function useDivination() {
   const [state, setState] = useState<DivinationState>(initialState);
+  const [question, setQuestion] = useState<string>('');
 
   /** 开始一次新的摇卦 */
-  const startDivination = useCallback(() => {
+  const startDivination = useCallback((q?: string) => {
+    setQuestion(q || '');
     setState({
       phase: 'flipping',
       currentFlip: 0,
@@ -62,6 +64,7 @@ export function useDivination() {
           changedLines,
           lines: newLines,
           timestamp: Date.now(),
+          question: question || undefined,
         };
 
         return {
@@ -96,6 +99,7 @@ export function useDivination() {
     lines: state.lines,
     flips: state.flips,
     result: state.result,
+    question,
     startDivination,
     flipOnce,
     reset,

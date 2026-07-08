@@ -59,7 +59,7 @@ const TaijiLoader: React.FC = () => (
 const App: React.FC = () => {
   const { view, navigate: rawNavigate } = useAppView();
   const navigate = useCallback((v: AppView) => { setSaved(false); setViewingResult(null); rawNavigate(v); }, [rawNavigate]);
-  const { phase, currentFlip, result, startDivination, flipOnce, reset } = useDivination();
+  const { phase, currentFlip, result, question, startDivination, flipOnce, reset } = useDivination();
   const [divComplete, setDivComplete] = React.useState(false);
   const { history, addRecord, removeRecord, clearHistory } = useHistory();
   const [showHistory, setShowHistory] = useState(false);
@@ -135,7 +135,7 @@ const App: React.FC = () => {
                 currentFlip={currentFlip}
                 hasResult={!!result}
                 onFlipOnce={flipOnce}
-                onStart={() => { setDivComplete(false); startDivination(); }}
+                onStart={(q) => { setDivComplete(false); startDivination(q); }}
                 onReset={() => { setSaved(false); setDivComplete(false); reset(); }}
                 onViewResult={() => setDivComplete(true)}
               />

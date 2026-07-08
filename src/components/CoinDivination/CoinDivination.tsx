@@ -8,7 +8,7 @@ interface CoinDivinationProps {
   currentFlip: number;
   hasResult: boolean;
   onFlipOnce: () => CoinFlipResult;
-  onStart: () => void;
+  onStart: (question?: string) => void;
   onReset: () => void;
   onViewResult: () => void;
 }
@@ -26,13 +26,14 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
   const [lastResult, setLastResult] = useState<CoinFlipResult | null>(null);
   const [coinResults, setCoinResults] = useState<number[][]>([]);
   const [showComplete, setShowComplete] = useState(false);
+  const [question, setQuestion] = useState('');
 
   const handleStart = useCallback(() => {
     setCoinResults([]);
     setLastResult(null);
     setShowComplete(false);
-    onStart();
-  }, [onStart]);
+    onStart(question.trim() || undefined);
+  }, [onStart, question]);
 
   const handleFlip = useCallback(() => {
     if (flipping || phase !== 'flipping') return;
@@ -63,6 +64,18 @@ const CoinDivination: React.FC<CoinDivinationProps> = ({
             <p className="coin-divination__intro-sub">
               抛掷三枚铜钱，共摇六次，自下而上生成六爻
             </p>
+          </div>
+          <div className="coin-divination__question">
+            <label className="coin-divination__question-label">所问何事</label>
+            <input
+              className="coin-divination__question-input"
+              type="text"
+              placeholder="心中所念之事（选填）"
+              value={question}
+              onChange={e => setQuestion(e.target.value)}
+              maxLength={50}
+              onKeyDown={e => { if (e.key === 'Enter') handleStart(); }}
+            />
           </div>
           <div className="coin-divination__idle-coins">
             <span className="coin-preview">🪙</span>

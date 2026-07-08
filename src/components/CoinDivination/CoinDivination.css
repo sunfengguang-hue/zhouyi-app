@@ -27,6 +27,48 @@
   line-height: 1.8;
 }
 
+.coin-divination__question {
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.coin-divination__question-label {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 3px;
+}
+
+.coin-divination__question-input {
+  width: 80%;
+  max-width: 320px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(212, 168, 83, 0.25);
+  border-radius: var(--radius-md);
+  text-align: center;
+  letter-spacing: 1px;
+  outline: none;
+  transition: var(--transition);
+}
+
+.coin-divination__question-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.5;
+  font-size: 13px;
+}
+
+.coin-divination__question-input:focus {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 12px rgba(212, 168, 83, 0.15);
+}
+
 .coin-divination__idle-coins {
   display: flex;
   justify-content: center;

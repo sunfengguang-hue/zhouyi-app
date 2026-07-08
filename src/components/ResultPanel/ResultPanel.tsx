@@ -364,6 +364,13 @@ const ResultPanel: React.FC<ResultPanelProps> = ({ result, onSaveHistory, shareR
 
       {/* 分享区域 */}
       <div ref={shareRef} className="result-panel__share-area">
+        {/* 问卦问题 */}
+        {result.question && (
+          <div className="result-panel__question">
+            <span className="result-panel__question-label">问</span>
+            <span className="result-panel__question-text">{result.question}</span>
+          </div>
+        )}
         {/* 卦辞 */}
         <div className="result-panel__judgment-text">
           <p className="result-panel__judgment-quote">「{hexagram.judgment}」</p>
