@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { BaziResult } from '../../types';
 import { calculateBazi, getYearPillarInfo } from '../../utils/baziCalc';
 import { SHISHEN_DESC, DAY_MASTER_PERSONALITY } from '../../data/bazi';
+import ShareButton from '../ShareButton/ShareButton';
 import './BaziPage.css';
 
 const BaziPage: React.FC = () => {
@@ -79,6 +80,7 @@ const BaziPage: React.FC = () => {
 /** 结果展示 */
 const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({ result, onReset }) => {
   const r = result;
+  const resultRef = useRef<HTMLDivElement>(null);
   const pillars = [r.year, r.month, r.day, r.hour];
   const pillarNames = ['年柱', '月柱', '日柱', '时柱'];
   const wxNames = ['金', '木', '水', '火', '土'] as const;
@@ -101,7 +103,7 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
   }, [] as typeof r.shiShenDetails);
 
   return (
-    <div className="page-result bazi-result">
+    <div ref={resultRef} className="page-result bazi-result">
       <h2 className="bazi-result__title">四柱八字排盘</h2>
       <p className="bazi-result__time">{r.input.gender}命 · {r.solarTime}</p>
 
@@ -527,6 +529,7 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
 
       <div className="page-form__actions">
         <button className="btn-secondary" onClick={onReset}>重新测算</button>
+        <ShareButton targetRef={resultRef} fileName={`八字排盘_${Date.now()}.png`} />
       </div>
     </div>
   );

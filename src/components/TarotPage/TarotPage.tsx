@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { TarotResult, TarotSpreadType } from '../../types';
 import { drawTarotCards, getOrientationColor } from '../../utils/tarotCalc';
 import { ELEMENT_COLORS, ELEMENT_SYMBOLS } from '../../data/tarotCards';
+import ShareButton from '../ShareButton/ShareButton';
 import './TarotPage.css';
 
 const SPREAD_OPTIONS: { type: TarotSpreadType; label: string; desc: string }[] = [
@@ -16,6 +17,7 @@ const TarotPage: React.FC = () => {
   const [result, setResult] = useState<TarotResult | null>(null);
   const [drawing, setDrawing] = useState(false);
   const [revealed, setRevealed] = useState<boolean[]>([]);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const handleDraw = () => {
     setDrawing(true);
@@ -96,7 +98,7 @@ const TarotPage: React.FC = () => {
       )}
 
       {result && (
-        <div className="tarot-result" style={{ animation: 'fadeInUp 0.6s ease' }}>
+        <div ref={resultRef} className="tarot-result" style={{ animation: 'fadeInUp 0.6s ease' }}>
           {/* 问题 */}
           {result.question !== '问事' && (
             <p className="tarot-result__question">问：{result.question}</p>
@@ -223,6 +225,7 @@ const TarotPage: React.FC = () => {
             <button className="btn-primary" onClick={handleReset}>
               重新占卜
             </button>
+            <ShareButton targetRef={resultRef} fileName={`塔罗占卜_${Date.now()}.png`} />
           </div>
         </div>
       )}
