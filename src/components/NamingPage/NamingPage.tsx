@@ -121,13 +121,15 @@ const NamingPage: React.FC = () => {
           <h2 className="naming-result__title">{analyzeResult.fullName} · 名字分析</h2>
           <div className="naming-analyze">
             {/* 综合评分 */}
-            <div className="naming-analyze__score-box">
-              <span className="naming-analyze__score" style={{color:scoreColor(analyzeResult.score)}}>{analyzeResult.score}</span>
+            <div className="naming-analyze__score-box" style={{ animation: 'fadeInUp 0.5s ease 0.1s both' }}>
+              <div className="naming-analyze__score-ring" style={{ ['--score-pct' as string]: `${analyzeResult.score}%` }}>
+                <span className="naming-analyze__score" style={{color:scoreColor(analyzeResult.score)}}>{analyzeResult.score}</span>
+              </div>
               <span className="naming-analyze__score-label">综合评分</span>
             </div>
 
             {/* 五格数理 */}
-            <div className="naming-analyze__wuge">
+            <div className="naming-analyze__wuge" style={{ animation: 'fadeInUp 0.5s ease 0.2s both' }}>
               <h4>五格数理</h4>
               {geNames.map((gn, gi) => (
                 <div key={gn} className="naming-analyze__ge-row">
@@ -140,24 +142,24 @@ const NamingPage: React.FC = () => {
             </div>
 
             {/* 三才配置 */}
-            <div className="naming-analyze__sancai">
+            <div className="naming-analyze__sancai" style={{ animation: 'fadeInUp 0.5s ease 0.3s both' }}>
               <h4>三才配置</h4>
               <p>{analyzeResult.sancai.tian}（天）· {analyzeResult.sancai.ren}（人）· {analyzeResult.sancai.di}（地）</p>
               <p className={`tag tag-${analyzeResult.sancai.luck==='凶'?'vermillion':'gold'}`}>{analyzeResult.sancai.luck}：{analyzeResult.sancai.desc}</p>
             </div>
 
             {/* 名字寓意 */}
-            <div className="naming-analyze__section">
+            <div className="naming-analyze__section" style={{ animation: 'fadeInUp 0.5s ease 0.4s both' }}>
               <h4>名字寓意</h4>
               <p className="naming-analyze__meaning-text">{analyzeResult.fullNameMeaning}</p>
             </div>
 
             {/* 逐字分析 */}
-            <div className="naming-analyze__section">
+            <div className="naming-analyze__section" style={{ animation: 'fadeInUp 0.5s ease 0.5s both' }}>
               <h4>逐字分析</h4>
               <div className="naming-analyze__chars">
                 {analyzeResult.charDetails.map((cd, i) => (
-                  <div key={i} className="naming-analyze__char-card">
+                  <div key={i} className="naming-analyze__char-card" style={{ animation: `fadeInUp 0.4s ease ${0.5 + i * 0.1}s both` }}>
                     <div className="naming-analyze__char-head">
                       <span className="naming-analyze__char-name">{cd.char}</span>
                       <span className="naming-analyze__char-wx" style={{color: wxColors[cd.wuxing] || '#ccc'}}>五行{cd.wuxing}</span>
@@ -173,7 +175,7 @@ const NamingPage: React.FC = () => {
             </div>
 
             {/* 音韵分析 */}
-            <div className="naming-analyze__section">
+            <div className="naming-analyze__section" style={{ animation: 'fadeInUp 0.5s ease 0.6s both' }}>
               <h4>音韵分析</h4>
               <div className="naming-analyze__pron">
                 <span className="naming-analyze__pron-score" style={{color:scoreColor(analyzeResult.pronunciation.score)}}>
@@ -184,7 +186,7 @@ const NamingPage: React.FC = () => {
             </div>
 
             {/* 生肖建议 */}
-            <div className="naming-analyze__section">
+            <div className="naming-analyze__section" style={{ animation: 'fadeInUp 0.5s ease 0.7s both' }}>
               <h4>生肖宜忌</h4>
               <p className="naming-analyze__zodiac-text">{analyzeResult.zodiacAdvice}</p>
             </div>

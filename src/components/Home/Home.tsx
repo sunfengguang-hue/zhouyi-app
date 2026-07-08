@@ -200,11 +200,12 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </button>
 
       <div className="home__grid">
-        {CARDS.map((card) => (
+        {CARDS.map((card, i) => (
           <button
             key={card.view}
             className={`home__card ${card.modifier ? `home__card--${card.modifier}` : ''}`}
             onClick={() => onNavigate(card.view)}
+            style={{ animation: `fadeInUp 0.5s ease ${0.4 + i * 0.08}s both` }}
           >
             <span className="home__card-icon">{card.icon}</span>
             <div className="home__card-body">
