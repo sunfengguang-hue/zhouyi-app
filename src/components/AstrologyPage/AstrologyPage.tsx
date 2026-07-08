@@ -133,8 +133,8 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
         <h3 className="astro-section__title">今日运势</h3>
         <p className="astro-summary text-gold">{r.todayFortune.summary}</p>
         <div className="astro-fortune-grid">
-          {fortuneItems.map(f => (
-            <div key={f.label} className="astro-fortune-item">
+          {fortuneItems.map((f, i) => (
+            <div key={f.label} className="astro-fortune-item" style={{ animation: `fadeInUp 0.4s ease ${0.4 + i * 0.1}s both` }}>
               <span className="astro-fortune__icon">{f.icon}</span>
               <span className="astro-fortune__label">{f.label}</span>
               <span className="astro-fortune__stars" style={{color: ec}}>{starLabels[f.val]}</span>
@@ -184,10 +184,10 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
         <h3 className="astro-section__title">星座配对</h3>
         <div className="astro-compat">
           {r.compatibleSigns.map((c, i) => (
-            <div key={i} className="astro-compat__item">
+            <div key={i} className="astro-compat__item" style={{ animation: `fadeInUp 0.4s ease ${0.8 + i * 0.1}s both` }}>
               <span className="astro-compat__name">{c.sign}</span>
               <div className="astro-compat__bar">
-                <div className="astro-compat__fill" style={{ width: `${c.score}%`, background: ec }} />
+                <div className="astro-compat__fill" style={{ width: `${c.score}%`, background: ec, transition: `width 0.8s ease ${0.9 + i * 0.15}s` }} />
               </div>
               <span className="astro-compat__score">{c.score}</span>
             </div>
