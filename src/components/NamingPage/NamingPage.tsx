@@ -1,8 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { NameResult, WuXing } from '../../types';
 import { recommendNames, analyzeName } from '../../utils/namingCalc';
 import { SURNAMES } from '../../data/naming';
 import './NamingPage.css';
+
+const allSurnames = Object.keys(SURNAMES);
+
+/** 可搜索姓氏选择器 */
+const SurnamePicker: React.FC<{ value: string; onChange: (v: string) => void }> = ({ value, onChange }) => {
+  const [filter, setFilter] = useState('');
+  const [open, setOpen] = useState(false);
+  const filtered = useMemo(() =>
+    filter ? allSurnames.filter(s => s.includes(filter)) : allSurnames,
+    [filter]
+  );
+  return (
+    <div className="surname-picker">
+      <input
+        className="page-form__input surname-picker__input"
+        placeholder={`当前：${value}（点击切换）`}
+        value={filter}
+        onChange={e => { setFilter(e.target.value); setOpen(true); }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 200)}
+      />
+      {open && filtered.length > 0 && (
+        <div className="surname-picker__dropdown">
+          {filtered.slice(0, 30).map(s => (
+            <button key={s} className={`surname-picker__option ${s === value ? 'surname-picker__option--active' : ''}`}
+              onClick={() => { onChange(s); setFilter(''); setOpen(false); }}>
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const NamingPage: React.FC = () => {
   const [tab, setTab] = useState<'recommend' | 'analyze'>('recommend');
@@ -38,9 +72,7 @@ const NamingPage: React.FC = () => {
           <div className="page-form__row">
             <div className="page-form__group">
               <label className="page-form__label">姓氏</label>
-              <select className="page-form__select" value={surname} onChange={e=>setSurname(e.target.value)}>
-                {Object.keys(SURNAMES).map(s=><option key={s} value={s}>{s}</option>)}
-              </select>
+              <SurnamePicker value={surname} onChange={setSurname} />
             </div>
             <div className="page-form__group">
               <label className="page-form__label">性别</label>
@@ -66,9 +98,7 @@ const NamingPage: React.FC = () => {
           <div className="page-form__row">
             <div className="page-form__group">
               <label className="page-form__label">姓氏</label>
-              <select className="page-form__select" value={surname} onChange={e=>setSurname(e.target.value)}>
-                {Object.keys(SURNAMES).map(s=><option key={s} value={s}>{s}</option>)}
-              </select>
+              <SurnamePicker value={surname} onChange={setSurname} />
             </div>
             <div className="page-form__group">
               <label className="page-form__label">名字</label>
