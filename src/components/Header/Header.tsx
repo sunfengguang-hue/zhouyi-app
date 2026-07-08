@@ -3,12 +3,18 @@ import './Header.css';
 interface HeaderProps {
   title?: string;
   compact?: boolean;
+  onBack?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ title = '周易算卦', compact = false }) => {
+const Header: React.FC<HeaderProps> = ({ title = '周易算卦', compact = false, onBack }) => {
   if (compact) {
     return (
       <header className="header header--compact">
+        {onBack && (
+          <button className="header__back" onClick={onBack} aria-label="返回首页">
+            ← 首页
+          </button>
+        )}
         <h1 className="header__title">{title}</h1>
       </header>
     );

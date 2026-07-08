@@ -35,9 +35,10 @@
   .header__subtitle { font-size: 14px; letter-spacing: 4px; }
 }
 
-/* Compact mode - hide taiji and subtitle on home view */
+/* Compact mode */
 .header--compact {
   padding: 16px 0 8px;
+  position: relative;
 }
 
 .header--compact .header__title {
@@ -45,9 +46,32 @@
   letter-spacing: 8px;
 }
 
+/* Back button */
+.header__back {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 1px solid rgba(212, 168, 83, 0.3);
+  color: var(--gold);
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: var(--font-display);
+  letter-spacing: 1px;
+}
+.header__back:hover {
+  background: rgba(212, 168, 83, 0.1);
+  border-color: var(--gold);
+}
+
 @media (max-width: 768px) {
   .header--compact { padding: 12px 0 6px; }
   .header--compact .header__title { font-size: 20px; letter-spacing: 6px; }
+  .header__back { font-size: 12px; padding: 3px 10px; left: 12px; }
 }
 
 /* Focus-visible for all buttons */

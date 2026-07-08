@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { TarotResult, TarotSpreadType } from '../../types';
 import { drawTarotCards, getOrientationColor } from '../../utils/tarotCalc';
 import { ELEMENT_COLORS, ELEMENT_SYMBOLS } from '../../data/tarotCards';
@@ -15,18 +15,32 @@ const TarotPage: React.FC = () => {
   const [spreadType, setSpreadType] = useState<TarotSpreadType>('three');
   const [result, setResult] = useState<TarotResult | null>(null);
   const [drawing, setDrawing] = useState(false);
+  const [revealed, setRevealed] = useState<boolean[]>([]);
 
   const handleDraw = () => {
     setDrawing(true);
+    setRevealed([]);
     setTimeout(() => {
-      setResult(drawTarotCards(spreadType, question));
+      const r = drawTarotCards(spreadType, question);
+      setResult(r);
       setDrawing(false);
+      // Stagger card reveals: each card flips after a delay
+      r.draws.forEach((_, i) => {
+        setTimeout(() => {
+          setRevealed(prev => {
+            const next = [...prev];
+            next[i] = true;
+            return next;
+          });
+        }, 400 + i * 500);
+      });
     }, 1800);
   };
 
   const handleReset = () => {
     setResult(null);
     setQuestion('');
+    setRevealed([]);
   };
 
   return (
@@ -70,7 +84,7 @@ const TarotPage: React.FC = () => {
       )}
 
       {drawing && (
-        <div className="tarot-page__drawing" style={{ animation: 'pulse 0.6s ease infinite' }}>
+        <div className="tarot-page__drawing">
           <div className="tarot-page__drawing-cards">
             <span>🂠</span><span>🂠</span><span>🂠</span>
           </div>
@@ -86,51 +100,68 @@ const TarotPage: React.FC = () => {
             <p className="tarot-result__question">问：{result.question}</p>
           )}
 
-          {/* 牌面展示 */}
+          {/* 牌面展示 - 3D flip */}
           <div className={`tarot-result__cards tarot-result__cards--${result.spreadType}`}>
-            {result.draws.map((draw, i) => (
-              <div
-                key={i}
-                className="tarot-card"
-                style={{ animation: `fadeInUp 0.5s ease ${i * 0.2}s both` }}
-              >
-                <div className="tarot-card__position">{draw.position}</div>
-                <div className={`tarot-card__face ${draw.orientation === 'reversed' ? 'tarot-card__face--reversed' : ''}`}>
-                  <div className="tarot-card__number">{draw.card.number}</div>
-                  <div className="tarot-card__name">{draw.card.name}</div>
-                  <div className="tarot-card__name-en">{draw.card.nameEn}</div>
-                </div>
-                {/* 元素徽章 */}
+            {result.draws.map((draw, i) => {
+              const isRevealed = revealed[i];
+              return (
                 <div
-                  className="tarot-card__element"
-                  style={{
-                    backgroundColor: `${ELEMENT_COLORS[draw.card.element]}22`,
-                    borderColor: ELEMENT_COLORS[draw.card.element],
-                    color: ELEMENT_COLORS[draw.card.element],
-                  }}
+                  key={i}
+                  className="tarot-card"
+                  style={{ animation: `fadeInUp 0.5s ease ${i * 0.2}s both` }}
                 >
-                  <span className="tarot-card__element-icon">{ELEMENT_SYMBOLS[draw.card.element]}</span>
-                  <span className="tarot-card__element-text">{draw.card.element}</span>
+                  <div className="tarot-card__position">{draw.position}</div>
+                  {/* 3D Flip container */}
+                  <div className="tarot-card__flip">
+                    <div className={`tarot-card__flip-inner ${isRevealed ? 'tarot-card__flip-inner--revealed' : ''} ${draw.orientation === 'reversed' ? 'tarot-card__flip-inner--reversed' : ''}`}>
+                      {/* Card back */}
+                      <div className="tarot-card__back">
+                        <div className="tarot-card__back-pattern">
+                          <span className="tarot-card__back-symbol">✦</span>
+                        </div>
+                      </div>
+                      {/* Card face */}
+                      <div className="tarot-card__face">
+                        <div className="tarot-card__number">{draw.card.number}</div>
+                        <div className="tarot-card__name">{draw.card.name}</div>
+                        <div className="tarot-card__name-en">{draw.card.nameEn}</div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 元素徽章 */}
+                  <div
+                    className="tarot-card__element"
+                    style={{
+                      backgroundColor: `${ELEMENT_COLORS[draw.card.element]}22`,
+                      borderColor: ELEMENT_COLORS[draw.card.element],
+                      color: ELEMENT_COLORS[draw.card.element],
+                      opacity: isRevealed ? 1 : 0,
+                      transition: 'opacity 0.4s ease 0.3s',
+                    }}
+                  >
+                    <span className="tarot-card__element-icon">{ELEMENT_SYMBOLS[draw.card.element]}</span>
+                    <span className="tarot-card__element-text">{draw.card.element}</span>
+                  </div>
+                  {/* 星体 */}
+                  <div className="tarot-card__planet" style={{ opacity: isRevealed ? 1 : 0, transition: 'opacity 0.4s ease 0.4s' }}>
+                    <span className="tarot-card__planet-label">✦</span>
+                    <span>{draw.card.planet}</span>
+                  </div>
+                  <div className="tarot-card__orientation" style={{ color: getOrientationColor(draw.orientation), opacity: isRevealed ? 1 : 0, transition: 'opacity 0.4s ease 0.5s' }}>
+                    {draw.orientation === 'upright' ? '正位' : '逆位'}
+                  </div>
+                  <div className="tarot-card__keywords" style={{ opacity: isRevealed ? 1 : 0, transition: 'opacity 0.4s ease 0.6s' }}>
+                    {draw.card.keywords.map((kw) => (
+                      <span key={kw} className="tarot-card__keyword">{kw}</span>
+                    ))}
+                  </div>
                 </div>
-                {/* 星体 */}
-                <div className="tarot-card__planet">
-                  <span className="tarot-card__planet-label">✦</span>
-                  <span>{draw.card.planet}</span>
-                </div>
-                <div className="tarot-card__orientation" style={{ color: getOrientationColor(draw.orientation) }}>
-                  {draw.orientation === 'upright' ? '正位' : '逆位'}
-                </div>
-                <div className="tarot-card__keywords">
-                  {draw.card.keywords.map((kw) => (
-                    <span key={kw} className="tarot-card__keyword">{kw}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* 综合解读 */}
-          <div className="tarot-result__summary">
+          {/* 综合解读 - show after all cards revealed */}
+          <div className="tarot-result__summary" style={{ opacity: revealed.length === result.draws.length ? 1 : 0, transition: 'opacity 0.5s ease' }}>
             <h4>牌面解读</h4>
             {result.summary.split('\n\n').map((para, i) => {
               if (para === '---') return <hr key={i} className="tarot-result__divider" />;
@@ -139,7 +170,7 @@ const TarotPage: React.FC = () => {
           </div>
 
           {/* 每张牌详情 */}
-          <div className="tarot-result__details">
+          <div className="tarot-result__details" style={{ opacity: revealed.length === result.draws.length ? 1 : 0, transition: 'opacity 0.5s ease 0.3s' }}>
             {result.draws.map((draw, i) => (
               <div key={i} className="tarot-result__detail">
                 <h4>
@@ -164,7 +195,7 @@ const TarotPage: React.FC = () => {
 
           {/* 组合解读（多牌阵） */}
           {result.spreadType !== 'single' && result.combination && (
-            <div className="tarot-result__combination">
+            <div className="tarot-result__combination" style={{ opacity: revealed.length === result.draws.length ? 1 : 0, transition: 'opacity 0.5s ease 0.5s' }}>
               <h4>🔮 组合解读</h4>
               <p className="tarot-result__combination-subtitle">
                 {result.draws.map((d, i) => (
@@ -186,7 +217,7 @@ const TarotPage: React.FC = () => {
           )}
 
           {/* 操作 */}
-          <div className="page-form__actions">
+          <div className="page-form__actions" style={{ opacity: revealed.length === result.draws.length ? 1 : 0, transition: 'opacity 0.5s ease 0.7s' }}>
             <button className="btn-primary" onClick={handleReset}>
               重新占卜
             </button>

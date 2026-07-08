@@ -106,7 +106,11 @@ const App: React.FC = () => {
 
   return (
     <Layout>
-      <Header title={pageTitles[view]} compact={view === 'home'} />
+      <Header
+        title={pageTitles[view]}
+        compact={view === 'home'}
+        onBack={view !== 'home' ? () => navigate('home') : undefined}
+      />
 
       <main className="app__main">
         <ErrorBoundary onReset={() => { setSaved(false); reset(); navigate('home'); }}>
