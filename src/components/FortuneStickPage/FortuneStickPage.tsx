@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { FortuneStickResult } from '../../types';
 import { drawFortuneStick, getLevelColor } from '../../utils/fortuneStickCalc';
+import ShareButton from '../ShareButton/ShareButton';
 import './FortuneStickPage.css';
 
 const FortuneStickPage: React.FC = () => {
@@ -10,6 +11,7 @@ const FortuneStickPage: React.FC = () => {
   const [shakePhase, setShakePhase] = useState(0);
   const [resultReady, setResultReady] = useState(false);
   const [flash, setFlash] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const tierClass: Record<string, string> = {
     '上上签': 'fortune-result--best',
@@ -88,7 +90,7 @@ const FortuneStickPage: React.FC = () => {
       {flash && <div className="fortune-flash" />}
 
       {result && resultReady && (
-        <div className={`fortune-result ${tierClass[result.stick.level] || ''}`}>
+        <div ref={resultRef} className={`fortune-result ${tierClass[result.stick.level] || ''}`}>
           {/* 签号与等级 */}
           <div className="fortune-result__header" style={{ animation: 'stampReveal 0.6s ease both' }}>
             <div className="fortune-result__number">第 {result.stick.id} 签</div>
@@ -190,6 +192,7 @@ const FortuneStickPage: React.FC = () => {
           {/* 操作按钮 */}
           <div className="page-form__actions" style={{ animation: 'fortuneReveal 0.5s ease 1.1s both' }}>
             <button className="btn-primary" onClick={handleReset}>再抽一签</button>
+            <ShareButton targetRef={resultRef} fileName={`抽签_${Date.now()}.png`} />
           </div>
         </div>
       )}
