@@ -305,6 +305,63 @@
   font-size: 12px; font-weight: bold;
 }
 
+/* 推荐卡片 - 字义详解 */
+.naming-card__chars {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(212, 168, 83, 0.1);
+}
+
+.naming-card__char {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+}
+
+.naming-card__char-letter {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  min-width: 24px;
+}
+
+.naming-card__char-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.naming-card__char-wx {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.naming-card__char-meaning {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.naming-card__zodiac {
+  font-size: 11px;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-top: 6px;
+  padding: 4px 8px;
+  background: rgba(212, 168, 83, 0.06);
+  border-radius: 4px;
+  border-left: 2px solid rgba(212, 168, 83, 0.3);
+  letter-spacing: 0.5px;
+}
+
 /* 测名新增区域 */
 .naming-analyze__section {
   padding: 16px; background: rgba(0,0,0,0.15); border-radius: var(--radius-md); border-left: 3px solid var(--gold);

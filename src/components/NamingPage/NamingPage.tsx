@@ -132,6 +132,23 @@ const NamingPage: React.FC = () => {
                 </div>
                 <p className="naming-card__sancai">三才：{r.sancai.tian}{r.sancai.ren}{r.sancai.di} · <span className={`text-${r.sancai.luck==='吉'?'gold':'secondary'}`}>{r.sancai.luck}</span></p>
                 <p className="naming-card__meaning">{r.fullNameMeaning}</p>
+                {/* 字义详解 */}
+                {r.charDetails && r.charDetails.length > 0 && (
+                  <div className="naming-card__chars">
+                    {r.charDetails.map((cd, ci) => (
+                      <div key={ci} className="naming-card__char">
+                        <span className="naming-card__char-letter" style={{ color: wxColors[cd.wuxing] || '#ccc' }}>{cd.char}</span>
+                        <div className="naming-card__char-info">
+                          <span className="naming-card__char-wx" style={{ color: wxColors[cd.wuxing] || '#ccc' }}>{cd.wuxing} · {cd.strokes}画</span>
+                          <span className="naming-card__char-meaning">{cd.meaning}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {r.zodiacAdvice && (
+                  <p className="naming-card__zodiac">{r.zodiacAdvice}</p>
+                )}
                 <div className="naming-card__pron">
                   <span className="naming-card__pron-label">音韵</span>
                   <span className="naming-card__pron-score" style={{color:scoreColor(r.pronunciation.score)}}>{r.pronunciation.score}</span>
