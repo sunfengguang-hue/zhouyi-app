@@ -280,4 +280,7 @@
   .fortune-result__title { font-size: 22px; letter-spacing: 4px; }
   .fortune-result__poem p { font-size: 16px; }
   .fortune-result__level { font-size: 16px; padding: 3px 12px; }
+  .fortune-result__poem-kw { font-size: 12px; padding: 3px 10px; }
+  .fortune-result__topic { padding: 14px; }
+  .fortune-result__topic-text { font-size: 13px; }
 }

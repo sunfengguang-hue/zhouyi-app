@@ -463,8 +463,11 @@
   .tarot-card__name { font-size: 12px; }
   .tarot-card__name-en { font-size: 7px; }
   .tarot-page__spreads { flex-direction: column; }
+  .tarot-page__guide { padding: 12px; }
+  .tarot-page__guide-pos-name { min-width: 60px; font-size: 12px; }
   .tarot-result__combination { padding: 14px; }
   .tarot-result__combination p { font-size: 13px; }
+  .tarot-result__energy { padding: 14px; }
 
   /* Relationship spread mobile: 3+2 row layout */
   .tarot-result__cards--relationship {

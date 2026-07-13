@@ -717,6 +717,10 @@
   .home__daily-tag { font-size: 11px; padding: 1px 6px; }
   .home__recommend { flex-wrap: wrap; padding: 12px 14px; gap: 8px; }
   .home__recommend-text { font-size: 13px; }
+  .home__daily-wx__tips { grid-template-columns: 1fr; }
+  .home__daily-wx__name { font-size: 22px; }
+  .home__daily-hex__name { font-size: 20px; }
+  .home__daily-hex__main { flex-wrap: wrap; }
 }
 
 @media (max-width: 360px) {
