@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import type { NameResult, WuXing } from '../../types';
 import { recommendNames, analyzeName } from '../../utils/namingCalc';
 import { SURNAMES } from '../../data/naming';
+import ShareButton from '../ShareButton/ShareButton';
 import './NamingPage.css';
 
 const allSurnames = Object.keys(SURNAMES);
@@ -47,6 +48,7 @@ const NamingPage: React.FC = () => {
   const [analyzeGiven, setAnalyzeGiven] = useState('');
   const [analyzeResult, setAnalyzeResult] = useState<NameResult | null>(null);
   const [analyzeError, setAnalyzeError] = useState('');
+  const analyzeRef = useRef<HTMLDivElement>(null);
 
   const handleRecommend = () => { setResults(recommendNames(surname, gender, preferWX, 12)); setAnalyzeResult(null); };
   const handleAnalyze = () => {
@@ -147,7 +149,7 @@ const NamingPage: React.FC = () => {
 
       {/* 测名结果 */}
       {analyzeResult && (
-        <div className="page-result naming-result">
+        <div ref={analyzeRef} className="page-result naming-result">
           <h2 className="naming-result__title">{analyzeResult.fullName} · 名字分析</h2>
           {analyzeResult.unknownChars && analyzeResult.unknownChars.length > 0 && (
             <div style={{
@@ -170,14 +172,23 @@ const NamingPage: React.FC = () => {
             {/* 五格数理 */}
             <div className="naming-analyze__wuge" style={{ animation: 'fadeInUp 0.5s ease 0.2s both' }}>
               <h4>五格数理</h4>
-              {geNames.map((gn, gi) => (
-                <div key={gn} className="naming-analyze__ge-row">
-                  <span className="naming-analyze__ge-name">{gn}</span>
-                  <span className="text-gold">{analyzeResult.wugeJi[gi].index}</span>
-                  <span className={`tag tag-${analyzeResult.wugeJi[gi].luck==='凶'?'vermillion':'gold'}`}>{analyzeResult.wugeJi[gi].luck}</span>
-                  <span className="text-secondary">{analyzeResult.wugeJi[gi].desc}</span>
-                </div>
-              ))}
+              {geNames.map((gn, gi) => {
+                const ge = analyzeResult.wugeJi[gi];
+                const isGood = ge.luck === '吉' || ge.luck === '大吉' || ge.luck === '半吉';
+                const barColor = isGood ? '#2ecc71' : '#e74c3c';
+                const barWidth = isGood ? `${Math.min(ge.index * 1.5, 100)}%` : `${Math.min(ge.index * 1.5, 100)}%`;
+                return (
+                  <div key={gn} className="naming-analyze__ge-row">
+                    <span className="naming-analyze__ge-name">{gn}</span>
+                    <span className="text-gold">{ge.index}</span>
+                    <div className="naming-analyze__ge-bar">
+                      <div className="naming-analyze__ge-bar-fill" style={{ width: barWidth, background: barColor }} />
+                    </div>
+                    <span className={`tag tag-${isGood ? 'gold' : 'vermillion'}`}>{ge.luck}</span>
+                    <span className="text-secondary naming-analyze__ge-desc">{ge.desc}</span>
+                  </div>
+                );
+              })}
             </div>
 
             {/* 三才配置 */}
@@ -229,6 +240,9 @@ const NamingPage: React.FC = () => {
               <h4>生肖宜忌</h4>
               <p className="naming-analyze__zodiac-text">{analyzeResult.zodiacAdvice}</p>
             </div>
+          </div>
+          <div className="page-form__actions">
+            <ShareButton targetRef={analyzeRef} fileName={`姓名分析_${analyzeResult.fullName}_${Date.now()}.png`} />
           </div>
         </div>
       )}

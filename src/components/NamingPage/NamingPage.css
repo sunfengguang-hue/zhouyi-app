@@ -256,6 +256,28 @@
   letter-spacing: 1px;
 }
 
+.naming-analyze__ge-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.naming-analyze__ge-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+.naming-analyze__ge-desc {
+  font-size: 12px !important;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .naming-analyze__sancai p {
   font-size: 14px;
   color: var(--text-secondary);
