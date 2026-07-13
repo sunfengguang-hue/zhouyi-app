@@ -49,6 +49,7 @@ const NamingPage: React.FC = () => {
   const [analyzeResult, setAnalyzeResult] = useState<NameResult | null>(null);
   const [analyzeError, setAnalyzeError] = useState('');
   const analyzeRef = useRef<HTMLDivElement>(null);
+  const recommendRef = useRef<HTMLDivElement>(null);
 
   const handleRecommend = () => { setResults(recommendNames(surname, gender, preferWX, 12)); setAnalyzeResult(null); };
   const handleAnalyze = () => {
@@ -113,7 +114,7 @@ const NamingPage: React.FC = () => {
 
       {/* 推荐结果 */}
       {results && results.length > 0 && (
-        <div className="page-result naming-result">
+        <div ref={recommendRef} className="page-result naming-result">
           <h2 className="naming-result__title">为您推荐 · {surname}姓{gender}宝吉名</h2>
           <div className="naming-list">
             {results.map((r, i) => (
@@ -137,6 +138,9 @@ const NamingPage: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="page-form__actions">
+            <ShareButton targetRef={recommendRef} fileName={`起名推荐_${surname}姓_${Date.now()}.png`} />
           </div>
         </div>
       )}
