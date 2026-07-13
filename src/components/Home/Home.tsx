@@ -3,7 +3,10 @@ import type { AppView } from '../../types';
 import { getLunarInfo } from '../../utils/lunarCalendar';
 import { drawFortuneStick, getLevelColor } from '../../utils/fortuneStickCalc';
 import { MAJOR_ARCANA, ELEMENT_COLORS, ELEMENT_SYMBOLS } from '../../data/tarotCards';
+import { hexagramsMap } from '../../data/hexagrams';
 import './Home.css';
+
+const ALL_HEXAGRAMS = Object.values(hexagramsMap);
 
 interface HomeProps {
   onNavigate: (view: AppView) => void;
@@ -299,6 +302,32 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </div>
             </div>
             <span className="home__daily-wx__more">查看八字详解 ›</span>
+          </button>
+        );
+      })()}
+
+      {/* 每日一卦 */}
+      {(() => {
+        const hexIdx = Math.floor(seededRandom(todaySeed + 300) * ALL_HEXAGRAMS.length);
+        const hex = ALL_HEXAGRAMS[hexIdx];
+        if (!hex) return null;
+        return (
+          <button className="home__daily-hex" onClick={() => onNavigate('zhouyi')} style={{ animation: 'fadeInUp 0.6s ease 0.65s both' }}>
+            <div className="home__daily-hex__badge">每日一卦</div>
+            <div className="home__daily-hex__content">
+              <div className="home__daily-hex__main">
+                <span className="home__daily-hex__number">第{hex.number}卦</span>
+                <span className="home__daily-hex__name">{hex.name}</span>
+                <span className="home__daily-hex__full">{hex.fullName}</span>
+              </div>
+              <div className="home__daily-hex__trigrams">
+                <span className="home__daily-hex__tri">上{hex.upperTrigram}</span>
+                <span className="home__daily-hex__tri">下{hex.lowerTrigram}</span>
+              </div>
+              <p className="home__daily-hex__judgment">{hex.judgmentTranslation}</p>
+              <p className="home__daily-hex__image">{hex.imageTranslation}</p>
+            </div>
+            <span className="home__daily-hex__more">摇卦问事 ›</span>
           </button>
         );
       })()}
