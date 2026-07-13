@@ -12,7 +12,7 @@ import Toast, { type ToastData } from './components/Toast/Toast';
 import { useDivination } from './hooks/useDivination';
 import { useHistory } from './hooks/useHistory';
 import { useAppView } from './hooks/useAppView';
-import type { AppView, DivinationResult, HistoryItem } from './types';
+import type { AppView, DivinationResult, HistoryItem, WuXing } from './types';
 
 // 占位组件 - 后续逐步实现
 const BaziPage = React.lazy(() => import('./components/BaziPage/BaziPage'));
@@ -57,7 +57,7 @@ const TaijiLoader: React.FC = () => (
 );
 
 const App: React.FC = () => {
-  const { view, navigate: rawNavigate } = useAppView();
+  const { view, navigate: rawNavigate, consumeParams } = useAppView();
   const navigate = useCallback((v: AppView) => { setSaved(false); setViewingResult(null); rawNavigate(v); }, [rawNavigate]);
   const { phase, currentFlip, result, startDivination, flipOnce, reset } = useDivination();
   const [divComplete, setDivComplete] = React.useState(false);
@@ -67,6 +67,13 @@ const App: React.FC = () => {
   const [saved, setSaved] = useState(false);
   const [viewingResult, setViewingResult] = useState<DivinationResult | null>(null);
   const shareRef = useRef<HTMLDivElement>(null);
+
+  // 跨模块导航：八字 → 起名（传favorableWX）
+  const handleBaziToNaming = useCallback((wx: WuXing) => {
+    setSaved(false);
+    setViewingResult(null);
+    rawNavigate('naming', { preferWX: wx });
+  }, [rawNavigate]);
 
   const showToast = useCallback((message: string, type: ToastData['type'] = 'info') => {
     const id = Date.now();
@@ -179,7 +186,7 @@ const App: React.FC = () => {
         {/* 生辰八字 */}
         {view === 'bazi' && (
           <React.Suspense fallback={<TaijiLoader />}>
-            <BaziPage />
+            <BaziPage onNavigateNaming={handleBaziToNaming} />
           </React.Suspense>
         )}
 
@@ -193,7 +200,7 @@ const App: React.FC = () => {
         {/* 起名测名 */}
         {view === 'naming' && (
           <React.Suspense fallback={<TaijiLoader />}>
-            <NamingPage />
+            <NamingPage initialPreferWX={consumeParams()?.preferWX} />
           </React.Suspense>
         )}
 

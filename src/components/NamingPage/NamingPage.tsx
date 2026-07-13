@@ -39,11 +39,11 @@ const SurnamePicker: React.FC<{ value: string; onChange: (v: string) => void }> 
   );
 };
 
-const NamingPage: React.FC = () => {
-  const [tab, setTab] = useState<'recommend' | 'analyze'>('recommend');
+const NamingPage: React.FC<{ initialPreferWX?: WuXing | 'auto' }> = ({ initialPreferWX }) => {
+  const [tab, setTab] = useState<'recommend' | 'analyze'>(initialPreferWX ? 'recommend' : 'recommend');
   const [surname, setSurname] = useState('李');
   const [gender, setGender] = useState<'男' | '女'>('男');
-  const [preferWX, setPreferWX] = useState<WuXing | 'auto'>('auto');
+  const [preferWX, setPreferWX] = useState<WuXing | 'auto'>(initialPreferWX ?? 'auto');
   const [results, setResults] = useState<NameResult[] | null>(null);
   const [analyzeGiven, setAnalyzeGiven] = useState('');
   const [analyzeResult, setAnalyzeResult] = useState<NameResult | null>(null);

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import type { BaziResult } from '../../types';
+import type { BaziResult, WuXing } from '../../types';
 import { calculateBazi, getYearPillarInfo } from '../../utils/baziCalc';
 import ShareButton from '../ShareButton/ShareButton';
 import './BaziPage.css';
 
-const BaziPage: React.FC = () => {
+const BaziPage: React.FC<{ onNavigateNaming?: (wx: WuXing) => void }> = ({ onNavigateNaming }) => {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
@@ -28,7 +28,7 @@ const BaziPage: React.FC = () => {
 
   const handleReset = () => setResult(null);
 
-  if (result) return <BaziResultView result={result} onReset={handleReset} />;
+  if (result) return <BaziResultView result={result} onReset={handleReset} onNavigateNaming={onNavigateNaming} />;
 
   return (
     <div className="page-form bazi-form">
@@ -77,7 +77,11 @@ const BaziPage: React.FC = () => {
 };
 
 /** 结果展示 */
-const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({ result, onReset }) => {
+const BaziResultView: React.FC<{
+  result: BaziResult;
+  onReset: () => void;
+  onNavigateNaming?: (wx: WuXing) => void;
+}> = ({ result, onReset, onNavigateNaming }) => {
   const r = result;
   const resultRef = useRef<HTMLDivElement>(null);
   const pillars = [r.year, r.month, r.day, r.hour];
@@ -608,6 +612,15 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
       <div className="page-form__actions">
         <button className="btn-secondary" onClick={onReset}>重新测算</button>
         <ShareButton targetRef={resultRef} fileName={`八字排盘_${Date.now()}.png`} />
+        {onNavigateNaming && r.favorableWX.length > 0 && (
+          <button
+            className="btn-primary"
+            style={{ background: 'linear-gradient(135deg, #e67e22, #d4a853)', marginTop: '8px' }}
+            onClick={() => onNavigateNaming(r.favorableWX[0])}
+          >
+            ✦ 根据喜用神「{r.favorableWX[0]}」起名
+          </button>
+        )}
       </div>
     </div>
   );
