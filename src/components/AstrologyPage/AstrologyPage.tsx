@@ -10,10 +10,11 @@ const AstrologyPage: React.FC = () => {
   const [error, setError] = useState('');
   const [result, setResult] = useState<AstrologyResult | null>(null);
 
-  const daysInMonth = new Date(2024, month, 0).getDate(); // 2024 is leap year
+  const currentYear = new Date().getFullYear();
+  const daysInMonth = new Date(currentYear, month, 0).getDate();
   const handleMonthChange = (m: number) => {
     setMonth(m);
-    const maxDay = new Date(2024, m, 0).getDate();
+    const maxDay = new Date(currentYear, m, 0).getDate();
     if (day > maxDay) setDay(maxDay);
   };
 

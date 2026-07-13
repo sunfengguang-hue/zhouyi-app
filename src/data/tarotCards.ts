@@ -178,8 +178,6 @@ export function generateCombinationReading(draws: TarotDraw[]): string {
     // 第一部分：你与对方的能量对比
     const youOrient = orientations[0] === 'upright' ? '正位' : '逆位';
     const otherOrient = orientations[1] === 'upright' ? '正位' : '逆位';
-    const youMeaning = youOrient === '正位' ? you.card.upright : you.card.reversed;
-    const otherMeaning = otherOrient === '正位' ? other.card.upright : other.card.reversed;
 
     const sameElement = elements[0] === elements[1];
     const compatibleElements: Record<string, string[]> = {

@@ -10,18 +10,55 @@ const TRIGRAM_SYMBOLS: Record<string, string> = {
   '西': '☱', '西北': '☰', '北': '☵', '东北': '☶',
 };
 
-// 2026丙午年流年飞星（一白入中宫）
-const ANNUAL_STARS_2026: { direction: string; star: number; name: string; color: string; lucky: boolean; effect: string; remedy: string }[] = [
-  { direction: '中宫', star: 1, name: '一白贪狼', color: '#3498db', lucky: true, effect: '桃花人缘星，利感情社交和远行', remedy: '摆放水晶或蓝色物品催旺' },
-  { direction: '西北', star: 2, name: '二黑病符', color: '#e67e22', lucky: false, effect: '病符星入位，易引发健康问题', remedy: '放铜葫芦或六帝钱化煞' },
-  { direction: '西', star: 3, name: '三碧禄存', color: '#27ae60', lucky: false, effect: '是非口舌星，易引起争吵纠纷', remedy: '放红色物品或长明灯化解' },
-  { direction: '东北', star: 4, name: '四绿文曲', color: '#2ecc71', lucky: true, effect: '文昌星入位，利考试学业', remedy: '放四支富贵竹或文昌塔' },
-  { direction: '南', star: 5, name: '五黄廉贞', color: '#e74c3c', lucky: false, effect: '最凶灾煞星，大病大灾之位', remedy: '放铜风铃或六帝钱强力化解' },
-  { direction: '北', star: 6, name: '六白武曲', color: '#f1c40f', lucky: true, effect: '偏财权力星，利事业升职', remedy: '放金属摆件或铜器催旺' },
-  { direction: '西南', star: 7, name: '七赤破军', color: '#e74c3c', lucky: false, effect: '破败盗劫星，易有口舌官非', remedy: '放蓝色花瓶或清水化解' },
-  { direction: '东', star: 8, name: '八白左辅', color: '#f39c12', lucky: true, effect: '当旺财星，大利财运置业', remedy: '放黄色水晶或陶瓷摆件催旺' },
-  { direction: '东南', star: 9, name: '九紫右弼', color: '#9b59b6', lucky: true, effect: '喜庆姻缘星，利婚嫁添丁', remedy: '放红色中国结或紫色物品催旺' },
-];
+// 流年飞星动态计算（中宫星每年递减1，9→8→…→1→9循环）
+const TIAN_GAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const DI_ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+function getGanZhiYear(year: number): string {
+  return TIAN_GAN[(year - 4) % 10] + DI_ZHI[(year - 4) % 12];
+}
+
+function getAnnualStars(year: number) {
+  // 2026年一白入中宫 → 中宫星 = (11 - (year - 2026) % 9) % 9 || 9
+  const centerStar = ((11 - ((year - 2026) % 9 + 9)) % 9) || 9;
+
+  const STAR_DATA: Record<number, { name: string; color: string; lucky: boolean;
+    effect: string; remedy: string; summary: string }> = {
+    1: { name: '一白贪狼', color: '#3498db', lucky: true, summary: '一白贪狼星入中宫，桃花人缘当旺',
+      effect: '桃花人缘星，利感情社交和远行', remedy: '摆放水晶或蓝色物品催旺' },
+    2: { name: '二黑病符', color: '#e67e22', lucky: false, summary: '二黑病符星入中宫，注意健康',
+      effect: '病符星入位，易引发健康问题', remedy: '放铜葫芦或六帝钱化煞' },
+    3: { name: '三碧禄存', color: '#27ae60', lucky: false, summary: '三碧禄存星入中宫，防口舌是非',
+      effect: '是非口舌星，易引起争吵纠纷', remedy: '放红色物品或长明灯化解' },
+    4: { name: '四绿文曲', color: '#2ecc71', lucky: true, summary: '四绿文曲星入中宫，利学业考试',
+      effect: '文昌星入位，利考试学业', remedy: '放四支富贵竹或文昌塔' },
+    5: { name: '五黄廉贞', color: '#e74c3c', lucky: false, summary: '五黄廉贞星入中宫，宜静不宜动',
+      effect: '最凶灾煞星，大病大灾之位', remedy: '放铜风铃或六帝钱强力化解' },
+    6: { name: '六白武曲', color: '#f1c40f', lucky: true, summary: '六白武曲星入中宫，利事业权力',
+      effect: '偏财权力星，利事业升职', remedy: '放金属摆件或铜器催旺' },
+    7: { name: '七赤破军', color: '#e74c3c', lucky: false, summary: '七赤破军星入中宫，防破财口舌',
+      effect: '破败盗劫星，易有口舌官非', remedy: '放蓝色花瓶或清水化解' },
+    8: { name: '八白左辅', color: '#f39c12', lucky: true, summary: '八白左辅星入中宫，财星当旺',
+      effect: '当旺财星，大利财运置业', remedy: '放黄色水晶或陶瓷摆件催旺' },
+    9: { name: '九紫右弼', color: '#9b59b6', lucky: true, summary: '九紫右弼星入中宫，喜庆姻缘旺',
+      effect: '喜庆姻缘星，利婚嫁添丁', remedy: '放红色中国结或紫色物品催旺' },
+  };
+
+  const directions = ['中宫', '西北', '西', '东北', '南', '北', '西南', '东', '东南'];
+  const result: { direction: string; star: number; name: string; color: string;
+    lucky: boolean; effect: string; remedy: string }[] = [];
+
+  for (let i = 0; i < 9; i++) {
+    const starNum = ((centerStar - 1 + i) % 9) + 1;
+    const data = STAR_DATA[starNum];
+    result.push({
+      direction: directions[i], star: starNum, name: data.name, color: data.color,
+      lucky: data.lucky,
+      effect: i === 0 ? data.summary : data.effect,
+      remedy: data.remedy,
+    });
+  }
+  return { stars: result, centerSummary: STAR_DATA[centerStar].summary, ganZhi: getGanZhiYear(year) };
+}
 
 const FengshuiPage: React.FC = () => {
   const [year, setYear] = useState(1990);
@@ -360,27 +397,33 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
         </div>
       </div>
 
-      {/* 流年飞星 2026 */}
-      <div className="fs-result__section">
-        <h3 className="fs-result__section-title">2026丙午年 · 流年飞星</h3>
-        <p className="fs-result__annual-desc">一白贪狼星入中宫，桃花人缘当旺。注意南方五黄煞位须化解。</p>
-        <div className="fs-result__annual-grid">
-          {ANNUAL_STARS_2026.map((s, i) => (
-            <div key={s.direction} className={`fs-result__annual-card ${s.lucky ? 'fs-result__annual-card--lucky' : 'fs-result__annual-card--unlucky'} ${s.direction === '中宫' ? 'fs-result__annual-card--center' : ''}`} style={{ animation: `fadeInUp 0.4s ease ${i * 0.06}s both` }}>
-              <div className="fs-result__annual-head">
-                <span className="fs-result__annual-dir">{s.direction}</span>
-                <span className="fs-result__annual-star" style={{ color: s.color }}>★{s.star}</span>
-              </div>
-              <p className="fs-result__annual-name" style={{ color: s.color }}>{s.name}</p>
-              <p className="fs-result__annual-effect">{s.effect}</p>
-              <div className="fs-result__annual-remedy">
-                <span className="fs-result__annual-remedy-label">{s.lucky ? '催旺' : '化解'}</span>
-                <p>{s.remedy}</p>
-              </div>
+      {/* 流年飞星 */}
+      {(() => {
+        const currentYear = new Date().getFullYear();
+        const annual = getAnnualStars(currentYear);
+        return (
+          <div className="fs-result__section">
+            <h3 className="fs-result__section-title">{currentYear}{annual.ganZhi}年 · 流年飞星</h3>
+            <p className="fs-result__annual-desc">{annual.centerSummary}。注意五黄煞位须化解。</p>
+            <div className="fs-result__annual-grid">
+              {annual.stars.map((s, i) => (
+                <div key={s.direction} className={`fs-result__annual-card ${s.lucky ? 'fs-result__annual-card--lucky' : 'fs-result__annual-card--unlucky'} ${s.direction === '中宫' ? 'fs-result__annual-card--center' : ''}`} style={{ animation: `fadeInUp 0.4s ease ${i * 0.06}s both` }}>
+                  <div className="fs-result__annual-head">
+                    <span className="fs-result__annual-dir">{s.direction}</span>
+                    <span className="fs-result__annual-star" style={{ color: s.color }}>★{s.star}</span>
+                  </div>
+                  <p className="fs-result__annual-name" style={{ color: s.color }}>{s.name}</p>
+                  <p className="fs-result__annual-effect">{s.effect}</p>
+                  <div className="fs-result__annual-remedy">
+                    <span className="fs-result__annual-remedy-label">{s.lucky ? '催旺' : '化解'}</span>
+                    <p>{s.remedy}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        );
+      })()}
 
       <div className="page-form__actions">
         <button className="btn-secondary" onClick={onReset}>重新测算</button>

@@ -195,7 +195,7 @@ const NamingPage: React.FC = () => {
               <h4>五格数理</h4>
               {geNames.map((gn, gi) => {
                 const ge = analyzeResult.wugeJi[gi];
-                const isGood = ge.luck === '吉' || ge.luck === '大吉' || ge.luck === '半吉';
+                const isGood = ge.luck === '吉' || ge.luck === '半吉';
                 const barColor = isGood ? '#2ecc71' : '#e74c3c';
                 const barWidth = isGood ? `${Math.min(ge.index * 1.5, 100)}%` : `${Math.min(ge.index * 1.5, 100)}%`;
                 return (

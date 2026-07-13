@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import type { FortuneStickResult } from '../../types';
 import { drawFortuneStick, getLevelColor } from '../../utils/fortuneStickCalc';
 import ShareButton from '../ShareButton/ShareButton';

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import type { BaziResult } from '../../types';
 import { calculateBazi, getYearPillarInfo } from '../../utils/baziCalc';
-import { SHISHEN_DESC, DAY_MASTER_PERSONALITY } from '../../data/bazi';
 import ShareButton from '../ShareButton/ShareButton';
 import './BaziPage.css';
 

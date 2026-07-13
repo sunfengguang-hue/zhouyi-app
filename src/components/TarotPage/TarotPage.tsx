@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import type { TarotResult, TarotSpreadType } from '../../types';
 import { drawTarotCards, getOrientationColor } from '../../utils/tarotCalc';
 import { ELEMENT_COLORS, ELEMENT_SYMBOLS } from '../../data/tarotCards';
