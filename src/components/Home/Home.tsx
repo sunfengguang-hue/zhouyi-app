@@ -247,6 +247,62 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         );
       })()}
 
+      {/* 每日五行能量 */}
+      {(() => {
+        const wxList = ['木', '火', '土', '金', '水'] as const;
+        const wxColors: Record<string, string> = { '金': '#f1c40f', '木': '#2ecc71', '水': '#3498db', '火': '#e74c3c', '土': '#e67e22' };
+        const wxIcons: Record<string, string> = { '金': '✦', '木': '✿', '水': '≋', '火': '✧', '土': '▣' };
+        const wxTips: Record<string, { favor: string; avoid: string; color: string; food: string; action: string }> = {
+          '木': { favor: '东方、绿色', avoid: '西方、白色', color: '绿色系穿搭', food: '绿色蔬菜、酸味食物', action: '适合学习、种植、读书' },
+          '火': { favor: '南方、红色', avoid: '北方、黑色', color: '红色系穿搭', food: '红色食物、苦味茶', action: '适合社交、表达、展示才华' },
+          '土': { favor: '中央、黄色', avoid: '东方、绿色', color: '黄色棕色系穿搭', food: '黄色食物、甘味零食', action: '适合理财、签约、稳固根基' },
+          '金': { favor: '西方、白色', avoid: '南方、红色', color: '白色银色系穿搭', food: '白色食物、辛辣调味', action: '适合决策、法律事务、整理归纳' },
+          '水': { favor: '北方、黑色', avoid: '中央、黄色', color: '黑色蓝色系穿搭', food: '黑色食物、咸味海鲜', action: '适合冥想、旅行、沟通交流' },
+        };
+        // 每日五行轮换（基于日期种子稳定）
+        const dayWxIdx = Math.floor(seededRandom(todaySeed + 200) * 5);
+        const dayWx = wxList[dayWxIdx];
+        const tip = wxTips[dayWx];
+        // 次旺五行（生今日五行的元素）
+        const genOrder: Record<string, string> = { '木': '水', '火': '木', '土': '火', '金': '土', '水': '金' };
+        const supportWx = genOrder[dayWx];
+
+        return (
+          <button className="home__daily-wx" onClick={() => onNavigate('bazi')} style={{ animation: 'fadeInUp 0.6s ease 0.55s both' }}>
+            <div className="home__daily-wx__badge">今日五行能量</div>
+            <div className="home__daily-wx__content">
+              <div className="home__daily-wx__main">
+                <span className="home__daily-wx__icon" style={{ color: wxColors[dayWx] }}>{wxIcons[dayWx]}</span>
+                <span className="home__daily-wx__name" style={{ color: wxColors[dayWx] }}>{dayWx}</span>
+                <span className="home__daily-wx__label">当旺</span>
+              </div>
+              <div className="home__daily-wx__tips">
+                <div className="home__daily-wx__tip">
+                  <span className="home__daily-wx__tip-label">利方</span>
+                  <span>{tip.favor}</span>
+                </div>
+                <div className="home__daily-wx__tip">
+                  <span className="home__daily-wx__tip-label">穿搭</span>
+                  <span>{tip.color}</span>
+                </div>
+                <div className="home__daily-wx__tip">
+                  <span className="home__daily-wx__tip-label">饮食</span>
+                  <span>{tip.food}</span>
+                </div>
+                <div className="home__daily-wx__tip">
+                  <span className="home__daily-wx__tip-label">宜事</span>
+                  <span>{tip.action}</span>
+                </div>
+              </div>
+              <div className="home__daily-wx__support">
+                助力元素：<span style={{ color: wxColors[supportWx], fontWeight: 600 }}>{wxIcons[supportWx]} {supportWx}</span>（{supportWx}生{dayWx}，可借势助力）
+              </div>
+            </div>
+            <span className="home__daily-wx__more">查看八字详解 ›</span>
+          </button>
+        );
+      })()}
+
       <div className="home__grid">
         {CARDS.map((card, i) => (
           <button
