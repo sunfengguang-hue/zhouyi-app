@@ -195,6 +195,42 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
         </div>
       </div>
 
+      {/* 五行补救建议 */}
+      <div className="bazi-result__remedy">
+        <h3 className="bazi-result__section-title">五行补救建议</h3>
+        <p className="bazi-remedy__intro">喜用神为「{r.favorableWX.join('、')}」，以下方面可助运势</p>
+        <div className="bazi-remedy__grid">
+          {(() => {
+            const remedyData: Record<string, { icon: string; color: string; direction: string; food: string; career: string; habit: string }> = {
+              '金': { icon: '✦', color: '白色、银色、金色', direction: '西方、西北方', food: '辛辣食物、白色食物（白萝卜、梨、百合）', career: '金融、法律、机械、矿业、珠宝', habit: '佩戴金属饰品，多接触金属器物，秋季运势较旺' },
+              '木': { icon: '✿', color: '绿色、青色、碧色', direction: '东方、东南方', food: '酸味食物、绿色蔬菜（菠菜、芹菜、韭菜）', career: '教育、出版、医疗、园艺、纺织', habit: '多养花草植物，居住宜近公园绿地，春季运势较旺' },
+              '水': { icon: '≋', color: '黑色、蓝色、深灰', direction: '北方', food: '咸味食物、黑色食物（黑豆、黑芝麻、海带）', career: '贸易、物流、旅游、传媒、水产', habit: '多饮水、近水而居，浴室保持水流通畅，冬季运势较旺' },
+              '火': { icon: '✧', color: '红色、紫色、橙色', direction: '南方', food: '苦味食物、红色食物（红枣、红豆、番茄）', career: '餐饮、娱乐、IT、能源、美容', habit: '多晒太阳，室内保持光线充足，夏季运势较旺' },
+              '土': { icon: '▣', color: '黄色、棕色、米色', direction: '中央、东北、西南', food: '甘味食物、黄色食物（南瓜、红薯、玉米）', career: '房地产、建筑、农业、陶瓷、保险', habit: '多接触大自然土地，赤足踩草地，四季交替时运势较旺' },
+            };
+            return r.favorableWX.map((wx, i) => {
+              const rem = remedyData[wx];
+              if (!rem) return null;
+              return (
+                <div key={wx} className="bazi-remedy__card" style={{ animation: `fadeInUp 0.4s ease ${i * 0.12}s both` }}>
+                  <div className="bazi-remedy__header">
+                    <span className="bazi-remedy__icon" style={{ color: wxColors[wx] }}>{rem.icon}</span>
+                    <span className="bazi-remedy__wx" style={{ color: wxColors[wx] }}>{wx}</span>
+                  </div>
+                  <div className="bazi-remedy__body">
+                    <div className="bazi-remedy__row"><span className="bazi-remedy__label">颜色</span><span>{rem.color}</span></div>
+                    <div className="bazi-remedy__row"><span className="bazi-remedy__label">方位</span><span>{rem.direction}</span></div>
+                    <div className="bazi-remedy__row"><span className="bazi-remedy__label">饮食</span><span>{rem.food}</span></div>
+                    <div className="bazi-remedy__row"><span className="bazi-remedy__label">行业</span><span>{rem.career}</span></div>
+                    <div className="bazi-remedy__row"><span className="bazi-remedy__label">习惯</span><span>{rem.habit}</span></div>
+                  </div>
+                </div>
+              );
+            });
+          })()}
+        </div>
+      </div>
+
       {/* 十神详解 */}
       <div className="bazi-result__shishen">
         <h3 className="bazi-result__section-title">十神详解</h3>
