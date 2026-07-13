@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { AstrologyResult } from '../../types';
 import { calcAstrology } from '../../utils/astrologyCalc';
+import ShareButton from '../ShareButton/ShareButton';
 import './AstrologyPage.css';
 
 const AstrologyPage: React.FC = () => {
@@ -75,6 +76,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
   const r = result;
   const s = r.sign;
   const ec = elementColors[s.element];
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const fortuneItems = [
     { label: '事业', val: r.todayFortune.career, icon: '💼' },
@@ -86,7 +88,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
   const weeklyKeys = ['overall', 'career', 'love', 'wealth', 'advice'] as const;
 
   return (
-    <div className="page-result astro-result">
+    <div ref={resultRef} className="page-result astro-result">
       {/* 星座头部 */}
       <div className="astro-header" style={{ animation: 'fadeInUp 0.6s ease 0.1s both' }}>
         <div className="astro-symbol" style={{ color: ec, borderColor: ec }}>{s.symbol}</div>
@@ -210,6 +212,7 @@ const AstrologyResultView: React.FC<{ result: AstrologyResult; onReset: () => vo
 
       <div className="page-form__actions">
         <button className="btn-secondary" onClick={onReset}>重新查询</button>
+        <ShareButton targetRef={resultRef} fileName={`星座运势_${s.name}_${Date.now()}.png`} />
       </div>
     </div>
   );

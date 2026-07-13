@@ -315,6 +315,38 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
         </div>
       </div>
 
+      {/* 总体风水建议 */}
+      <div className="fs-result__section">
+        <h3 className="fs-result__section-title">总体风水建议</h3>
+        <div className="fs-result__tips">
+          {(() => {
+            const isEastGroup = r.group === '东四命';
+            const tips = isEastGroup ? [
+              { icon: '🏠', title: '卧室方位', text: '主卧宜选东、南、北、东南方，床头朝向吉方可增强睡眠质量和整体运势。' },
+              { icon: '🪑', title: '书桌摆放', text: '书桌宜面向东方或东南方，利于思维活跃和学业进步。避免背对门窗。' },
+              { icon: '🚪', title: '大门朝向', text: '大门朝东或东南为最佳，可纳入生旺之气。若朝向不佳，可在门口放置绿色植物化解。' },
+              { icon: '🎨', title: '色彩搭配', text: '主色调宜用绿色、蓝色、红色等东四命吉色。避免大面积使用白色和金色。' },
+              { icon: '🌿', title: '植物摆放', text: '客厅东方位摆放高大阔叶植物，可催旺生气。避免在卧室放带刺植物。' },
+            ] : [
+              { icon: '🏠', title: '卧室方位', text: '主卧宜选西、西北、西南、东北方，床头朝向吉方可增强安全感和稳定性。' },
+              { icon: '🪑', title: '书桌摆放', text: '书桌宜面向西方或西北方，利于决策力和事业运。书桌后方宜有靠墙。' },
+              { icon: '🚪', title: '大门朝向', text: '大门朝西或西北为最佳，可收纳金气。若朝向不佳，可在门口放置金属摆件化解。' },
+              { icon: '🎨', title: '色彩搭配', text: '主色调宜用白色、金色、黄色等西四命吉色。避免大面积使用红色和绿色。' },
+              { icon: '🔔', title: '金属摆件', text: '客厅西方位摆放铜器或金属风铃，可催旺金气。避免在凶方放置水景。' },
+            ];
+            return tips.map((tip, i) => (
+              <div key={i} className="fs-result__tip-card" style={{ animation: `fadeInUp 0.4s ease ${i * 0.08}s both` }}>
+                <span className="fs-result__tip-icon">{tip.icon}</span>
+                <div>
+                  <h4 className="fs-result__tip-title">{tip.title}</h4>
+                  <p className="fs-result__tip-text">{tip.text}</p>
+                </div>
+              </div>
+            ));
+          })()}
+        </div>
+      </div>
+
       <div className="page-form__actions">
         <button className="btn-secondary" onClick={onReset}>重新测算</button>
         <ShareButton targetRef={resultRef} fileName={`风水分析_${Date.now()}.png`} />
