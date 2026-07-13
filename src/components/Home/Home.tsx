@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import type { AppView } from '../../types';
 import { getLunarInfo } from '../../utils/lunarCalendar';
 import { drawFortuneStick, getLevelColor } from '../../utils/fortuneStickCalc';
+import { MAJOR_ARCANA, ELEMENT_COLORS, ELEMENT_SYMBOLS } from '../../data/tarotCards';
 import './Home.css';
 
 interface HomeProps {
@@ -216,6 +217,35 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <span className="home__daily-stick__more">查看详解 ›</span>
         </div>
       </button>
+
+      {/* 每日塔罗 */}
+      {(() => {
+        const tarotIdx = Math.floor(seededRandom(todaySeed + 99) * MAJOR_ARCANA.length);
+        const dailyTarot = MAJOR_ARCANA[tarotIdx];
+        const isUpright = seededRandom(todaySeed + 100) > 0.35;
+        const orientLabel = isUpright ? '正位' : '逆位';
+        const orientColor = isUpright ? '#2ecc71' : '#e67e22';
+        const meaning = isUpright ? dailyTarot.upright : dailyTarot.reversed;
+        return (
+          <button className="home__daily-tarot" onClick={() => onNavigate('tarot')} style={{ animation: 'fadeInUp 0.6s ease 0.45s both' }}>
+            <div className="home__daily-tarot__badge">每日塔罗</div>
+            <div className="home__daily-tarot__content">
+              <div className="home__daily-tarot__card">
+                <span className="home__daily-tarot__number">{dailyTarot.number}</span>
+                <span className="home__daily-tarot__name">{dailyTarot.name}</span>
+                <span className="home__daily-tarot__element" style={{ color: ELEMENT_COLORS[dailyTarot.element] }}>
+                  {ELEMENT_SYMBOLS[dailyTarot.element]} {dailyTarot.element}
+                </span>
+              </div>
+              <div className="home__daily-tarot__info">
+                <span className="home__daily-tarot__orient" style={{ color: orientColor }}>{orientLabel}</span>
+                <p className="home__daily-tarot__meaning">{meaning.slice(0, 40)}{meaning.length > 40 ? '...' : ''}</p>
+              </div>
+              <span className="home__daily-tarot__more">查看详解 ›</span>
+            </div>
+          </button>
+        );
+      })()}
 
       <div className="home__grid">
         {CARDS.map((card, i) => (

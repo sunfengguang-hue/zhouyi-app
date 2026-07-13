@@ -310,6 +310,65 @@
   text-align: right;
 }
 
+/* 每日塔罗 */
+.home__daily-tarot {
+  display: block; width: 100%;
+  background: linear-gradient(135deg, rgba(30,30,50,0.95), rgba(20,20,40,0.98));
+  border: 1px solid rgba(212,168,83,0.2);
+  border-radius: 14px;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 20px;
+}
+.home__daily-tarot:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+.home__daily-tarot__badge {
+  background: linear-gradient(90deg, rgba(147,51,234,0.3), rgba(79,70,229,0.3));
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #c4b5fd;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+.home__daily-tarot__content {
+  padding: 14px 16px;
+}
+.home__daily-tarot__card {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.home__daily-tarot__number {
+  font-size: 13px; color: var(--text-secondary); opacity: 0.7;
+}
+.home__daily-tarot__name {
+  font-size: 18px; font-weight: bold; color: var(--text-primary);
+  font-family: var(--font-display); letter-spacing: 2px;
+}
+.home__daily-tarot__element {
+  font-size: 12px; margin-left: auto;
+}
+.home__daily-tarot__info {
+  margin-bottom: 10px;
+}
+.home__daily-tarot__orient {
+  font-size: 13px; font-weight: bold; margin-right: 8px;
+}
+.home__daily-tarot__meaning {
+  font-size: 13px; color: var(--text-secondary); line-height: 1.5;
+  margin: 4px 0 0;
+}
+.home__daily-tarot__more {
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  text-align: right;
+  display: block;
+}
+
 /* Module grid */
 .home__grid {
   display: flex;
