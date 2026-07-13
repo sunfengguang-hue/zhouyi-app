@@ -107,8 +107,109 @@
 .fs-result__tip-title { font-size: 14px; color: var(--gold); font-weight: 600; margin-bottom: 4px; letter-spacing: 1px; }
 .fs-result__tip-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
 
+/* ======================== 流年飞星 ======================== */
+.fs-result__annual-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.fs-result__annual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.fs-result__annual-card {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.fs-result__annual-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-2px);
+}
+
+.fs-result__annual-card--lucky {
+  border-color: rgba(46, 204, 113, 0.2);
+}
+
+.fs-result__annual-card--unlucky {
+  border-color: rgba(231, 76, 60, 0.15);
+}
+
+.fs-result__annual-card--center {
+  background: linear-gradient(135deg, rgba(212, 168, 83, 0.1), rgba(212, 168, 83, 0.04));
+  border-color: rgba(212, 168, 83, 0.3);
+  box-shadow: 0 0 16px rgba(212, 168, 83, 0.08);
+}
+
+.fs-result__annual-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.fs-result__annual-dir {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--text-primary);
+  letter-spacing: 2px;
+}
+
+.fs-result__annual-star {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.fs-result__annual-name {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.fs-result__annual-effect {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.fs-result__annual-remedy {
+  padding: 6px 8px;
+  background: rgba(212, 168, 83, 0.06);
+  border-radius: 4px;
+  border-left: 2px solid rgba(212, 168, 83, 0.3);
+}
+
+.fs-result__annual-remedy-label {
+  font-size: 10px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.fs-result__annual-remedy p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
 @media (max-width: 480px) {
   .compass-svg-wrap { width: 260px; height: 260px; }
   .fs-result__grid { grid-template-columns: 1fr; }
+  .fs-result__annual-grid { grid-template-columns: repeat(2, 1fr); }
   .fs-mingua-detail { flex-direction: column; align-items: center; text-align: center; }
 }
