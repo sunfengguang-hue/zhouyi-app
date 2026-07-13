@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import type { FengshuiResult } from '../../types';
 import { calculateFengshui } from '../../utils/fengshuiCalc';
 import { SITTING_OPTIONS } from '../../data/fengshui';
+import ShareButton from '../ShareButton/ShareButton';
 import './FengshuiPage.css';
 
 const TRIGRAM_SYMBOLS: Record<string, string> = {
@@ -52,6 +53,7 @@ const FengshuiPage: React.FC = () => {
 
 const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void }> = ({ result, onReset }) => {
   const r = result;
+  const resultRef = useRef<HTMLDivElement>(null);
   const luckyDirs = r.directions.filter(d => d.lucky);
   const unluckyDirs = r.directions.filter(d => !d.lucky);
   const [hoveredSector, setHoveredSector] = useState<number | null>(null);
@@ -82,7 +84,7 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
   };
 
   return (
-    <div className="page-result fengshui-result">
+    <div ref={resultRef} className="page-result fengshui-result">
       <h2 className="fs-result__title">八宅风水分析</h2>
       <div className="fs-result__mingua">
         <span className="tag tag-gold">{r.group}</span>
@@ -313,7 +315,10 @@ const FengshuiResultView: React.FC<{ result: FengshuiResult; onReset: () => void
         </div>
       </div>
 
-      <div className="page-form__actions"><button className="btn-secondary" onClick={onReset}>重新测算</button></div>
+      <div className="page-form__actions">
+        <button className="btn-secondary" onClick={onReset}>重新测算</button>
+        <ShareButton targetRef={resultRef} fileName={`风水分析_${Date.now()}.png`} />
+      </div>
     </div>
   );
 };
