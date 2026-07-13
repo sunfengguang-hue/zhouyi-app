@@ -125,6 +125,14 @@ export interface BaziPillar {
   zhiSS: ShiShen;  // 地支主气十神
 }
 
+export interface DizhiRelation {
+  type: '六冲' | '六合' | '三合' | '三刑' | '六害' | '自刑';
+  pillars: string[];   // e.g. ['年支', '月支']
+  dizhi: string[];     // e.g. ['子', '午']
+  element?: string;    // for 三合: the resulting element
+  description: string;
+}
+
 export interface BaziResult {
   year: BaziPillar;   // 年柱
   month: BaziPillar;  // 月柱
@@ -147,6 +155,7 @@ export interface BaziResult {
   dayMasterPersonality: { character: string; career: string; love: string; wealth: string };
   shiShenDetails: { name: string; position: string; meaning: string }[];
   daYun: { age: number; year: number; ganZhi: string; wuxing: string; interp: string }[];
+  dizhiRelations: DizhiRelation[];
 }
 
 // ======================== 星座 ========================

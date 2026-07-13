@@ -401,6 +401,49 @@ const BaziResultView: React.FC<{ result: BaziResult; onReset: () => void }> = ({
         </div>
       )}
 
+      {/* 地支互动 */}
+      {r.dizhiRelations.length > 0 && (
+        <div className="bazi-result__dizhi">
+          <h3 className="bazi-result__section-title">地支互动</h3>
+          <div className="bazi-dizhi__grid">
+            {r.dizhiRelations.map((rel, i) => {
+              const typeConfig: Record<string, { color: string; icon: string }> = {
+                '六冲': { color: '#e74c3c', icon: '⚡' },
+                '六合': { color: '#2ecc71', icon: '🤝' },
+                '三合': { color: '#3498db', icon: '🔺' },
+                '三刑': { color: '#e67e22', icon: '⚔️' },
+                '六害': { color: '#9b59b6', icon: '🔪' },
+                '自刑': { color: '#95a5a6', icon: '🔄' },
+              };
+              const cfg = typeConfig[rel.type] || { color: '#ccc', icon: '◇' };
+              return (
+                <div
+                  key={i}
+                  className="bazi-dizhi__card"
+                  style={{ animation: `fadeInUp 0.3s ease ${i * 0.06}s both`, borderLeftColor: cfg.color }}
+                >
+                  <div className="bazi-dizhi__header">
+                    <span className="bazi-dizhi__icon">{cfg.icon}</span>
+                    <span className="bazi-dizhi__type" style={{ color: cfg.color }}>{rel.type}</span>
+                    {rel.element && (
+                      <span className="bazi-dizhi__element" style={{ color: cfg.color }}>→ {rel.element}局</span>
+                    )}
+                  </div>
+                  <div className="bazi-dizhi__pillars">
+                    {rel.pillars.map((p, j) => (
+                      <span key={j} className="bazi-dizhi__pillar">
+                        {p}（{rel.dizhi[j]}）
+                      </span>
+                    ))}
+                  </div>
+                  <p className="bazi-dizhi__desc">{rel.description}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* 流年运势 */}
       {(() => {
         const currentYear = new Date().getFullYear();

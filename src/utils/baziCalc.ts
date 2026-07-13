@@ -1,4 +1,4 @@
-import type { BaziResult, BaziPillar, WuXing, ShiShen } from '../types';
+import type { BaziResult, BaziPillar, WuXing, ShiShen, DizhiRelation } from '../types';
 import {
   TIAN_GAN, DI_ZHI, TIAN_GAN_WUXING, DI_ZHI_WUXING,
   DI_ZHI_CANG_GAN, WU_HU_DUN, WU_SHU_DUN, JIE_QI,
@@ -233,6 +233,168 @@ function getSolarTime(date: Date, longitude: number): Date {
   const eotMin = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
 
   return new Date(date.getTime() + (lngOffsetMin + eotMin) * 60 * 1000);
+}
+
+/**
+ * 地支互动分析：六冲、六合、三合、三刑、六害、自刑
+ */
+function analyzeDizhiRelations(allZhi: string[], pillarNames: string[]): DizhiRelation[] {
+  const relations: DizhiRelation[] = [];
+
+  // 六冲：子午、丑未、寅申、卯酉、辰戌、巳亥
+  const LIU_CHONG: [string, string, string][] = [
+    ['子', '午', '子午冲——水火相激，变动剧烈'],
+    ['丑', '未', '丑未冲——土气碰撞，固执互克'],
+    ['寅', '申', '寅申冲——金木交战，道路奔波'],
+    ['卯', '酉', '卯酉冲——金木相伐，门户不安'],
+    ['辰', '戌', '辰戌冲——天罗地网，官非口舌'],
+    ['巳', '亥', '巳亥冲——水火相冲，驿马动荡'],
+  ];
+  for (let i = 0; i < allZhi.length; i++) {
+    for (let j = i + 1; j < allZhi.length; j++) {
+      for (const [a, b, desc] of LIU_CHONG) {
+        if ((allZhi[i] === a && allZhi[j] === b) || (allZhi[i] === b && allZhi[j] === a)) {
+          relations.push({
+            type: '六冲',
+            pillars: [pillarNames[i], pillarNames[j]],
+            dizhi: [a, b],
+            description: desc,
+          });
+        }
+      }
+    }
+  }
+
+  // 六合：子丑合土、寅亥合木、卯戌合火、辰酉合金、巳申合水、午未合土
+  const LIU_HE: [string, string, string, string][] = [
+    ['子', '丑', '土', '子丑合土——暗合踏实，利于稳定'],
+    ['寅', '亥', '木', '寅亥合木——生合有情，利于发展'],
+    ['卯', '戌', '火', '卯戌合火——热情暗涌，利于合作'],
+    ['辰', '酉', '金', '辰酉合金——义合相助，利于事业'],
+    ['巳', '申', '水', '巳申合水——智合灵活，利于谋略'],
+    ['午', '未', '土', '午未合土——明合中正，利于婚姻'],
+  ];
+  for (let i = 0; i < allZhi.length; i++) {
+    for (let j = i + 1; j < allZhi.length; j++) {
+      for (const [a, b, elem, desc] of LIU_HE) {
+        if ((allZhi[i] === a && allZhi[j] === b) || (allZhi[i] === b && allZhi[j] === a)) {
+          relations.push({
+            type: '六合',
+            pillars: [pillarNames[i], pillarNames[j]],
+            dizhi: [a, b],
+            element: elem,
+            description: desc,
+          });
+        }
+      }
+    }
+  }
+
+  // 三合：申子辰(水局)、亥卯未(木局)、寅午戌(火局)、巳酉丑(金局)
+  const SAN_HE: [string, string, string, string, string][] = [
+    ['申', '子', '辰', '水', '申子辰三合水局——智慧流动，利于谋划'],
+    ['亥', '卯', '未', '木', '亥卯未三合木局——仁德生发，利于成长'],
+    ['寅', '午', '戌', '火', '寅午戌三合火局——热情光明，利于表现'],
+    ['巳', '酉', '丑', '金', '巳酉丑三合金局——义气果决，利于事业'],
+  ];
+  for (const [a, b, c, elem, desc] of SAN_HE) {
+    const indices: number[] = [];
+    for (let i = 0; i < allZhi.length; i++) {
+      if (allZhi[i] === a || allZhi[i] === b || allZhi[i] === c) {
+        if (!indices.includes(i)) indices.push(i);
+      }
+    }
+    const uniqueZhi = [...new Set(indices.map(i => allZhi[i]))];
+    if (uniqueZhi.length === 3) {
+      relations.push({
+        type: '三合',
+        pillars: indices.map(i => pillarNames[i]),
+        dizhi: [a, b, c],
+        element: elem,
+        description: desc,
+      });
+    }
+  }
+
+  // 三刑：寅巳申(无恩之刑)、丑未戌(恃势之刑)、子卯(无礼之刑)、自刑(辰辰/午午/酉酉/亥亥)
+  const SAN_XING_GROUP: [string[], string, string][] = [
+    [['寅', '巳', '申'], '无恩之刑', '寅巳申无恩之刑——恩将仇报，口舌是非'],
+    [['丑', '未', '戌'], '恃势之刑', '丑未戌恃势之刑——恃强凌弱，刑伤灾厄'],
+  ];
+  for (const [group, _name, desc] of SAN_XING_GROUP) {
+    const indices: number[] = [];
+    for (let i = 0; i < allZhi.length; i++) {
+      if (group.includes(allZhi[i]) && !indices.includes(i)) indices.push(i);
+    }
+    const uniqueZhi = [...new Set(indices.map(i => allZhi[i]))];
+    if (uniqueZhi.length === 3) {
+      relations.push({
+        type: '三刑',
+        pillars: indices.map(i => pillarNames[i]),
+        dizhi: group,
+        description: desc,
+      });
+    }
+  }
+  // 子卯无礼之刑
+  for (let i = 0; i < allZhi.length; i++) {
+    for (let j = i + 1; j < allZhi.length; j++) {
+      if ((allZhi[i] === '子' && allZhi[j] === '卯') || (allZhi[i] === '卯' && allZhi[j] === '子')) {
+        relations.push({
+          type: '三刑',
+          pillars: [pillarNames[i], pillarNames[j]],
+          dizhi: ['子', '卯'],
+          description: '子卯无礼之刑——礼法有亏，桃花纠纷',
+        });
+      }
+    }
+  }
+
+  // 自刑：辰辰、午午、酉酉、亥亥
+  const ZI_XING = ['辰', '午', '酉', '亥'];
+  const zhiCount: Record<string, number[]> = {};
+  allZhi.forEach((z, i) => {
+    if (ZI_XING.includes(z)) {
+      if (!zhiCount[z]) zhiCount[z] = [];
+      zhiCount[z].push(i);
+    }
+  });
+  for (const [zhi, indices] of Object.entries(zhiCount)) {
+    if (indices.length >= 2) {
+      relations.push({
+        type: '自刑',
+        pillars: indices.slice(0, 2).map(i => pillarNames[i]),
+        dizhi: [zhi, zhi],
+        description: `${zhi}${zhi}自刑——自我矛盾，内心纠结`,
+      });
+    }
+  }
+
+  // 六害：子未害、丑午害、寅巳害、卯辰害、申亥害、酉戌害
+  const LIU_HAI: [string, string, string][] = [
+    ['子', '未', '子未相害——穿害暗损，小人暗算'],
+    ['丑', '午', '丑午相害——官非暗耗，是非不断'],
+    ['寅', '巳', '寅巳相害——刑害并临，口舌纷争'],
+    ['卯', '辰', '卯辰相害——穿害破财，事业受阻'],
+    ['申', '亥', '申亥相害——嫉妒暗害，人际复杂'],
+    ['酉', '戌', '酉戌相害——嫉妒穿害，家宅不宁'],
+  ];
+  for (let i = 0; i < allZhi.length; i++) {
+    for (let j = i + 1; j < allZhi.length; j++) {
+      for (const [a, b, desc] of LIU_HAI) {
+        if ((allZhi[i] === a && allZhi[j] === b) || (allZhi[i] === b && allZhi[j] === a)) {
+          relations.push({
+            type: '六害',
+            pillars: [pillarNames[i], pillarNames[j]],
+            dizhi: [a, b],
+            description: desc,
+          });
+        }
+      }
+    }
+  }
+
+  return relations;
 }
 
 /**
@@ -493,6 +655,10 @@ export function calculateBazi(
     });
   }
 
+  // 地支互动分析
+  const zhiPillarNames = ['年支', '月支', '日支', '时支'];
+  const dizhiRelations = analyzeDizhiRelations(allZhi, zhiPillarNames);
+
   return {
     year: yearPillar,
     month: monthPillar,
@@ -515,5 +681,6 @@ export function calculateBazi(
     dayMasterPersonality,
     shiShenDetails,
     daYun,
+    dizhiRelations,
   };
 }
