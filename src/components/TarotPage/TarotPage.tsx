@@ -11,6 +11,45 @@ const SPREAD_OPTIONS: { type: TarotSpreadType; label: string; desc: string }[] =
   { type: 'relationship', label: '关系牌阵', desc: '探索两人关系的深层动态' },
 ];
 
+const SPREAD_GUIDES: Record<TarotSpreadType, { intro: string; positions: { name: string; meaning: string }[]; when: string; tip: string }> = {
+  single: {
+    intro: '单牌占卜是最简洁的塔罗方式，一张牌即给出当下的核心指引。适合日常快速查看，获取今日的灵感与方向。',
+    positions: [{ name: '指引', meaning: '当下最重要的能量与讯息' }],
+    when: '每日晨间查看、快速决策参考、心情迷茫时',
+    tip: '关注这张牌的核心关键词和正/逆位含义，让它成为你今天的一面镜子。',
+  },
+  three: {
+    intro: '时间之流是最经典的三牌阵，通过过去、现在、未来三个时间节点，展现事物的发展脉络和能量走向。',
+    positions: [
+      { name: '过去', meaning: '影响当前局面的历史因素与根源' },
+      { name: '现在', meaning: '当前面临的核心课题与能量状态' },
+      { name: '未来', meaning: '若保持现状，事物发展的可能方向' },
+    ],
+    when: '想了解事情来龙去脉、分析当前处境、预测发展趋势',
+    tip: '重点看三张牌之间的元素互动——相生代表顺畅，相克提示需要注意的转变。',
+  },
+  relationship: {
+    intro: '关系牌阵深入探索两人之间的能量互动，五张牌分别展现双方的内在状态、关系动态和未来发展可能。',
+    positions: [
+      { name: '你的状态', meaning: '你在这段关系中的内在感受和能量' },
+      { name: '对方状态', meaning: '对方在这段关系中的内在感受和能量' },
+      { name: '关系本质', meaning: '这段关系的核心能量与本质特征' },
+      { name: '挑战', meaning: '当前关系中需要面对的主要课题' },
+      { name: '发展方向', meaning: '关系的潜在走向和发展可能' },
+    ],
+    when: '感情困惑、想深入了解两人关系、评估关系健康度',
+    tip: '对比你和对方的牌面元素——相同元素代表共鸣，互补元素代表吸引力，冲突元素则是需要磨合的部分。',
+  },
+};
+
+// 元素能量分析数据
+const ELEMENT_ANALYSIS: Record<string, { label: string; positive: string; negative: string }> = {
+  '火': { label: '行动与激情', positive: '充满动力，适合主动出击', negative: '可能过于急躁，需要冷静' },
+  '水': { label: '情感与直觉', positive: '感受力强，适合倾听内心', negative: '情绪波动，需要理性平衡' },
+  '风': { label: '思维与沟通', positive: '思路清晰，适合交流决策', negative: '过于理性，需要关注感受' },
+  '土': { label: '稳定与物质', positive: '基础稳固，适合务实规划', negative: '可能过于保守，需要灵活变通' },
+};
+
 const TarotPage: React.FC = () => {
   const [question, setQuestion] = useState('');
   const [spreadType, setSpreadType] = useState<TarotSpreadType>('three');
@@ -64,6 +103,24 @@ const TarotPage: React.FC = () => {
                   <span className="tarot-page__spread-desc">{opt.desc}</span>
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* 牌阵说明 */}
+          <div className="tarot-page__guide" style={{ animation: 'fadeInUp 0.4s ease' }}>
+            <h4 className="tarot-page__guide-title">牌阵说明 · {SPREAD_OPTIONS.find(o => o.type === spreadType)?.label}</h4>
+            <p className="tarot-page__guide-intro">{SPREAD_GUIDES[spreadType].intro}</p>
+            <div className="tarot-page__guide-positions">
+              {SPREAD_GUIDES[spreadType].positions.map((pos, i) => (
+                <div key={i} className="tarot-page__guide-pos">
+                  <span className="tarot-page__guide-pos-name">第{i + 1}张 · {pos.name}</span>
+                  <span className="tarot-page__guide-pos-meaning">{pos.meaning}</span>
+                </div>
+              ))}
+            </div>
+            <div className="tarot-page__guide-meta">
+              <p><span className="tarot-page__guide-meta-label">适用场景</span>{SPREAD_GUIDES[spreadType].when}</p>
+              <p><span className="tarot-page__guide-meta-label">解读技巧</span>{SPREAD_GUIDES[spreadType].tip}</p>
             </div>
           </div>
 
@@ -217,6 +274,51 @@ const TarotPage: React.FC = () => {
               {result.combination.split('\n\n').map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
+            </div>
+          )}
+
+          {/* 能量分析 */}
+          {revealed.length === result.draws.length && (
+            <div className="tarot-result__energy">
+              <h4 className="tarot-result__energy-title">能量分析</h4>
+              <div className="tarot-result__energy-bars">
+                {(['火', '水', '风', '土'] as const).map((el, i) => {
+                  const count = result.draws.filter(d => d.card.element === el).length;
+                  const total = result.draws.length;
+                  const pct = Math.round((count / total) * 100);
+                  const analysis = ELEMENT_ANALYSIS[el];
+                  return (
+                    <div key={el} className="tarot-result__energy-row" style={{ animation: `fadeInUp 0.4s ease ${0.8 + i * 0.08}s both` }}>
+                      <div className="tarot-result__energy-head">
+                        <span className="tarot-result__energy-icon" style={{ color: ELEMENT_COLORS[el] }}>{ELEMENT_SYMBOLS[el]}</span>
+                        <span className="tarot-result__energy-label" style={{ color: ELEMENT_COLORS[el] }}>{el}象</span>
+                        <span className="tarot-result__energy-sublabel">{analysis.label}</span>
+                        <span className="tarot-result__energy-count">{count}张</span>
+                      </div>
+                      <div className="tarot-result__energy-bar">
+                        <div className="tarot-result__energy-fill" style={{ width: count > 0 ? `${Math.max(pct, 15)}%` : '0%', background: ELEMENT_COLORS[el], transition: `width 0.8s ease ${0.9 + i * 0.1}s` }} />
+                      </div>
+                      {count > 0 && (
+                        <p className="tarot-result__energy-note">{count >= total / 2 ? analysis.positive : analysis.negative}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              {(() => {
+                const elements = result.draws.map(d => d.card.element);
+                const unique = [...new Set(elements)];
+                const dominant = unique.length === 1 ? unique[0] : null;
+                const balanced = unique.length === result.draws.length;
+                if (dominant) {
+                  return <p className="tarot-result__energy-summary">全部{dominant}象能量集中，{ELEMENT_ANALYSIS[dominant].positive}，是极强的单一能量指向。</p>;
+                }
+                if (balanced) {
+                  return <p className="tarot-result__energy-summary">元素分布均衡，各方面能量平衡，整体局势稳定和谐。</p>;
+                }
+                const counts = unique.map(el => ({ el, count: elements.filter(e => e === el).length })).sort((a, b) => b.count - a.count);
+                return <p className="tarot-result__energy-summary">{counts[0].el}象能量最强（{counts[0].count}张），{ELEMENT_ANALYSIS[counts[0].el].positive}。注意平衡{counts[counts.length - 1].el}象的不足。</p>;
+              })()}
             </div>
           )}
 

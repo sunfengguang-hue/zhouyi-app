@@ -283,6 +283,178 @@
   padding: 1px 5px;
 }
 
+/* ==================== 牌阵说明 ==================== */
+.tarot-page__guide {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(212, 168, 83, 0.2);
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.tarot-page__guide-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.tarot-page__guide-intro {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.tarot-page__guide-positions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tarot-page__guide-pos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--gold);
+}
+
+.tarot-page__guide-pos-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+.tarot-page__guide-pos-meaning {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.tarot-page__guide-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(212, 168, 83, 0.15);
+}
+
+.tarot-page__guide-meta p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.tarot-page__guide-meta-label {
+  color: var(--gold);
+  font-weight: 600;
+  margin-right: 8px;
+  letter-spacing: 1px;
+}
+
+/* ==================== 能量分析 ==================== */
+.tarot-result__energy {
+  padding: 20px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, rgba(155, 89, 182, 0.08), rgba(52, 152, 219, 0.06));
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(155, 89, 182, 0.2);
+}
+
+.tarot-result__energy-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--gold);
+  letter-spacing: 4px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.tarot-result__energy-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tarot-result__energy-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tarot-result__energy-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tarot-result__energy-icon {
+  font-size: 16px;
+}
+
+.tarot-result__energy-label {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.tarot-result__energy-sublabel {
+  font-size: 11px;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.tarot-result__energy-count {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.tarot-result__energy-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.tarot-result__energy-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+.tarot-result__energy-note {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 0;
+  padding-left: 28px;
+  opacity: 0.8;
+}
+
+.tarot-result__energy-summary {
+  font-size: 13px;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.7;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+}
+
 @media (max-width: 480px) {
   .tarot-card { width: 130px; padding: 12px 8px; }
   .tarot-card__flip { width: 72px; height: 104px; }
