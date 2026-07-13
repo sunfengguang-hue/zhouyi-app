@@ -4,6 +4,38 @@ import { drawFortuneStick, getLevelColor } from '../../utils/fortuneStickCalc';
 import ShareButton from '../ShareButton/ShareButton';
 import './FortuneStickPage.css';
 
+// 问事分类关键词
+const topicKeywords: Record<string, { keywords: string[]; icon: string; label: string; field: 'career' | 'love' | 'wealth' | 'health' }> = {
+  career: { keywords: ['事业', '工作', '职业', '升职', '跳槽', '创业', '生意', '项目', '考试', '面试', '学业', '进修', '合作', '客户'], icon: '💼', label: '事业', field: 'career' },
+  love: { keywords: ['感情', '爱情', '恋爱', '婚姻', '对象', '老公', '老婆', '伴侣', '暗恋', '分手', '复合', '桃花', '相亲', '约会'], icon: '❤️', label: '感情', field: 'love' },
+  wealth: { keywords: ['财运', '赚钱', '投资', '理财', '股票', '基金', '彩票', '买房', '贷款', '收入', '工资', '奖金', '生意', '副业'], icon: '💰', label: '财运', field: 'wealth' },
+  health: { keywords: ['健康', '身体', '生病', '手术', '治疗', '康复', '减肥', '运动', '养生', '体检', '失眠', '压力', '焦虑'], icon: '🏥', label: '健康', field: 'health' },
+};
+
+function detectTopic(question: string): { icon: string; label: string; field: 'career' | 'love' | 'wealth' | 'health' } | null {
+  if (!question || question === '问事') return null;
+  for (const [, topic] of Object.entries(topicKeywords)) {
+    if (topic.keywords.some(kw => question.includes(kw))) {
+      return { icon: topic.icon, label: topic.label, field: topic.field };
+    }
+  }
+  return null;
+}
+
+// 签诗赏析：将签诗四句提炼为关键词
+function extractPoemKeywords(poem: string): string[] {
+  const lines = poem.split('\n').filter(Boolean);
+  const keywords: string[] = [];
+  const patterns = [/[春风秋雨日月星山河云]/, /[龙虎凤鹤鹏鸾]/, /[金玉珠宝翠]/, /[东南西北]/, /[天地人]/, /[福禄寿喜财]/];
+  lines.forEach(line => {
+    patterns.forEach(p => {
+      const matches = line.match(new RegExp(p.source, 'g'));
+      if (matches) keywords.push(...matches.slice(0, 2));
+    });
+  });
+  return [...new Set(keywords)].slice(0, 6);
+}
+
 const FortuneStickPage: React.FC = () => {
   const [question, setQuestion] = useState('');
   const [result, setResult] = useState<FortuneStickResult | null>(null);
@@ -114,6 +146,22 @@ const FortuneStickPage: React.FC = () => {
             ))}
           </div>
 
+          {/* 签诗赏析 */}
+          {(() => {
+            const keywords = extractPoemKeywords(result.stick.poem);
+            if (keywords.length === 0) return null;
+            return (
+              <div className="fortune-result__poem-analysis" style={{ animation: 'fortuneReveal 0.5s ease 0.3s both' }}>
+                <h4>签诗意象</h4>
+                <div className="fortune-result__poem-keywords">
+                  {keywords.map((kw, i) => (
+                    <span key={i} className="fortune-result__poem-kw" style={{ animation: `popIn 0.3s ease ${0.35 + i * 0.06}s both` }}>{kw}</span>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+
           {/* 解曰 */}
           <div className="fortune-result__interp" style={{ animation: 'fortuneReveal 0.5s ease 0.3s both' }}>
             <h4>解曰</h4>
@@ -156,6 +204,23 @@ const FortuneStickPage: React.FC = () => {
             <h4>总体</h4>
             <p>{result.stick.meaning.overall}</p>
           </div>
+
+          {/* 针对性解读 */}
+          {(() => {
+            const topic = detectTopic(result.question);
+            if (!topic) return null;
+            const topicMeaning = result.stick.meaning[topic.field];
+            return (
+              <div className="fortune-result__topic" style={{ animation: 'fortuneReveal 0.5s ease 0.65s both' }}>
+                <div className="fortune-result__topic-badge">
+                  <span className="fortune-result__topic-icon">{topic.icon}</span>
+                  <span className="fortune-result__topic-label">针对「{topic.label}」解读</span>
+                </div>
+                <p className="fortune-result__topic-text">{topicMeaning}</p>
+                <p className="fortune-result__topic-hint">此签在{topic.label}方面的指引尤为关键，建议重点关注</p>
+              </div>
+            );
+          })()}
 
           {/* 详细解读 */}
           <div className="fortune-result__details">
